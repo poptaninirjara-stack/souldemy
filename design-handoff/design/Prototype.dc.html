@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&amp;family=Public+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#E4E7EF;color:#181B2E;font-family:"Public Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1E2A5E;text-decoration:underline;text-decoration-color:#8A90A8;text-underline-offset:3px}
+a:hover{text-decoration-color:#D69A12;text-decoration-thickness:2px}
+button{font-family:inherit}
+</style>
+</helmet>
+
+<section data-screen-label="Prototype" style="padding:48px 64px 64px;display:flex;flex-direction:column;gap:32px">
+
+<div style="display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;padding:20px 24px;background:#FFFFFF;border:1px solid #D9DCE6;border-radius:8px;max-width:1734px;box-sizing:border-box">
+<div style="font:600 19px Literata,serif;color:#1E2A5E">Review controls</div>
+<div role="radiogroup" aria-label="Student" style="display:flex;gap:8px">
+<button onClick="{{ setReturning }}" aria-checked="{{ retChecked }}" role="radio" style="height:40px;padding:0 14px;border:1px solid {{ retBorder }};border-radius:4px;background:{{ retBg }};color:{{ retFg }};font:600 14px 'Public Sans';cursor:pointer">Returning student</button>
+<button onClick="{{ setFirst }}" aria-checked="{{ firstChecked }}" role="radio" style="height:40px;padding:0 14px;border:1px solid {{ firstBorder }};border-radius:4px;background:{{ firstBg }};color:{{ firstFg }};font:600 14px 'Public Sans';cursor:pointer">First visit</button>
+</div>
+<button onClick="{{ replay }}" style="height:40px;padding:0 16px;border:1px solid #1E2A5E;border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 14px 'Public Sans';cursor:pointer">Replay opening</button>
+<label style="display:flex;gap:8px;align-items:center;font:400 16px 'Public Sans';cursor:pointer"><input type="checkbox" checked="{{ slow }}" onChange="{{ toggleSlow }}" style="width:18px;height:18px;margin:0;accent-color:#1E2A5E">Show loading state between screens</label>
+<label style="display:flex;gap:8px;align-items:center;font:400 16px 'Public Sans';cursor:pointer"><input type="checkbox" checked="{{ reduced }}" onChange="{{ toggleReduced }}" style="width:18px;height:18px;margin:0;accent-color:#1E2A5E">Reduced motion (transitions now, opening on replay)</label>
+<span style="font:400 14px/1.5 'Public Sans';color:#4B5375">Phone and desktop keep separate state. Switching student resets both.</span>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:64px;align-items:flex-start">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font:500 14px 'Public Sans';color:#4B5375">Phone, 390px</div>
+<dc-import name="App" device="phone" first-visit="{{ first }}" reset-key="{{ resetKey }}" replay-key="{{ replayKey }}" slow="{{ slow }}" sim-reduced="{{ reduced }}" hint-size="390px,844px"></dc-import>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font:500 14px 'Public Sans';color:#4B5375">Phone, 360px</div>
+<dc-import name="App" device="phone" narrow="{{ true }}" first-visit="{{ first }}" reset-key="{{ resetKey }}" replay-key="{{ replayKey }}" slow="{{ slow }}" sim-reduced="{{ reduced }}" hint-size="360px,780px"></dc-import>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font:500 14px 'Public Sans';color:#4B5375">Desktop, 1280px</div>
+<dc-import name="App" device="desktop" first-visit="{{ first }}" reset-key="{{ resetKey }}" replay-key="{{ replayKey }}" slow="{{ slow }}" sim-reduced="{{ reduced }}" hint-size="1280px,860px"></dc-import>
+</div>
+</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { first: false, resetKey: 0, replayKey: 0, slow: false, reduced: false };
+  renderVals() {
+    const s = this.state, ink = '#1E2A5E';
+    const seg = (on) => ({ bg: on ? ink : '#FFFFFF', fg: on ? '#FFFFFF' : ink, border: on ? ink : '#8A90A8', checked: on ? 'true' : 'false' });
+    const r = seg(!s.first), f = seg(s.first);
+    return {
+      first: s.first, resetKey: s.resetKey, replayKey: s.replayKey, slow: s.slow, reduced: s.reduced,
+      retBg: r.bg, retFg: r.fg, retBorder: r.border, retChecked: r.checked,
+      firstBg: f.bg, firstFg: f.fg, firstBorder: f.border, firstChecked: f.checked,
+      setReturning: () => this.setState(st => ({ first: false, resetKey: st.resetKey + 1 })),
+      setFirst: () => this.setState(st => ({ first: true, resetKey: st.resetKey + 1 })),
+      replay: () => this.setState(st => ({ replayKey: st.replayKey + 1 })),
+      toggleSlow: (e) => this.setState({ slow: e.target.checked }),
+      toggleReduced: (e) => this.setState({ reduced: e.target.checked })
+    };
+  }
+}
+</script>
+</body>
+</html>

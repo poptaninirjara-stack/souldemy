@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Public+Sans:wght@400;500;600&amp;family=Noto+Serif+Devanagari:wght@400;600&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#E4E7EF;color:#181B2E;font-family:"Public Sans","Noto Sans Devanagari",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:#D69A12;color:#181B2E}
+a{color:#1E2A5E;text-decoration:underline;text-decoration-color:#6E7590;text-underline-offset:3px}
+a:hover{text-decoration-color:#D69A12;text-decoration-thickness:2px}
+button{font-family:inherit}
+:focus-visible{outline:2px solid #1E2A5E;outline-offset:2px}
+</style>
+</helmet>
+
+<div onPointerDown="{{ onTap }}" style="position:relative;width:{{ L.w }};height:{{ L.h }};background:#F6F7FA;border:1px solid #D9DCE6;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;box-sizing:border-box">
+
+<sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
+<header style="flex:none;height:56px;padding:0 12px 0 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #D9DCE6;background:#FFFFFF">
+<sc-if value="{{ hdr.hasBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ hdr.onBack }}" style="display:flex;align-items:center;gap:4px;min-height:44px;padding:0 8px;border:0;background:none;font:500 16px 'Public Sans';color:#1E2A5E;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E2A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>{{ hdr.back }}</button></sc-if>
+<sc-if value="{{ hdr.noBack }}" hint-placeholder-val="{{ true }}"><button onClick="{{ goWelcome }}" style="min-height:44px;padding:0 16px;border:0;background:none;font:600 20px/1 Literata,serif;color:#1E2A5E;letter-spacing:-0.01em;cursor:pointer">{{ wordmark }}</button></sc-if>
+<sc-if value="{{ hdr.right }}" hint-placeholder-val="{{ false }}"><button onClick="{{ hdr.onRight }}" style="min-height:44px;padding:0 8px;border:0;background:none;font:500 14px 'Public Sans';color:{{ hdr.rightColor }};text-decoration:{{ hdr.rightDeco }};text-decoration-color:#6E7590;text-underline-offset:3px;cursor:pointer">{{ hdr.right }}</button></sc-if>
+</header>
+</sc-if>
+
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ false }}">
+<header style="flex:none;height:64px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #D9DCE6;background:#FFFFFF">
+<button onClick="{{ goWelcome }}" style="border:0;background:none;padding:0;font:600 22px/1 Literata,serif;color:#1E2A5E;letter-spacing:-0.01em;cursor:pointer">{{ wordmark }}</button>
+<nav style="display:flex;gap:32px;align-items:center">
+<sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+<button onClick="{{ n.on }}" aria-current="{{ n.aria }}" style="border:0;background:none;min-height:44px;padding:0;font:{{ n.weight }} 16px 'Public Sans';color:{{ n.color }};text-decoration:{{ n.deco }};text-decoration-color:#D69A12;text-decoration-thickness:3px;text-underline-offset:8px;cursor:pointer">{{ n.label }}</button>
+</sc-for>
+<button onClick="{{ goPhrases }}" style="border:0;background:none;min-height:44px;padding:0;font:500 14px 'Public Sans';color:#1E2A5E;text-decoration:underline;text-decoration-color:#6E7590;text-underline-offset:3px;cursor:pointer">Phrase book ({{ phraseCount }})</button>
+</nav>
+</header>
+</sc-if>
+
+<div style="flex:1;display:flex;min-height:0">
+
+<sc-if value="{{ showRail }}" hint-placeholder-val="{{ false }}">
+<aside style="flex:none;width:248px;box-sizing:border-box;border-right:1px solid #D9DCE6;background:#F6F7FA;overflow-y:auto;padding:28px 20px 28px 24px;display:flex;flex-direction:column;gap:12px">
+<button onClick="{{ goDash }}" style="align-self:flex-start;display:flex;align-items:center;gap:4px;border:0;background:none;padding:4px 0;font:500 14px 'Public Sans';color:#1E2A5E;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E2A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>All modules</button>
+<div style="font:600 16px/1.4 'Public Sans';color:#1E2A5E">Research English for Humanities</div>
+<ul style="list-style:none;margin:0;padding:0;border-top:1px solid #D9DCE6">
+<sc-for list="{{ railMods }}" as="m" hint-placeholder-count="12">
+<li style="padding:9px 0;border-bottom:1px solid #D9DCE6;display:flex;flex-direction:column;gap:6px">
+<button onClick="{{ m.open }}" style="border:0;background:none;padding:0;text-align:left;font:{{ m.weight }} 14px/1.4 'Public Sans';color:{{ m.color }};cursor:pointer">{{ m.title }}</button>
+<div style="height:{{ m.barH }};background:#D9DCE6"><div style="width:{{ m.pct }};height:100%;background:#D69A12;transition:width .45s cubic-bezier(0.25, 1, 0.5, 1)"></div></div>
+<sc-if value="{{ m.current }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:2px;padding-top:2px">
+<sc-for list="{{ railSubs }}" as="s" hint-placeholder-count="2">
+<button onClick="{{ s.on }}" aria-current="{{ s.aria }}" style="display:flex;justify-content:space-between;gap:8px;border:0;border-radius:4px;background:{{ s.bg }};padding:10px 8px;margin:0 -8px;text-align:left;font:{{ s.weight }} 14px/1.4 'Public Sans';color:#181B2E;cursor:pointer"><span>{{ s.label }}</span><span style="color:#4B5375;font-weight:400">{{ s.note }}</span></button>
+</sc-for>
+</div>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+</aside>
+</sc-if>
+
+<div ref="{{ mainRef }}" style="flex:1;min-width:0;overflow-y:auto;background:{{ mainBg }}">
+
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+<div aria-busy="true" style="padding:{{ L.readPad }};max-width:600px;display:flex;flex-direction:column;gap:16px">
+<div style="height:36px;width:70%;background:#EEF0F7;border-radius:4px"></div>
+<div style="height:16px;width:45%;background:#EEF0F7;border-radius:4px"></div>
+<div style="height:24px"></div>
+<div style="height:14px;width:100%;background:#EEF0F7;border-radius:4px"></div>
+<div style="height:14px;width:96%;background:#EEF0F7;border-radius:4px"></div>
+<div style="height:14px;width:88%;background:#EEF0F7;border-radius:4px"></div>
+<p style="margin:16px 0 0;font:400 16px/1.5 'Public Sans';color:#4B5375">Loading {{ loadingLabel }}…</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.welcome }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:{{ L.wideMax }};margin:0 auto;padding:{{ L.pagePad }};display:flex;flex-direction:column;gap:24px">
+<h1 style="margin:0;max-width:640px;font:600 {{ L.h1 }}/1.2 Literata,'Noto Serif Devanagari',serif;color:#1E2A5E;letter-spacing:-0.015em;text-wrap:balance">Learn to write and speak the way scholars do.</h1>
+<div style="display:grid;grid-template-columns:{{ L.cols }};column-gap:40px;row-gap:16px;align-items:start">
+<blockquote style="margin:0;font:400 {{ L.demo }}/1.6 Literata,serif;color:#181B2E">“Early findings <mark ref="{{ markRef }}" style="background-color:transparent;color:inherit;background-image:linear-gradient(#F1DCAC,#F1DCAC);background-repeat:no-repeat;background-position:0 0;background-size:100% 100%;text-decoration:underline;text-decoration-color:#D69A12;text-decoration-thickness:2px;text-underline-offset:5px;padding:2px 0">suggest</mark> a link between sleep and memory.”</blockquote>
+<div ref="{{ noteRef }}" style="border-top:2px solid #D69A12;padding-top:11px;display:flex;flex-direction:column;gap:6px">
+<span style="font:600 16px/1.4 Literata,serif;color:#1E2A5E">suggest</span>
+<span style="font:400 16px/1.5 'Public Sans';color:#181B2E;text-wrap:pretty">Hedging. ‘Suggest’ signals caution; ‘prove’ would claim too much.</span>
+</div>
+</div>
+<h2 style="margin:16px 0 0;font:600 24px/1.3 Literata,serif;color:#1E2A5E;letter-spacing:-0.01em">Choose a track</h2>
+<div style="display:grid;grid-template-columns:{{ L.trackCols }};gap:16px">
+<sc-for list="{{ trackOpts }}" as="t" hint-placeholder-count="2">
+<button onClick="{{ t.on }}" style="display:flex;flex-direction:column;gap:8px;text-align:left;padding:20px;border:1px solid #D9DCE6;border-radius:8px;background:#FFFFFF;cursor:pointer;color:#181B2E" style-hover="border-color:#1E2A5E">
+<span style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><span style="font:600 19px/1.35 Literata,serif;color:#1E2A5E">{{ t.name }}</span><svg style="flex:none;margin-top:4px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E2A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></span>
+<span style="font:400 16px/1.5 'Public Sans'">{{ t.blurb }}</span>
+<span style="font:400 14px/1.4 'Public Sans';color:#4B5375">{{ t.count }}</span>
+</button>
+</sc-for>
+</div>
+<p style="margin:0;font:400 14px/1.5 'Public Sans';color:#4B5375">Free. No account. Progress stays on this device.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.dash }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:{{ L.wideMax }};margin:0 auto;padding:{{ L.pagePad }};display:grid;grid-template-columns:{{ L.dashCols }};gap:{{ L.dashGap }};align-items:start">
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+<h1 style="margin:0;font:600 {{ L.h1 }}/1.2 Literata,serif;color:#1E2A5E;letter-spacing:-0.015em;text-wrap:balance">{{ dash.trackName }}</h1>
+<div style="display:flex;gap:16px;align-items:baseline;flex-wrap:wrap;font:400 16px/1.5 'Public Sans';color:#4B5375"><span>{{ dash.summary }}</span><button onClick="{{ goWelcome }}" style="min-height:44px;border:0;background:none;padding:0;font:500 16px 'Public Sans';color:#1E2A5E;text-decoration:underline;text-decoration-color:#6E7590;text-underline-offset:3px;cursor:pointer">Change track</button></div>
+<div ref="{{ listRef }}" style="position:relative;margin-top:16px;border-top:1px solid #D9DCE6">
+<div ref="{{ ribbonRef }}" aria-hidden="true" style="position:absolute;left:{{ L.ribbonLeft }};top:0;width:4px;height:0;background:#D69A12;opacity:0"></div>
+<sc-for list="{{ dash.mods }}" as="m" hint-placeholder-count="12">
+<button data-row="{{ m.n }}" onClick="{{ m.open }}" aria-current="{{ m.aria }}" style="display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:12px;width:100%;text-align:left;padding:16px 0;border:0;border-bottom:1px solid #D9DCE6;background:none;cursor:pointer;color:#181B2E" style-hover="background:#FFFFFF">
+<span style="font:400 16px/1.6 Literata,serif;color:#4B5375;font-variant-numeric:tabular-nums">{{ m.n }}</span>
+<span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+<span style="font:{{ m.weight }} 19px/1.4 Literata,serif;color:#1E2A5E;text-wrap:pretty">{{ m.title }}</span>
+<span style="font:400 16px/1.5 'Public Sans';color:#4B5375;text-wrap:pretty">{{ m.outcome }}</span>
+<span style="display:flex;align-items:center;gap:12px;margin-top:6px"><span style="flex:1;height:2px;background:#D9DCE6"><span style="display:block;width:{{ m.pct }};height:100%;background:#D69A12"></span></span><span style="flex:none;min-width:76px;text-align:right;font:400 14px 'Public Sans';color:#4B5375">{{ m.status }}</span></span>
+</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="order:{{ L.asideOrder }};display:flex;flex-direction:column;gap:16px">
+<div style="background:#FFFFFF;border:1px solid #D9DCE6;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">{{ dash.panelTitle }}</h2>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#181B2E;text-wrap:pretty">{{ dash.panelText }}</p>
+<sc-if value="{{ dash.showPanelBar }}" hint-placeholder-val="{{ true }}"><div style="height:4px;background:#D9DCE6"><div style="width:{{ dash.panelPct }};height:100%;background:#D69A12"></div></div></sc-if>
+<button onClick="{{ dash.go }}" style="margin-top:8px;height:48px;border:0;border-radius:4px;background:#1E2A5E;color:#FFFFFF;font:600 16px 'Public Sans';cursor:pointer" style-hover="background:#16204A">{{ dash.goLabel }}</button>
+</div>
+<div style="background:#FFFFFF;border:1px solid #D9DCE6;border-radius:8px;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">This week</h2><span style="font:400 14px 'Public Sans';color:#4B5375">{{ week.summary }}</span></div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+<sc-for list="{{ week.days }}" as="d" hint-placeholder-count="7">
+<div aria-label="{{ d.label }}" style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;height:{{ d.barH }};margin-top:{{ d.barM }};background:{{ d.bar }}"></div><span style="font:{{ d.weight }} 14px 'Public Sans';color:{{ d.color }}">{{ d.short }}</span></div>
+</sc-for>
+</div>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#181B2E">{{ week.line }}</p>
+<button onClick="{{ goProgress }}" style="align-self:flex-start;border:0;background:none;min-height:44px;padding:0;font:500 16px 'Public Sans';color:#1E2A5E;text-decoration:underline;text-decoration-color:#6E7590;text-underline-offset:3px;cursor:pointer">{{ week.action }}</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.study }}" hint-placeholder-val="{{ false }}">
+<article style="padding:{{ L.readPad }}">
+<div style="display:grid;grid-template-columns:{{ L.cols }};column-gap:40px;row-gap:0">
+<div style="padding-bottom:32px">
+<h1 style="margin:0;font:600 {{ L.h1 }}/1.2 Literata,serif;color:#1E2A5E;letter-spacing:-0.015em;text-wrap:balance">Hedging and academic stance</h1>
+<p style="margin:12px 0 0;font:400 16px/1.5 'Public Sans';color:#4B5375">{{ studyMeta }}</p>
+</div>
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ false }}"><div></div></sc-if>
+<p style="margin:0;font:400 19px/1.7 Literata,'Noto Serif Devanagari',serif;color:#181B2E;text-wrap:pretty"><sc-for list="{{ parts }}" as="p" hint-placeholder-count="9"><sc-if value="{{ p.a }}" hint-placeholder-val="{{ false }}"><span role="button" tabindex="0" aria-pressed="{{ p.pressed }}" onClick="{{ p.on }}" onKeyDown="{{ p.key }}" style="cursor:pointer;text-decoration:underline;text-decoration-color:#D69A12;text-decoration-thickness:2px;text-underline-offset:5px;background-image:linear-gradient(#F1DCAC,#F1DCAC);background-repeat:no-repeat;background-position:0 0;background-size:{{ p.bs }} 100%;transition:{{ sweepT }};-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:2px 0">{{ p.t }}</span></sc-if><sc-if value="{{ p.plain }}" hint-placeholder-val="{{ true }}"><span>{{ p.t }}</span></sc-if></sc-for></p>
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ false }}">
+<div data-margin="1" style="display:flex;flex-direction:column;gap:20px">
+<sc-for list="{{ notes }}" as="n" hint-placeholder-count="4">
+<div onClick="{{ n.open }}" style="border-top:{{ n.rule }};padding-top:{{ n.pad }};display:flex;flex-direction:column;gap:6px;cursor:pointer">
+<div style="font:600 16px/1.4 Literata,serif;color:#1E2A5E">{{ n.phrase }}</div>
+<div style="font:400 16px/1.5 'Public Sans';color:#181B2E;text-wrap:pretty">{{ n.note }}</div>
+<sc-if value="{{ n.mr }}" hint-placeholder-val="{{ false }}"><div lang="mr" style="margin-top:2px;font:400 16px/1.8 'Noto Serif Devanagari',serif;color:#181B2E">{{ n.mr }}</div></sc-if>
+<sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><button onClick="{{ n.save }}" style="align-self:flex-start;margin-top:6px;height:44px;padding:0 16px;border:1px solid {{ n.btnBorder }};border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 14px 'Public Sans';cursor:pointer">{{ n.saveLabel }}</button></sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<div style="margin-top:40px;padding-top:24px;border-top:1px solid #D9DCE6">
+<h2 style="margin:0 0 8px;font:600 24px/1.3 Literata,serif;color:#1E2A5E;letter-spacing:-0.01em">Sources and further reading</h2>
+<ul style="list-style:none;margin:0;padding:0">
+<li style="padding:12px 0;border-bottom:1px solid #D9DCE6;display:flex;flex-direction:column;gap:2px"><a href="https://www.phrasebank.manchester.ac.uk/" target="_blank" rel="noopener" style="font:500 16px/1.4 'Public Sans'">Academic Phrasebank</a><span style="font:400 14px/1.4 'Public Sans';color:#4B5375">University of Manchester</span></li>
+<li style="padding:12px 0;border-bottom:1px solid #D9DCE6;display:flex;flex-direction:column;gap:2px"><a href="https://owl.purdue.edu/owl/research_and_citation/resources.html" target="_blank" rel="noopener" style="font:500 16px/1.4 'Public Sans'">Research and Citation</a><span style="font:400 14px/1.4 'Public Sans';color:#4B5375">Purdue Online Writing Lab</span></li>
+</ul>
+<div style="margin-top:32px;display:flex;flex-direction:column;gap:8px;align-items:{{ L.btnAlign }}">
+<button onClick="{{ goExercise }}" style="height:48px;padding:0 40px;border:0;border-radius:4px;background:#1E2A5E;color:#FFFFFF;font:600 16px 'Public Sans';cursor:pointer" style-hover="background:#16204A">Practise</button>
+<span style="font:400 14px/1.5 'Public Sans';color:#4B5375">Three tasks: multiple choice, fill in the blank, reorder the words.</span>
+</div>
+</div>
+</div>
+</article>
+</sc-if>
+
+<sc-if value="{{ is.exercise }}" hint-placeholder-val="{{ false }}">
+<article style="padding:{{ L.readPad }}">
+<sc-if value="{{ ex.notDone }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:{{ L.cols }};column-gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px;padding-bottom:32px">
+<h1 style="margin:0;font:600 {{ L.h1 }}/1.2 Literata,serif;color:#1E2A5E;letter-spacing:-0.015em">Practice</h1>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#4B5375">Hedging and academic stance. {{ ex.stepText }}</p>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:240px"><sc-for list="{{ ex.steps }}" as="s" hint-placeholder-count="3"><div style="height:4px;background:{{ s.bg }};transition:background .3s"></div></sc-for></div>
+</div>
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ false }}"><div></div></sc-if>
+
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+<h2 style="margin:0;font:600 24px/1.3 Literata,serif;color:#1E2A5E;letter-spacing:-0.01em">{{ ex.label }}</h2>
+<p style="margin:0 0 16px;font:400 16px/1.5 'Public Sans';color:#4B5375">{{ ex.instruction }}</p>
+
+<sc-if value="{{ ex.isMC }}" hint-placeholder-val="{{ true }}">
+<p style="margin:0 0 12px;font:400 19px/1.6 Literata,serif;color:#181B2E">{{ ex.prompt }}</p>
+<div role="radiogroup" style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ ex.opts }}" as="o" hint-placeholder-count="4">
+<button role="radio" aria-checked="{{ o.pressed }}" onClick="{{ o.pick }}" style="display:grid;grid-template-columns:20px 16px minmax(0,1fr);column-gap:12px;align-items:start;width:100%;text-align:left;padding:14px 16px;border:1px solid {{ o.border }};box-shadow:inset 0 0 0 1px {{ o.ring }};border-radius:4px;background:{{ o.bg }};cursor:{{ o.cursor }};color:#181B2E;transition:background .12s, border-color .12s, box-shadow .12s">
+<span style="margin-top:5px;width:20px;height:20px;box-sizing:border-box;border-radius:50%;border:2px solid {{ o.radio }};display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:50%;background:{{ o.dot }}"></span></span>
+<span style="font:600 16px/1.9 'Public Sans';color:#1E2A5E">{{ o.letter }}</span>
+<span style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font:400 19px/1.55 Literata,serif">{{ o.text }}</span>
+<sc-if value="{{ o.isRight }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;gap:6px;font:600 14px 'Public Sans';color:#2E7D5B"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Correct answer</span></sc-if>
+<sc-if value="{{ o.isWrong }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;gap:6px;font:600 14px 'Public Sans';color:#B23A48"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B23A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg>Your answer</span></sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ ex.isFill }}" hint-placeholder-val="{{ false }}">
+<p style="margin:0 0 20px;font:400 21px/2.1 Literata,serif;color:#181B2E">These findings <span style="display:inline-block;min-width:8ch;padding:0 6px;border-bottom:2px solid {{ ex.fill.line }};text-align:center;line-height:1.5;color:#1E2A5E;font-weight:600;transition:border-color .12s">{{ ex.fill.word }}</span> a relationship between reading habits and vocabulary.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ ex.fill.chips }}" as="c" hint-placeholder-count="3">
+<button onClick="{{ c.on }}" aria-pressed="{{ c.pressed }}" style="min-height:44px;padding:0 16px;border:1px solid {{ c.border }};box-shadow:inset 0 0 0 1px {{ c.ring }};border-radius:4px;background:{{ c.bg }};color:#1E2A5E;font:400 17px Literata,serif;cursor:{{ c.cursor }}">{{ c.t }}</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ ex.isOrder }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:56px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;padding-bottom:8px;border-bottom:2px solid {{ ex.order.line }};transition:border-color .12s">
+<sc-if value="{{ ex.order.empty }}" hint-placeholder-val="{{ true }}"><span style="font:400 16px/44px 'Public Sans';color:#4B5375">Your sentence appears on this line.</span></sc-if>
+<sc-for list="{{ ex.order.placed }}" as="w" hint-placeholder-count="0">
+<button onClick="{{ w.on }}" style="min-height:44px;padding:0 14px;border:1px solid #1E2A5E;border-radius:4px;background:#EEF0F7;color:#1E2A5E;font:400 17px Literata,serif;cursor:{{ w.cursor }}">{{ w.t }}</button>
+</sc-for>
+</div>
+<div style="height:2px;margin-top:14px;background:#D9DCE6"></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px">
+<sc-for list="{{ ex.order.bank }}" as="w" hint-placeholder-count="6">
+<button onClick="{{ w.on }}" aria-hidden="{{ w.used }}" tabindex="{{ w.tab }}" style="min-height:44px;padding:0 14px;border:1px {{ w.borderStyle }} {{ w.border }};border-radius:4px;background:#FFFFFF;color:{{ w.color }};font:400 17px Literata,serif;cursor:{{ w.cursor }}">{{ w.t }}</button>
+</sc-for>
+</div>
+</sc-if>
+
+<div data-feedback="1" role="status" aria-live="polite" style="margin-top:20px">
+<sc-if value="{{ ex.isCorrect }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:10px;align-items:flex-start;font:400 16px/1.5 'Public Sans';color:#181B2E"><svg style="flex:none;margin-top:2px" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg><span><strong style="font-weight:600;color:#2E7D5B">Correct.</strong> {{ ex.correctMsg }}</span></div></sc-if>
+<sc-if value="{{ ex.isIncorrect }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:10px;align-items:flex-start;font:400 16px/1.5 'Public Sans';color:#181B2E"><svg style="flex:none;margin-top:2px" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B23A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg><span><strong style="font-weight:600;color:#B23A48">Incorrect.</strong> {{ ex.wrongMsg }}</span></div></sc-if>
+<sc-if value="{{ ex.isRevealed }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:10px;align-items:flex-start;font:400 16px/1.5 'Public Sans';color:#181B2E"><svg style="flex:none;margin-top:2px" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E2A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg><span><strong style="font-weight:600;color:#1E2A5E">Answer shown.</strong> No points for this task.</span></div></sc-if>
+</div>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+<sc-if value="{{ ex.isIdle }}" hint-placeholder-val="{{ true }}"><button onClick="{{ ex.check }}" aria-disabled="{{ ex.cantCheck }}" style="height:48px;padding:0 28px;border:0;border-radius:4px;background:{{ ex.checkBg }};color:{{ ex.checkFg }};font:600 16px 'Public Sans';cursor:{{ ex.checkCursor }};transition:background .12s">Check answer</button></sc-if>
+<sc-if value="{{ ex.isIncorrect }}" hint-placeholder-val="{{ false }}"><button onClick="{{ ex.tryAgain }}" style="height:48px;padding:0 28px;border:0;border-radius:4px;background:#1E2A5E;color:#FFFFFF;font:600 16px 'Public Sans';cursor:pointer">Try again</button><button onClick="{{ ex.reveal }}" style="height:48px;padding:0 24px;border:1px solid #6E7590;border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 16px 'Public Sans';cursor:pointer">Show answer</button></sc-if>
+<sc-if value="{{ ex.isSolvedDesk }}" hint-placeholder-val="{{ false }}"><button onClick="{{ ex.next }}" style="height:48px;padding:0 28px;border:0;border-radius:4px;background:#1E2A5E;color:#FFFFFF;font:600 16px 'Public Sans';cursor:pointer">{{ ex.nextLabel }}</button></sc-if>
+<sc-if value="{{ ex.isSolvedPhone }}" hint-placeholder-val="{{ false }}"><button onClick="{{ ex.openExpl }}" style="height:48px;padding:0 24px;border:1px solid #6E7590;border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 16px 'Public Sans';cursor:pointer">Read explanation</button><button onClick="{{ ex.next }}" style="height:48px;padding:0 28px;border:0;border-radius:4px;background:#1E2A5E;color:#FFFFFF;font:600 16px 'Public Sans';cursor:pointer">{{ ex.nextLabel }}</button></sc-if>
+</div>
+</div>
+
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ false }}">
+<div style="padding-top:44px">
+<sc-if value="{{ ex.showExpl }}" hint-placeholder-val="{{ false }}">
+<div data-expl="1" style="border-top:2px solid #D69A12;padding-top:11px;display:flex;flex-direction:column;gap:6px">
+<div style="font:600 16px/1.4 Literata,serif;color:#1E2A5E">Explanation</div>
+<div style="font:400 16px/1.5 'Public Sans';color:#181B2E;text-wrap:pretty">{{ ex.expl }}</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ ex.done }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:600px;display:flex;flex-direction:column;gap:16px">
+<h1 style="margin:0;font:600 {{ L.h1 }}/1.2 Literata,serif;color:#1E2A5E;letter-spacing:-0.015em">Practice complete</h1>
+<p style="margin:0;font:400 19px/1.7 Literata,serif;color:#181B2E;text-wrap:pretty">{{ ex.summary }}</p>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#181B2E">Hedging and academic stance is complete. Its badge is on your progress page.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+<button onClick="{{ goDash }}" style="height:48px;padding:0 28px;border:0;border-radius:4px;background:#1E2A5E;color:#FFFFFF;font:600 16px 'Public Sans';cursor:pointer">Back to contents</button>
+<button onClick="{{ goProgress }}" style="height:48px;padding:0 24px;border:1px solid #6E7590;border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 16px 'Public Sans';cursor:pointer">Open progress</button>
+</div>
+<button onClick="{{ ex.restart }}" style="align-self:flex-start;border:0;background:none;min-height:44px;padding:0;font:500 16px 'Public Sans';color:#1E2A5E;text-decoration:underline;text-decoration-color:#6E7590;text-underline-offset:3px;cursor:pointer">Practise again</button>
+</div>
+</sc-if>
+</article>
+</sc-if>
+
+<sc-if value="{{ is.library }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:{{ L.libMax }};margin:0 auto;padding:{{ L.pagePad }};display:flex;flex-direction:column;gap:12px">
+<h1 style="margin:0;font:600 {{ L.h1 }}/1.2 Literata,serif;color:#1E2A5E;letter-spacing:-0.015em">Library</h1>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#4B5375">Links open the original site.</p>
+<div role="radiogroup" aria-label="Filter by skill" style="display:flex;gap:8px;flex-wrap:{{ L.chipWrap }};overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;margin:12px -24px 0 -4px;padding:4px 24px 4px 4px">
+<sc-for list="{{ lib.chips }}" as="c" hint-placeholder-count="7">
+<button role="radio" aria-checked="{{ c.checked }}" onClick="{{ c.on }}" style="flex:none;min-height:44px;padding:0 14px;border:1px solid {{ c.border }};border-radius:4px;background:{{ c.bg }};color:{{ c.fg }};font:500 14px 'Public Sans';white-space:nowrap;cursor:pointer">{{ c.label }}</button>
+</sc-for>
+</div>
+<ul style="list-style:none;margin:8px 0 0;padding:0;border-top:1px solid #D9DCE6">
+<sc-for list="{{ lib.items }}" as="r" hint-placeholder-count="7">
+<li style="border-bottom:1px solid #D9DCE6">
+<a href="{{ r.url }}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:4px;padding:18px 0;text-decoration:none;color:#181B2E">
+<span style="display:flex;gap:8px;align-items:flex-start;justify-content:space-between"><span style="font:600 19px/1.4 Literata,serif;color:#1E2A5E">{{ r.name }}</span><svg style="flex:none;margin-top:5px" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E2A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Opens the original site in a new tab"><path d="M14 4h6v6"></path><path d="M10 14L20 4"></path><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"></path></svg></span>
+<span style="font:400 16px/1.5 'Public Sans';color:#181B2E;text-wrap:pretty">{{ r.good }}</span>
+<span style="font:400 14px/1.4 'Public Sans';color:#4B5375">{{ r.host }}</span>
+</a>
+</li>
+</sc-for>
+</ul>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.progress }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:{{ L.wideMax }};margin:0 auto;padding:{{ L.pagePad }};display:flex;flex-direction:column;gap:24px">
+<h1 style="margin:0;font:600 {{ L.h1 }}/1.2 Literata,serif;color:#1E2A5E;letter-spacing:-0.015em">My progress</h1>
+<div style="display:grid;grid-template-columns:{{ L.progCols }};column-gap:56px;align-items:start">
+<div style="display:flex;flex-direction:column;min-width:0">
+
+<section style="padding:20px 0 24px;border-top:1px solid #D9DCE6;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">This week</h2><span style="font:400 14px 'Public Sans';color:#4B5375">{{ week.summary }}</span></div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px">
+<sc-for list="{{ week.days }}" as="d" hint-placeholder-count="7">
+<div aria-label="{{ d.label }}" style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;height:{{ d.barH }};margin-top:{{ d.barM }};background:{{ d.bar }}"></div><span style="font:{{ d.weight }} 14px 'Public Sans';color:{{ d.color }}">{{ d.short }}</span><span style="font:400 14px 'Public Sans';color:#4B5375;font-variant-numeric:tabular-nums">{{ d.min }}</span></div>
+</sc-for>
+</div>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#181B2E">{{ week.line }}</p>
+</section>
+
+<section style="padding:20px 0 24px;border-top:1px solid #D9DCE6;display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">Weekly practice goal</h2>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#4B5375">Choose a number of hours you can keep in a busy week. You can change it at any time.</p>
+<div role="radiogroup" aria-label="Hours per week" style="display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ goalOpts }}" as="g" hint-placeholder-count="6">
+<button role="radio" aria-checked="{{ g.checked }}" onClick="{{ g.on }}" style="min-width:52px;height:44px;padding:0 12px;border:1px solid {{ g.border }};border-radius:4px;background:{{ g.bg }};color:{{ g.fg }};font:600 16px 'Public Sans';cursor:pointer">{{ g.label }}</button>
+</sc-for>
+</div>
+</section>
+
+<section style="padding:20px 0 24px;border-top:1px solid #D9DCE6;display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">Points</h2><span style="font:600 19px Literata,serif;color:#1E2A5E;font-variant-numeric:tabular-nums">{{ points }}</span></div>
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#4B5375">Ten points for each task answered correctly the first time.</p>
+</section>
+
+<section style="padding:20px 0 24px;border-top:1px solid #D9DCE6;display:flex;flex-direction:column;gap:16px">
+<h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">Modules completed</h2>
+<sc-for list="{{ trackTotals }}" as="tt" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between;gap:12px;font:400 16px/1.4 'Public Sans';color:#181B2E"><span>{{ tt.name }}</span><span style="flex:none;color:#4B5375;font-variant-numeric:tabular-nums">{{ tt.count }}</span></div>
+<div style="height:2px;background:#D9DCE6"><div style="width:{{ tt.pct }};height:100%;background:#D69A12;transition:width .45s cubic-bezier(0.25, 1, 0.5, 1)"></div></div>
+</div>
+</sc-for>
+</section>
+</div>
+
+<div style="display:flex;flex-direction:column;min-width:0">
+<section style="padding:20px 0 24px;border-top:1px solid #D9DCE6;display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">Badges</h2>
+<sc-if value="{{ noBadges }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font:400 16px/1.5 'Public Sans';color:#4B5375">A badge appears here each time you finish a module.</p></sc-if>
+<ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ badges }}" as="bd" hint-placeholder-count="3">
+<li style="display:flex;gap:12px;align-items:center"><span style="flex:none;width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:1.5px solid #1E2A5E;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E2A5E" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg></span><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:400 16px/1.4 Literata,serif;color:#1E2A5E">{{ bd.title }}</span><span style="font:400 14px 'Public Sans';color:#4B5375">{{ bd.track }}</span></span></li>
+</sc-for>
+</ul>
+</section>
+
+<section ref="{{ phraseRef }}" style="padding:20px 0 24px;border-top:1px solid #D9DCE6;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><h2 style="margin:0;font:600 19px/1.35 Literata,serif;color:#1E2A5E">Phrase book</h2><span style="font:400 14px 'Public Sans';color:#4B5375">{{ phraseCountText }}</span></div>
+<sc-if value="{{ noPhrases }}" hint-placeholder-val="{{ true }}">
+<div style="background:#FFFFFF;border:1px solid #D9DCE6;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:10px">
+<p style="margin:0;font:400 16px/1.5 'Public Sans';color:#181B2E;text-wrap:pretty">Save phrases while you read and they collect here with their notes, ready to use in your own writing.</p>
+<button onClick="{{ goStudy }}" style="align-self:flex-start;height:44px;padding:0 20px;border:1px solid #1E2A5E;border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 16px 'Public Sans';cursor:pointer">Open a study page</button>
+</div>
+</sc-if>
+<ul style="list-style:none;margin:0;padding:0">
+<sc-for list="{{ phrases }}" as="ph" hint-placeholder-count="0">
+<li style="padding:12px 0;border-bottom:1px solid #D9DCE6;display:flex;flex-direction:column;gap:4px">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font:600 19px/1.4 Literata,serif;color:#1E2A5E">{{ ph.phrase }}</span><button onClick="{{ ph.remove }}" style="flex:none;border:0;background:none;min-height:44px;padding:0;font:500 14px 'Public Sans';color:#1E2A5E;text-decoration:underline;text-decoration-color:#6E7590;text-underline-offset:3px;cursor:pointer">Remove</button></div>
+<span style="font:400 16px/1.5 'Public Sans';color:#181B2E">{{ ph.note }}</span>
+<span style="font:400 14px 'Public Sans';color:#4B5375">From Hedging and academic stance</span>
+</li>
+</sc-for>
+</ul>
+</section>
+</div>
+</div>
+<p style="margin:0;padding-top:16px;border-top:1px solid #D9DCE6;font:400 14px/1.5 'Public Sans';color:#4B5375">Progress is saved on this device only. Clearing your browser data removes it.</p>
+</div>
+</sc-if>
+
+</div>
+</div>
+
+<sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+<nav style="flex:none;height:64px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #D9DCE6;background:#FFFFFF">
+<sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+<button onClick="{{ n.on }}" aria-current="{{ n.aria }}" style="border:0;background:none;font:{{ n.weight }} 14px 'Public Sans';color:{{ n.color }};text-decoration:{{ n.deco }};text-decoration-color:#D69A12;text-decoration-thickness:3px;text-underline-offset:6px;cursor:pointer">{{ n.label }}</button>
+</sc-for>
+</nav>
+</sc-if>
+
+<div role="status" aria-live="polite" style="position:absolute;left:50%;bottom:{{ L.toastBottom }};display:flex;align-items:center;gap:10px;padding:12px 16px;background:#FFFFFF;border:1px solid #D9DCE6;border-radius:4px;font:400 16px/1.4 'Public Sans';color:#181B2E;max-width:calc(100% - 48px);box-sizing:border-box;opacity:{{ toastOp }};transform:translate(-50%, {{ toastY }});transition:opacity .2s, transform .2s;pointer-events:none;z-index:6"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>{{ toastText }}</div>
+
+<sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
+<div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(24,27,46,.36);opacity:{{ sh.scrimOp }};pointer-events:{{ sh.scrimPE }};transition:opacity .3s;z-index:7"></div>
+<div role="dialog" aria-label="{{ sh.aria }}" aria-hidden="{{ sh.hidden }}" style="position:absolute;left:0;right:0;bottom:0;z-index:8;background:#FFFFFF;border-radius:8px 8px 0 0;box-shadow:0 -8px 32px rgba(30,42,94,.16);padding:12px 24px 24px;display:flex;flex-direction:column;gap:12px;transform:translateY({{ sh.y }});visibility:{{ sh.vis }};transition:{{ sh.trans }}">
+<div style="align-self:center;width:36px;height:4px;border-radius:2px;background:#D9DCE6"></div>
+<sc-if value="{{ sh.isNote }}" hint-placeholder-val="{{ false }}">
+<div style="font:600 19px/1.4 Literata,serif;color:#1E2A5E;padding-top:4px">{{ sh.phrase }}</div>
+<div style="font:400 16px/1.6 'Public Sans';color:#181B2E;text-wrap:pretty">{{ sh.note }}</div>
+<sc-if value="{{ sh.mr }}" hint-placeholder-val="{{ false }}"><div lang="mr" style="font:400 17px/1.8 'Noto Serif Devanagari',serif;color:#181B2E;padding:12px 16px;background:#EEF0F7;border-radius:4px">{{ sh.mr }}</div></sc-if>
+<div style="display:grid;grid-template-columns:1fr auto;gap:8px;padding-top:8px">
+<button onClick="{{ sh.save }}" style="height:48px;border:0;border-radius:4px;background:{{ sh.btnBg }};color:{{ sh.btnFg }};font:600 16px 'Public Sans';cursor:pointer">{{ sh.saveLabel }}</button>
+<button onClick="{{ closeSheet }}" style="height:48px;padding:0 20px;border:1px solid #6E7590;border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 16px 'Public Sans';cursor:pointer">Close</button>
+</div>
+</sc-if>
+<sc-if value="{{ sh.isExpl }}" hint-placeholder-val="{{ false }}">
+<div style="border-top:2px solid #D69A12;padding-top:11px;margin-top:4px;display:flex;flex-direction:column;gap:6px">
+<div style="font:600 16px/1.4 Literata,serif;color:#1E2A5E">Explanation</div>
+<div style="font:400 16px/1.6 'Public Sans';color:#181B2E;text-wrap:pretty">{{ ex.expl }}</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr auto;gap:8px;padding-top:8px">
+<button onClick="{{ ex.next }}" style="height:48px;border:0;border-radius:4px;background:#1E2A5E;color:#FFFFFF;font:600 16px 'Public Sans';cursor:pointer">{{ ex.nextLabel }}</button>
+<button onClick="{{ closeSheet }}" style="height:48px;padding:0 20px;border:1px solid #6E7590;border-radius:4px;background:#FFFFFF;color:#1E2A5E;font:600 16px 'Public Sans';cursor:pointer">Close</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ showPanel }}" hint-placeholder-val="{{ false }}">
+<div ref="{{ panelRef }}" aria-hidden="true" style="position:absolute;inset:0;z-index:20;background:#1E2A5E;display:flex;align-items:center;justify-content:center">
+<div style="display:flex;flex-direction:column;align-items:stretch;gap:10px">
+<div ref="{{ wordRef }}" style="font:600 {{ L.mark }}/1.1 Literata,serif;color:#F6F7FA;letter-spacing:-0.01em;white-space:nowrap">{{ wordmark }}</div>
+<div ref="{{ lineRef }}" style="height:3px;background:#D69A12;transform-origin:left center"></div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;392px&quot;,&quot;height&quot;:&quot;846px&quot;},&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;phone&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;phone&quot;,&quot;tsType&quot;:&quot;'phone'|'desktop'&quot;},&quot;firstVisit&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;slow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;marathiGloss&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;wordmark&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;[NAME]&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;resetKey&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;number&quot;},&quot;replayKey&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;number&quot;},&quot;simReduced&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const EASE = 'cubic-bezier(0.25, 1, 0.5, 1)';
+const SKEY = 'app-opening-seen';
+const seen = () => { try { return sessionStorage.getItem(SKEY) === '1'; } catch (e) { return false; } };
+const markSeen = () => { try { sessionStorage.setItem(SKEY, '1'); } catch (e) {} };
+const osReduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const RES = [
+  ['What research is, and why academic writing works the way it does', 'Explain what counts as research and why academic writing backs each claim with evidence.'],
+  ['How to find academic papers', 'Search for scholarly papers in your subject and judge which are worth reading.'],
+  ['How to read a paper', 'Find a paper’s question, method and findings without reading every word.'],
+  ['Critical reading and analysis', 'Judge how well a source supports its own claims.'],
+  ['What a research gap is', 'Recognise a gap in earlier studies and describe it in one sentence.'],
+  ['Reading and summarising academic sources', 'Summarise a source accurately and in your own words.'],
+  ['Hedging and academic stance', 'Make claims with the degree of caution the evidence allows.'],
+  ['Structuring an abstract', 'Write an abstract that states aim, method, findings and significance.'],
+  ['Literature review phrasing', 'Use phrases that group, compare and evaluate earlier studies.'],
+  ['Framing a research question', 'Turn a broad topic into a focused question you can answer.'],
+  ['Qualitative research vocabulary', 'Use the terms for interviews, themes and coding correctly.'],
+  ['Citation-adjacent phrasing', 'Introduce, report and respond to other writers’ ideas.']
+];
+const COM = [
+  ['Formal email', 'Write a clear formal email to a teacher, office or employer.'],
+  ['Shifting register', 'Move between casual, neutral and formal English on purpose.'],
+  ['Presentations and viva', 'Present your work and answer examiners’ questions clearly.'],
+  ['Interview English', 'Answer common interview questions clearly and briefly.'],
+  ['Group discussion', 'Join in, build on others’ points and disagree politely.'],
+  ['Professional self-introduction', 'Introduce yourself and your studies in under a minute.']
+];
+const HEDGE = 6;
+const ANN = {
+  proves: { phrase: 'proves', note: 'Too strong for most single studies. Compare: suggests, indicates.' },
+  suggest: { phrase: 'suggest', note: 'A hedging verb. It reports a pattern without claiming it is settled.', mr: 'सूचित करणे: निष्कर्ष निश्चित आहे असे न म्हणता नमुना मांडणे.' },
+  appears: { phrase: 'appears to', note: 'A distancing phrase. It signals a reasonable but not final reading.' },
+  weight: { phrase: 'how much weight a claim can bear', note: 'Hedging is about accuracy, not doubt.' }
+};
+const ORDER = ['proves', 'suggest', 'appears', 'weight'];
+const PARTS = [
+  { t: 'Academic writers rarely claim certainty. Instead of writing that a study ' }, { a: 'proves' },
+  { t: ' something, they write that its results ' }, { a: 'suggest' },
+  { t: ' a link, or that the evidence ' }, { a: 'appears' },
+  { t: ' support an explanation. This is not weakness. Hedging shows the reader ' }, { a: 'weight' },
+  { t: ', and it leaves room for other researchers to test it.' }
+];
+const TASKS = [
+  { type: 'mc', label: 'Multiple choice', instruction: 'Choose one sentence.', prompt: 'Which sentence is best hedged for a small survey?',
+    options: ['The survey proves that students sleep too little.', 'The survey suggests that many students may be sleeping too little.', 'Students definitely sleep too little.', 'Everyone knows students sleep too little.'],
+    correct: 1, expl: 'B reports what the data can support and uses ‘suggests’ and ‘may’. The others claim certainty that one small survey cannot give.' },
+  { type: 'fill', label: 'Fill in the blank', instruction: 'Choose the word that completes the sentence.', options: ['suggest', 'prove', 'confirm beyond doubt'], correct: 'suggest',
+    expl: '‘Suggest’ reports the relationship and leaves room for further study. ‘Prove’ and ‘confirm beyond doubt’ claim more than findings like these can support.' },
+  { type: 'order', label: 'Reorder the words', instruction: 'Tap the words in order to build the sentence. Tap a placed word to remove it.',
+    words: ['may', 'the results', 'explain', 'differences', 'in', 'attendance'], correct: ['the results', 'may', 'explain', 'differences', 'in', 'attendance'],
+    expl: '‘May’ sits directly before the verb it hedges. The sentence offers the results as a possible explanation for differences in attendance, not a proven one.' }
+];
+const SOURCES = [
+  { name: 'Purdue OWL, Research and Citation', good: 'Conducting and using research, quoting and paraphrasing, citation styles', url: 'https://owl.purdue.edu/owl/research_and_citation/resources.html', tags: ['Reading and citing'] },
+  { name: 'Purdue OWL, Abstracts', good: 'What an abstract does and how it is usually structured', url: 'https://owl.purdue.edu/owl/graduate_writing/graduate_writing_genres/graduate_writing_genres_abstracts_new.html', tags: ['Abstracts'] },
+  { name: 'Academic Phrasebank, University of Manchester', good: 'Example phrases organised by the sections of a research paper', url: 'https://www.phrasebank.manchester.ac.uk/', tags: ['Academic phrasing', 'Abstracts', 'Literature reviews'] },
+  { name: 'UNC Writing Center, Literature Reviews', good: 'What a literature review is and how to build one', url: 'https://writingcenter.unc.edu/tips-and-tools/literature-reviews/', tags: ['Literature reviews'] },
+  { name: 'Google Scholar, Help', good: 'Searching for scholarly papers', url: 'https://scholar.google.com/intl/en/scholar/help.html', tags: ['Finding papers'] },
+  { name: 'DOAJ, Directory of Open Access Journals', good: 'Finding peer-reviewed open access journals', url: 'https://doaj.org', tags: ['Finding papers'] },
+  { name: 'British Council LearnEnglish, English for emails', good: 'Starting, organising and finishing emails', url: 'https://learnenglish.britishcouncil.org/business/eng', tags: ['Email'] }
+];
+const FILTERS = ['All', 'Finding papers', 'Reading and citing', 'Academic phrasing', 'Abstracts', 'Literature reviews', 'Email'];
+const DAYS = [['M', 'Monday'], ['T', 'Tuesday'], ['W', 'Wednesday'], ['T', 'Thursday'], ['F', 'Friday'], ['S', 'Saturday'], ['S', 'Sunday']];
+const TODAY = 1;
+const fmt = (m) => { const h = Math.floor(m / 60), r = m % 60; return h && r ? `${h} h ${r} min` : h ? `${h} h` : `${r} min`; };
+const blankTask = () => ({ sel: null, order: [], status: 'idle', firstTry: true });
+const ink = '#1E2A5E', muted = '#4B5375', hair = '#D9DCE6';
+
+class Component extends DCLogic {
+  mainRef = React.createRef(); listRef = React.createRef(); ribbonRef = React.createRef(); phraseRef = React.createRef();
+  panelRef = React.createRef(); wordRef = React.createRef(); lineRef = React.createRef(); markRef = React.createRef(); noteRef = React.createRef();
+  anims = []; timers = []; playing = false;
+
+  initState(first, mode) {
+    return {
+      screen: 'welcome', track: 'research', first, studyRead: !first, tasks: [blankTask(), blankTask(), blankTask()], exI: 0, exDone: false, hedgeDone: false,
+      saved: [], active: null, sheet: null, toast: '', goal: first ? null : 3, filter: 'All', loading: false,
+      minutes: first ? [0, 0, 0, 0, 0, 0, 0] : [50, 20, 0, 0, 0, 0, 0], points: first ? 0 : 420,
+      mode, showPanel: mode === 'intro'
+    };
+  }
+  state = this.initState(!!this.props.firstVisit, seen() ? 'skip' : (osReduced() || this.props.simReduced) ? 'reduced' : 'intro');
+
+  componentDidMount() {
+    this._rk = this.props.resetKey; this._pk = this.props.replayKey; this._key = this.viewKey(); this._fb = this.fbKey();
+    this.onKey = (e) => { if (this.playing) { this.skipOpening(); return; } if (e.key === 'Escape' && this.state.sheet) this.setState({ sheet: null }); };
+    window.addEventListener('keydown', this.onKey);
+    this.playOpening(); this.placeRibbon();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.placeRibbon());
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); this.clearOpening(); clearTimeout(this._toastT); clearTimeout(this._loadT); }
+  componentDidUpdate() {
+    if (this.props.resetKey !== this._rk) { this._rk = this.props.resetKey; this.clearOpening(); this._ribPlaced = null; this.setState(this.initState(!!this.props.firstVisit, 'skip')); return; }
+    if (this.props.replayKey !== this._pk) {
+      this._pk = this.props.replayKey; this.clearOpening();
+      const mode = (osReduced() || this.props.simReduced) ? 'reduced' : 'intro';
+      this.setState({ screen: 'welcome', loading: false, sheet: null, mode, showPanel: mode === 'intro' }, () => this.playOpening());
+      return;
+    }
+    const k = this.viewKey();
+    if (k !== this._key) { this._key = k; this.crossfade(); }
+    const f = this.fbKey();
+    if (f !== this._fb) { this._fb = f; this.feedbackIn(); }
+    this.placeRibbon();
+  }
+  viewKey() { const s = this.state; return [s.screen, s.loading, s.exDone, s.exI, s.track].join('|'); }
+  fbKey() { const s = this.state; return s.exI + ':' + s.tasks[s.exI].status; }
+
+  // opening
+  clearOpening() { this.anims.forEach(a => { try { a.cancel(); } catch (e) {} }); this.anims = []; this.timers.forEach(clearTimeout); this.timers = []; this.playing = false; }
+  A(ref, kf, delay, duration) { const el = ref && ref.current ? ref.current : ref; if (!el || !el.animate) return null; const a = el.animate(kf, { delay, duration, easing: EASE, fill: 'both' }); this.anims.push(a); return a; }
+  playOpening() {
+    const m = this.state.mode;
+    if (m === 'intro') {
+      this.playing = true;
+      this.A(this.wordRef, [{ opacity: 0, letterSpacing: '0.14em' }, { opacity: 1, letterSpacing: '-0.01em' }], 300, 500);
+      this.A(this.lineRef, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 700, 300);
+      this.A(this.panelRef, [{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], 1000, 300);
+      this.timers.push(setTimeout(() => { if (this.panelRef.current) this.panelRef.current.style.pointerEvents = 'none'; }, 1000));
+      this.timers.push(setTimeout(() => this.setState({ showPanel: false }), 1300));
+      this.A(this.markRef, [{ backgroundSize: '0% 100%' }, { backgroundSize: '100% 100%' }], 1300, 500);
+      this.A(this.noteRef, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], 1300, 500);
+      this.timers.push(setTimeout(() => { this.playing = false; markSeen(); }, 1800));
+    } else if (m === 'reduced') {
+      markSeen(); this.A(this.mainRef, [{ opacity: 0 }, { opacity: 1 }], 0, 150);
+    }
+  }
+  skipOpening() {
+    if (!this.playing) return;
+    this.playing = false; markSeen();
+    this.timers.forEach(clearTimeout); this.timers = [];
+    this.anims.forEach(a => { try { a.finish(); } catch (e) {} });
+    this.setState({ showPanel: false });
+  }
+
+  // transitions
+  crossfade() {
+    const main = this.mainRef.current; if (!main || !main.animate) return;
+    main.scrollTop = 0;
+    if (this.reduced()) { main.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: EASE }); return; }
+    main.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: EASE });
+    main.querySelectorAll('[data-margin]').forEach(el => el.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 260, delay: 120, easing: EASE, fill: 'backwards' }));
+  }
+  feedbackIn() {
+    const main = this.mainRef.current; if (!main) return;
+    const fb = main.querySelector('[data-feedback]');
+    if (fb && fb.animate) fb.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 120, easing: EASE });
+    if (this.reduced()) return;
+    const ex = main.querySelector('[data-expl]');
+    if (ex && ex.animate) ex.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 260, delay: 120, easing: EASE, fill: 'backwards' });
+  }
+  reduced() { return osReduced() || !!this.props.simReduced; }
+  curIndex() { const p = this.progs(); return (this.state.track === 'research' ? p.res : p.com).findIndex(x => x < 1); }
+  placeRibbon() {
+    const list = this.listRef.current, rib = this.ribbonRef.current;
+    if (!list || !rib) return;
+    const rows = list.querySelectorAll('[data-row]'), idx = this.curIndex(), row = rows[idx];
+    if (!row) { rib.style.opacity = '0'; return; }
+    const set = (r) => { rib.style.top = r.offsetTop + 'px'; rib.style.height = r.offsetHeight + 'px'; };
+    const prev = this._ribTrack === this.state.track ? this._ribPlaced : null;
+    if (!this.reduced() && rib.dataset.mounted !== '1' && prev != null && prev !== idx && rows[prev]) {
+      rib.style.transition = 'none'; set(rows[prev]); void rib.offsetHeight;
+      rib.style.transition = `top .45s ${EASE}, height .45s ${EASE}`; set(row);
+    } else { if (rib.dataset.mounted !== '1') rib.style.transition = 'none'; set(row); }
+    rib.dataset.mounted = '1'; rib.style.opacity = '1';
+    this._ribPlaced = idx; this._ribTrack = this.state.track;
+  }
+
+  // navigation
+  nav(screen, extra) {
+    const patch = Object.assign({ screen, sheet: null, active: null }, extra || {});
+    if (screen === 'study') patch.studyRead = true;
+    if (this.props.slow) {
+      patch.loading = true; this.setState(patch);
+      clearTimeout(this._loadT); this._loadT = setTimeout(() => this.setState({ loading: false }), 1200);
+    } else this.setState(patch);
+  }
+  showToast(t) { this.setState({ toast: t }); clearTimeout(this._toastT); this._toastT = setTimeout(() => this.setState({ toast: '' }), 2600); }
+  saveNote(id) {
+    this.setState(s => ({ saved: s.saved.includes(id) ? s.saved : [...s.saved, id], sheet: null }));
+    this.showToast('Saved to your phrase book.');
+  }
+  setTask(i, patch) { this.setState(s => { const tasks = s.tasks.slice(); tasks[i] = Object.assign({}, tasks[i], patch); return { tasks }; }); }
+  isRight(i) { const t = this.state.tasks[i], T = TASKS[i]; if (T.type === 'mc') return t.sel === T.correct; if (T.type === 'fill') return t.sel === T.correct; return t.order.map(k => T.words[k]).join('|') === T.correct.join('|'); }
+  check(desk) {
+    const i = this.state.exI, t = this.state.tasks[i];
+    if (!this.canCheck(i)) return;
+    if (this.isRight(i)) {
+      this.setTask(i, { status: 'correct' });
+      if (t.firstTry) this.setState(s => ({ points: s.points + 10 }));
+      if (!desk) this.setState({ sheet: { kind: 'expl' } });
+    } else this.setTask(i, { status: 'incorrect', firstTry: false });
+  }
+  canCheck(i) { const t = this.state.tasks[i], T = TASKS[i]; if (t.status !== 'idle') return false; return T.type === 'order' ? t.order.length === T.words.length : t.sel !== null; }
+  reveal(desk) {
+    const i = this.state.exI, T = TASKS[i];
+    const patch = { status: 'revealed', firstTry: false };
+    if (T.type === 'order') patch.order = T.correct.map(w => T.words.indexOf(w)); else patch.sel = T.correct;
+    this.setTask(i, patch);
+    if (!desk) this.setState({ sheet: { kind: 'expl' } });
+  }
+  next() {
+    const i = this.state.exI;
+    if (i < 2) { this.setState({ exI: i + 1, sheet: null }); return; }
+    this.setState(s => { const minutes = s.minutes.slice(); minutes[TODAY] += 15; return { exDone: true, hedgeDone: true, sheet: null, minutes }; });
+  }
+  progs() {
+    const s = this.state;
+    const done = s.tasks.filter(t => t.status === 'correct' || t.status === 'revealed').length;
+    const hedge = s.hedgeDone ? 1 : ((s.studyRead ? 1 : 0) + done) / 4;
+    return {
+      res: RES.map((m, i) => i === HEDGE ? hedge : (!s.first && i < 6 ? 1 : 0)),
+      com: COM.map((m, i) => s.first ? 0 : i === 0 ? 1 : i === 1 ? 0.3 : 0),
+      done
+    };
+  }
+
+  renderVals() {
+    const s = this.state, desk = this.props.device === 'desktop', phone = !desk, red = this.reduced();
+    const L = desk
+      ? { w: '1280px', h: '860px', pagePad: '56px 48px 72px', readPad: '48px 48px 72px', h1: '38px', demo: '24px', cols: '600px 254px', wideMax: '1040px', trackCols: '1fr 1fr', dashCols: 'minmax(0,1fr) 300px', dashGap: '56px', asideOrder: '0', progCols: '1fr 1fr', libMax: '760px', chipWrap: 'wrap', ribbonLeft: '-20px', btnAlign: 'flex-start', toastBottom: '24px', mark: '56px' }
+      : { w: this.props.narrow ? '360px' : '390px', h: this.props.narrow ? '780px' : '844px', pagePad: '32px 24px 40px', readPad: '32px 24px 40px', h1: '30px', demo: '21px', cols: '1fr', wideMax: '100%', trackCols: '1fr', dashCols: '1fr', dashGap: '24px', asideOrder: '-1', progCols: '1fr', libMax: '100%', chipWrap: 'nowrap', ribbonLeft: '-24px', btnAlign: 'stretch', toastBottom: '80px', mark: '44px' };
+    const P = this.progs();
+    const isRes = s.track === 'research', list = isRes ? RES : COM, prog = isRes ? P.res : P.com;
+    const cur = prog.findIndex(x => x < 1);
+    const openMod = () => this.nav('study', { track: 'research' });
+    const go = (sc) => () => this.nav(sc);
+
+    // header
+    const scr = s.screen;
+    let hdr = { hasBack: false, noBack: true, back: '', onBack: null, right: '', onRight: () => {}, rightColor: ink, rightDeco: 'underline' };
+    if (scr === 'dash') hdr = Object.assign(hdr, { right: 'Change track', onRight: go('welcome') });
+    if (scr === 'study') hdr = Object.assign(hdr, { hasBack: true, noBack: false, back: 'Contents', onBack: go('dash'), right: `Phrase book (${s.saved.length})`, onRight: () => this.nav('progress') });
+    if (scr === 'exercise') hdr = Object.assign(hdr, { hasBack: true, noBack: false, back: 'Study page', onBack: go('study'), right: s.exDone ? '' : `Task ${s.exI + 1} of 3`, rightColor: muted, rightDeco: 'none' });
+    const learnScreens = ['welcome', 'dash', 'study', 'exercise'];
+    const navItems = [['Learn', 'dash'], ['Library', 'library'], ['Progress', 'progress']].map(([label, sc]) => {
+      const on = sc === 'dash' ? learnScreens.includes(scr) : scr === sc;
+      return { label, on: go(sc), aria: on ? 'page' : 'false', color: on ? ink : muted, weight: on ? '600' : '500', deco: on ? 'underline' : 'none' };
+    });
+
+    // dashboard
+    const curName = list[cur] ? list[cur][0] : '';
+    const hedgeCur = isRes && cur === HEDGE;
+    const doneCount = prog.filter(x => x >= 1).length;
+    const dash = {
+      trackName: isRes ? 'Research English for Humanities' : 'Communicative and professional English',
+      summary: `${list.length} modules, ${doneCount} completed`,
+      mods: list.map(([t, o], i) => ({
+        n: String(i + 1), title: t, outcome: o, pct: (prog[i] * 100) + '%', aria: i === cur ? 'step' : 'false', weight: i === cur ? '600' : '400',
+        status: prog[i] >= 1 ? 'Completed' : prog[i] > 0 ? `${Math.round(prog[i] * 100)}%` : i === cur ? 'Not started' : '',
+        open: openMod
+      })),
+      panelTitle: s.first && cur === 0 && prog[0] === 0 ? 'Start here' : curName,
+      panelText: s.first && cur === 0 && prog[0] === 0
+        ? 'Begin with the first module. It explains what research is and why academic writing works the way it does.'
+        : hedgeCur ? (s.studyRead ? `Module ${cur + 1} of ${list.length}. Study page read; practice ${P.done} of 3 tasks done.` : `Module ${cur + 1} of ${list.length}. Not started.`)
+          : `Module ${cur + 1} of ${list.length}. ${Math.round((prog[cur] || 0) * 100)}% complete.`,
+      showPanelBar: !(s.first && cur === 0 && prog[0] === 0),
+      panelPct: ((prog[cur] || 0) * 100) + '%',
+      goLabel: s.first && cur === 0 && prog[0] === 0 ? 'Start module' : 'Continue',
+      go: () => hedgeCur && s.studyRead ? this.nav('exercise', { track: 'research' }) : openMod()
+    };
+
+    // week
+    const total = s.minutes.reduce((a, b) => a + b, 0);
+    const week = {
+      days: DAYS.map(([sh, name], i) => ({ short: sh, label: `${name}: ${s.minutes[i] ? fmt(s.minutes[i]) + ' practised' : 'no practice'}`, bar: s.minutes[i] ? '#D69A12' : '#6E7590', barH: s.minutes[i] ? '6px' : '1px', barM: s.minutes[i] ? '0px' : '5px', color: i === TODAY ? ink : muted, weight: i === TODAY ? '600' : '400', min: s.minutes[i] ? String(s.minutes[i]) : '–' })),
+      summary: s.goal ? `${fmt(total)} of ${s.goal} h` : (total ? fmt(total) : ''),
+      line: s.goal ? (s.first ? 'Practise on any day this week to start your record.' : 'You met your weekly goal for the last 4 weeks.') : 'Choose how many hours a week you want to practise.',
+      action: s.goal ? 'Change goal' : 'Set a weekly goal'
+    };
+
+    // study
+    const act = s.active;
+    const parts = PARTS.map(p => {
+      if (!p.a) return { plain: true, t: p.t };
+      const on = () => { if (desk) this.setState(st => ({ active: st.active === p.a ? null : p.a })); else this.setState({ active: p.a, sheet: { kind: 'note', id: p.a } }); };
+      return { a: true, t: ANN[p.a].phrase, bs: act === p.a ? '100%' : '0%', pressed: act === p.a ? 'true' : 'false', on, key: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); on(); } } };
+    });
+    const showMr = this.props.marathiGloss ?? true;
+    const notes = ORDER.map(id => {
+      const on = act === id, sv = s.saved.includes(id);
+      return {
+        phrase: ANN[id].phrase, note: ANN[id].note, mr: showMr ? (ANN[id].mr || '') : '', active: on,
+        rule: on ? '2px solid #D69A12' : '1px solid #D9DCE6', pad: on ? '11px' : '12px',
+        saveLabel: sv ? 'In your phrase book' : 'Save phrase', btnBorder: sv ? hair : ink,
+        open: () => this.setState({ active: id }),
+        save: (e) => { e.stopPropagation(); if (!sv) this.saveNote(id); }
+      };
+    });
+
+    // exercise
+    const i = s.exI, T = TASKS[i], t = s.tasks[i];
+    const solved = t.status === 'correct' || t.status === 'revealed', locked = solved;
+    const can = this.canCheck(i);
+    const ex = {
+      notDone: !s.exDone, done: s.exDone, stepText: `Task ${i + 1} of 3.`,
+      steps: [0, 1, 2].map(k => { const st = s.tasks[k].status; return { bg: (st === 'correct' || st === 'revealed') ? '#D69A12' : k === i ? '#6E7590' : hair }; }),
+      label: T.label, instruction: T.instruction, prompt: T.prompt || '',
+      isMC: T.type === 'mc', isFill: T.type === 'fill', isOrder: T.type === 'order',
+      isIdle: t.status === 'idle', isCorrect: t.status === 'correct', isIncorrect: t.status === 'incorrect', isRevealed: t.status === 'revealed',
+      isSolvedDesk: solved && desk, isSolvedPhone: solved && phone, showExpl: solved,
+      cantCheck: can ? 'false' : 'true', checkBg: can ? ink : hair, checkFg: can ? '#FFFFFF' : muted, checkCursor: can ? 'pointer' : 'not-allowed',
+      check: () => this.check(desk), tryAgain: () => this.setTask(i, { status: 'idle', sel: null, order: [] }),
+      reveal: () => this.reveal(desk), next: () => this.next(), openExpl: () => this.setState({ sheet: { kind: 'expl' } }),
+      nextLabel: i < 2 ? 'Next task' : 'Finish practice', expl: T.expl,
+      correctMsg: t.firstTry ? '10 points added.' : '',
+      wrongMsg: T.type === 'mc' ? 'That sentence claims more certainty than one small survey can give. Choose a sentence that reports the finding cautiously.'
+        : T.type === 'fill' ? `“${t.sel || ''}” claims more than these findings can support. Choose a hedging verb.`
+          : 'The words are not in a grammatical order. Start with the subject, then put “may” before the verb it hedges.',
+      restart: () => this.setState({ tasks: [blankTask(), blankTask(), blankTask()], exI: 0, exDone: false }),
+      summary: (() => { const firsts = s.tasks.filter(x => x.status === 'correct' && x.firstTry).length; const rev = s.tasks.filter(x => x.status === 'revealed').length; const later = 3 - firsts - rev; const bits = [`${firsts} correct the first time`]; if (later) bits.push(`${later} correct after another try`); if (rev) bits.push(`${rev} with the answer shown`); return `You finished all three tasks: ${bits.join(', ')}. ${firsts * 10} points added.`; })()
+    };
+    if (T.type === 'mc') ex.opts = T.options.map((o, k) => {
+      const sel = t.sel === k, right = k === T.correct;
+      const showRight = solved && right, showWrong = t.status === 'incorrect' && sel;
+      return {
+        letter: 'ABCD'[k], text: o, pressed: sel ? 'true' : 'false', cursor: locked ? 'default' : 'pointer',
+        pick: () => { if (!locked) this.setTask(i, { sel: k, status: 'idle' }); },
+        border: showRight ? '#2E7D5B' : showWrong ? '#B23A48' : sel ? ink : hair,
+        ring: showRight ? '#2E7D5B' : showWrong ? '#B23A48' : sel ? ink : 'transparent',
+        bg: showRight || showWrong ? '#FFFFFF' : sel ? '#EEF0F7' : '#FFFFFF', radio: sel ? ink : '#6E7590', dot: sel ? ink : 'transparent',
+        isRight: showRight, isWrong: showWrong
+      };
+    });
+    if (T.type === 'fill') ex.fill = {
+      word: t.sel || '\u00A0', line: t.status === 'correct' || t.status === 'revealed' ? '#2E7D5B' : t.status === 'incorrect' ? '#B23A48' : t.sel ? ink : '#6E7590',
+      chips: T.options.map(w => { const on = t.sel === w; return { t: w, pressed: on ? 'true' : 'false', cursor: locked ? 'default' : 'pointer', border: on ? ink : '#6E7590', ring: on ? ink : 'transparent', bg: on ? '#EEF0F7' : '#FFFFFF', on: () => { if (!locked) this.setTask(i, { sel: w, status: 'idle' }); } }; })
+    };
+    if (T.type === 'order') {
+      const placed = t.order.map((k, pos) => { let w = T.words[k]; if (pos === 0) w = w[0].toUpperCase() + w.slice(1); if (pos === T.words.length - 1 && solved) w += '.'; return { t: w, cursor: locked ? 'default' : 'pointer', on: () => { if (!locked) this.setTask(i, { order: t.order.filter((_, p) => p !== pos), status: 'idle' }); } }; });
+      ex.order = {
+        empty: placed.length === 0, placed,
+        line: solved ? '#2E7D5B' : t.status === 'incorrect' ? '#B23A48' : placed.length ? ink : '#6E7590',
+        bank: T.words.map((w, k) => { const used = t.order.includes(k); return { t: w, used: used ? 'true' : 'false', tab: used ? '-1' : '0', borderStyle: used ? 'dashed' : 'solid', border: used ? hair : '#6E7590', color: used ? 'transparent' : ink, cursor: used || locked ? 'default' : 'pointer', on: () => { if (!used && !locked) this.setTask(i, { order: [...t.order, k], status: 'idle' }); } }; })
+      };
+    }
+
+    // sheet (phone)
+    const shOpen = !!s.sheet;
+    if (s.sheet) this._lastSheet = s.sheet;
+    const last = this._lastSheet || { kind: 'note', id: 'suggest' };
+    const nid = last.kind === 'note' ? last.id : 'suggest', nsv = s.saved.includes(nid);
+    const sh = {
+      vis: shOpen ? 'visible' : 'hidden', trans: red ? 'none' : `transform .32s ${EASE}, visibility 0s linear ${shOpen ? '0s' : '.32s'}`, scrimOp: shOpen ? 1 : 0, scrimPE: shOpen ? 'auto' : 'none', y: shOpen ? '0%' : '110%', hidden: shOpen ? 'false' : 'true',
+      isNote: last.kind === 'note', isExpl: last.kind === 'expl', aria: last.kind === 'note' ? 'Note' : 'Explanation',
+      phrase: ANN[nid].phrase, note: ANN[nid].note, mr: showMr ? (ANN[nid].mr || '') : '',
+      saveLabel: nsv ? 'In your phrase book' : 'Save phrase', btnBg: nsv ? '#EEF0F7' : ink, btnFg: nsv ? ink : '#FFFFFF',
+      save: () => { if (!nsv) this.saveNote(nid); }
+    };
+
+    // library
+    const lib = {
+      chips: FILTERS.map(f => { const on = s.filter === f; return { label: f, checked: on ? 'true' : 'false', bg: on ? ink : '#FFFFFF', fg: on ? '#FFFFFF' : ink, border: on ? ink : '#6E7590', on: () => this.setState({ filter: f }) }; }),
+      items: SOURCES.filter(r => s.filter === 'All' || r.tags.includes(s.filter)).map(r => ({ ...r, host: r.url.replace(/^https?:\/\//, '').split('/')[0] }))
+    };
+
+    // progress
+    const badges = [];
+    RES.forEach(([tt], k) => { if (P.res[k] >= 1) badges.push({ title: tt, track: 'Research English for Humanities' }); });
+    COM.forEach(([tt], k) => { if (P.com[k] >= 1) badges.push({ title: tt, track: 'Communicative and professional English' }); });
+    const resDone = P.res.filter(x => x >= 1).length, comDone = P.com.filter(x => x >= 1).length;
+
+    const railSubs = [
+      { label: 'Study page', note: s.studyRead ? 'Read' : '', on: go('study'), aria: scr === 'study' ? 'page' : 'false', bg: scr === 'study' ? '#EEF0F7' : 'transparent', weight: scr === 'study' ? '600' : '400' },
+      { label: 'Practice', note: `${P.done} of 3`, on: go('exercise'), aria: scr === 'exercise' ? 'page' : 'false', bg: scr === 'exercise' ? '#EEF0F7' : 'transparent', weight: scr === 'exercise' ? '600' : '400' }
+    ];
+
+    const loadingLabels = { welcome: 'the welcome page', dash: 'the contents', study: 'Hedging and academic stance', exercise: 'the practice tasks', library: 'the library', progress: 'your progress' };
+    const loaded = !s.loading;
+    return {
+      sweepT: red ? 'none' : `background-size .5s ${EASE}`,
+      L, isPhone: phone, isDesk: desk, wordmark: this.props.wordmark || '[NAME]',
+      hdr, navItems, showTabs: phone && scr !== 'welcome' && scr !== 'exercise', showRail: desk && (scr === 'study' || scr === 'exercise'),
+      mainBg: ['welcome', 'study', 'exercise'].includes(scr) ? '#FFFFFF' : '#F6F7FA',
+      is: { welcome: loaded && scr === 'welcome', dash: loaded && scr === 'dash', study: loaded && scr === 'study', exercise: loaded && scr === 'exercise', library: loaded && scr === 'library', progress: loaded && scr === 'progress' },
+      loading: s.loading, loadingLabel: loadingLabels[scr],
+      mainRef: this.mainRef, listRef: this.listRef, ribbonRef: this.ribbonRef, phraseRef: this.phraseRef,
+      panelRef: this.panelRef, wordRef: this.wordRef, lineRef: this.lineRef, markRef: this.markRef, noteRef: this.noteRef,
+      showPanel: s.mode === 'intro' && s.showPanel,
+      onTap: () => this.skipOpening(),
+      goWelcome: go('welcome'), goDash: go('dash'), goStudy: () => this.nav('study', { track: 'research' }), goExercise: go('exercise'), goProgress: go('progress'),
+      goPhrases: () => { this.nav('progress'); setTimeout(() => { const el = this.phraseRef.current, m = this.mainRef.current; if (el && m) m.scrollTop = el.offsetTop - 24; }, this.props.slow ? 1300 : 60); },
+      trackOpts: [
+        { name: 'Research English for Humanities', blurb: 'Read papers, find a research gap, and write in the register of your discipline.', count: `${RES.length} modules`, on: () => this.nav('dash', { track: 'research' }) },
+        { name: 'Communicative and professional English', blurb: 'Write formal email, speak in seminars and vivas, and introduce yourself professionally.', count: `${COM.length} modules`, on: () => this.nav('dash', { track: 'comm' }) }
+      ],
+      dash, week, parts, notes, ex, sh, lib,
+      studyMeta: `Module ${HEDGE + 1} of ${RES.length} in Research English for Humanities.${phone ? ' Tap an underlined phrase to read its note.' : ''}`,
+      railMods: RES.map(([tt], k) => ({ title: tt, current: k === HEDGE, color: k === HEDGE ? ink : '#181B2E', weight: k === HEDGE ? '600' : '400', barH: k === HEDGE ? '4px' : '2px', pct: (P.res[k] * 100) + '%', open: openMod })),
+      railSubs,
+      closeSheet: () => this.setState({ sheet: null }),
+      toastText: s.toast || 'Saved to your phrase book.', toastOp: s.toast ? 1 : 0, toastY: s.toast ? '0px' : '8px',
+      phraseCount: s.saved.length,
+      points: s.points,
+      goalOpts: [1, 2, 3, 4, 5, 6].map(h => { const on = s.goal === h; return { label: `${h} h`, checked: on ? 'true' : 'false', bg: on ? ink : '#FFFFFF', fg: on ? '#FFFFFF' : ink, border: on ? ink : '#6E7590', on: () => this.setState({ goal: h }) }; }),
+      trackTotals: [
+        { name: 'Research English for Humanities', count: `${resDone} of ${RES.length}`, pct: (resDone / RES.length * 100) + '%' },
+        { name: 'Communicative and professional English', count: `${comDone} of ${COM.length}`, pct: (comDone / COM.length * 100) + '%' }
+      ],
+      badges, noBadges: badges.length === 0,
+      phrases: ORDER.filter(id => s.saved.includes(id)).map(id => ({ phrase: ANN[id].phrase, note: ANN[id].note, remove: () => this.setState(st => ({ saved: st.saved.filter(x => x !== id) })) })),
+      noPhrases: s.saved.length === 0, phraseCountText: s.saved.length === 1 ? '1 phrase' : `${s.saved.length} phrases`
+    };
+  }
+}
+</script>
+</body>
+</html>
