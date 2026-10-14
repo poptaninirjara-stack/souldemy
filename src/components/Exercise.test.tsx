@@ -52,6 +52,6 @@ describe('Exercise', () => {
   it('stores the attempt on the device', () => {
     setup()
     fireEvent.change(screen.getByLabelText('Your answer'), { target: { value: 'saved text' } })
-    expect(localStorage.getItem('english-app:v1:attempts')).toContain('saved text')
+    expect(localStorage.getItem('souldemy:v1:attempts')).toContain('saved text')
   })
 })

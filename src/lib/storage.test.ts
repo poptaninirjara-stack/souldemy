@@ -9,14 +9,14 @@ afterEach(() => {
 describe('storage', () => {
   it('round-trips namespaced values', () => {
     save('visited', ['r1/l1'])
-    expect(localStorage.getItem('english-app:v1:visited')).toBe('["r1/l1"]')
+    expect(localStorage.getItem('souldemy:v1:visited')).toBe('["r1/l1"]')
     expect(load('visited', [])).toEqual(['r1/l1'])
   })
 
   it('falls back to the default for corrupt or invalid data', () => {
-    localStorage.setItem('english-app:v1:visited', '{not json')
+    localStorage.setItem('souldemy:v1:visited', '{not json')
     expect(load('visited', ['x'])).toEqual(['x'])
-    localStorage.setItem('english-app:v1:visited', '42')
+    localStorage.setItem('souldemy:v1:visited', '42')
     expect(load('visited', [] as string[], Array.isArray)).toEqual([])
   })
 
@@ -37,7 +37,7 @@ describe('storage', () => {
     localStorage.setItem('someone-else', '1')
     save('track', 'research')
     clearAll()
-    expect(localStorage.getItem('english-app:v1:track')).toBeNull()
+    expect(localStorage.getItem('souldemy:v1:track')).toBeNull()
     expect(localStorage.getItem('someone-else')).toBe('1')
   })
 })

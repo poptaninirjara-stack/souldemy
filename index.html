@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="A free study app for academic and professional English. No account; progress stays on this device." />
     <meta name="theme-color" content="#FFFFFF" />
-    <title>English</title>
+    <title>SoulDemy</title>
     <script>
       // Apply reduced motion before first paint so nothing animates by mistake.
       try {
         var r = matchMedia('(prefers-reduced-motion: reduce)').matches ||
-          JSON.parse(localStorage.getItem('english-app:v1:ui') || '""') === 'reduce'
+          JSON.parse(localStorage.getItem('souldemy:v1:ui') || '""') === 'reduce'
         document.documentElement.dataset.motion = r ? 'reduced' : 'full'
       } catch (e) {}
     </script>

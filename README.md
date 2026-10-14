@@ -1,4 +1,4 @@
-# Academic & Professional English (working title)
+# SoulDemy
 
 A free, static study app for first- and second-year BA students (Geography, Psychology, English) at an English-medium college in Maharashtra. It has two tracks:
 
@@ -7,7 +7,7 @@ A free, static study app for first- and second-year BA students (Geography, Psyc
 
 The app has no backend, accounts, adverts, analytics, timers or leaderboards. Everything a student does is stored in their own browser (`localStorage`).
 
-The name is not final. Change `APP_NAME` in `src/config.ts`; it is used everywhere.
+The app name is set by `APP_NAME` in `src/config.ts`; it is used everywhere.
 
 ## Run
 
@@ -78,14 +78,14 @@ This sends a HEAD request (GET fallback) to every Further reading URL and writes
 | `src/styles/tokens.css` | All design tokens (the only file with colour values) |
 | `src/lib/storage.ts` | `load` / `save` / `remove` / `migrate`. This is the seam for future accounts and sync. |
 | `src/lib/weekly.ts` | Weekly practice rules (Monday start, Asia/Kolkata, goal-met weeks). Kept in one module so it is easy to change. |
-| `src/state/` | App state (context) persisted under `english-app:v1:*` keys |
+| `src/state/` | App state (context) persisted under `souldemy:v1:*` keys |
 | `CONTENT_ISSUES.md` | Content problems for the owner (nothing was changed in the text) |
 | `DESIGN_GAPS.md` | Where the build departs from or extends the handoff |
 | `LINK_REPORT.md` | Output of `npm run check-links` |
 
 ## Stored data
 
-All data is kept in `localStorage` under keys prefixed `english-app:v1:`:
+All data is kept in `localStorage` under keys prefixed `souldemy:v1:`:
 
 | Key | Contents |
 |---|---|

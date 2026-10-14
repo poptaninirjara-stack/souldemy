@@ -1,13 +1,13 @@
 // App-wide settings. Change the name here; it is used everywhere.
 
-/** Working title. Not final. */
-export const APP_NAME = '[Working Title]'
+/** App name, used everywhere (wordmark, opening, page title, About). */
+export const APP_NAME = 'SoulDemy'
 
 /**
  * Prefix for every localStorage key. Kept separate from APP_NAME so renaming
  * the app does not wipe students' saved progress.
  */
-export const STORAGE_NAMESPACE = 'english-app:v1:'
+export const STORAGE_NAMESPACE = 'souldemy:v1:'
 
 /** Show "Pending faculty review" on Marathi to English notes until a Marathi-speaking faculty member has reviewed them. */
 export const SHOW_UNREVIEWED_BADGE = true
