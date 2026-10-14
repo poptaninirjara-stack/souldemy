@@ -1,0 +1,93 @@
+/* In-page index: a single scrolling row of chips on phone (bleeds right), wraps on desktop. */
+.indexNav {
+  margin: 0 calc(-1 * var(--page-pad-x)) 0 0;
+}
+
+.index {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--page-pad-x) 0 0;
+  display: flex;
+  gap: var(--s-8);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.index::-webkit-scrollbar {
+  display: none;
+}
+
+.index li {
+  flex: none;
+}
+
+@media (min-width: 1024px) {
+  .indexNav {
+    margin: 0;
+  }
+
+  .index {
+    flex-wrap: wrap;
+    overflow: visible;
+    padding: 0;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  padding: 0 14px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--r-control);
+  background: var(--page);
+  font: 500 var(--text-caption) / 1.2 var(--font-sans);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background: var(--margin-tint);
+  text-decoration: none;
+}
+
+.chip[aria-current='location'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--page);
+}
+
+.headRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-8) var(--s-12);
+}
+
+.sectionTitle {
+  outline-offset: 4px;
+  scroll-margin-top: calc(var(--topbar-h) + var(--s-24));
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--s-8);
+  border: 1px solid var(--control-border);
+  border-radius: var(--r-control);
+  font: 600 var(--text-caption) / 1.2 var(--font-sans);
+  color: var(--ink);
+  background: var(--margin-tint);
+}
+
+.tasks ol > li::marker {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.sentinel {
+  display: block;
+  height: 1px;
+}

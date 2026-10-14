@@ -33,8 +33,9 @@ export function isPersistent(): boolean {
 export function load<T>(key: string, fallback: T, isValid: (v: unknown) => boolean = () => true): T {
   const k = STORAGE_NAMESPACE + key
   let raw: string | null = null
+  const s = store()
   try {
-    raw = store()?.getItem(k) ?? memory.get(k) ?? null
+    raw = s ? s.getItem(k) : (memory.get(k) ?? null)
   } catch {
     raw = memory.get(k) ?? null
   }

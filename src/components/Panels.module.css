@@ -1,0 +1,39 @@
+/* Panels: page surface, hairline border, radius 8. No shadows. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  padding: var(--s-20) var(--s-24);
+  background: var(--page);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-panel);
+}
+
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-12);
+}
+
+.panelTitle {
+  font-size: var(--text-panel);
+  line-height: var(--lh-panel);
+}
+
+.panelValue {
+  font: 500 var(--text-caption) / var(--lh-caption) var(--font-sans);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.line {
+  margin: 0;
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--body-ink);
+}
+
+.panel :global(.btn) {
+  margin-top: var(--s-4);
+}

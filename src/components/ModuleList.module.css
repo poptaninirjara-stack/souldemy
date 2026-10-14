@@ -1,0 +1,159 @@
+.wrap {
+  position: relative;
+}
+
+/* Progress ribbon: 4px turmeric bookmark in the left gutter, slides to the current row. */
+.ribbon {
+  position: absolute;
+  left: -24px;
+  width: 4px;
+  background: var(--turmeric);
+  transition:
+    top var(--dur-ribbon) var(--ease-out),
+    height var(--dur-ribbon) var(--ease-out);
+}
+
+@media (min-width: 1024px) {
+  .ribbon {
+    left: -20px;
+  }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.item {
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* Module row: grid 28px 1fr, gap 12, padding 16 0. */
+.row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--s-12);
+  padding: var(--s-16) 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.row:hover {
+  background: var(--page);
+  text-decoration: none;
+}
+
+.num {
+  font: 400 var(--text-ui) / 1.6 var(--font-serif);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
+}
+
+.title {
+  font: 400 var(--text-body) / 1.35 var(--font-serif);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.row[data-current='true'] .title {
+  font-weight: 600;
+}
+
+.outcome {
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--muted);
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+  margin-top: var(--s-4);
+}
+
+.line {
+  flex: 1;
+}
+
+.status {
+  min-width: 76px;
+  text-align: right;
+  font: 400 var(--text-caption) / var(--lh-caption) var(--font-sans);
+  color: var(--muted);
+}
+
+.details {
+  margin: 0 0 var(--s-16) 40px;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--target-min);
+  font: 500 var(--text-caption) / 1.2 var(--font-sans);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--control-border);
+  text-underline-offset: 3px;
+}
+
+.detailBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  padding-bottom: var(--s-8);
+}
+
+.small {
+  margin: 0;
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--muted);
+}
+
+.outcomes {
+  margin: 0;
+  padding-left: 1.4em;
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.map {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 28rem;
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+}
+
+.map th,
+.map td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--s-8) var(--s-12) var(--s-8) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.map tr:last-child td {
+  border-bottom: 0;
+}
+
+.map th {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mapNum {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}

@@ -16,9 +16,14 @@ import '@fontsource/noto-sans-devanagari/600.css'
 import './styles/tokens.css'
 import './styles/global.css'
 import { App } from './App'
+import { OPENING_FLAG } from './components/Opening'
 import { APP_NAME } from './config'
+import { setSessionFlag } from './lib/storage'
 
 document.title = APP_NAME
+
+// The opening plays only when a session starts on the welcome page, never over a deep link.
+if (!['', '#', '#/'].includes(window.location.hash)) setSessionFlag(OPENING_FLAG)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

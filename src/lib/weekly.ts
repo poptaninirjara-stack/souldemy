@@ -103,3 +103,11 @@ export function isWeeklyState(v: unknown): v is WeeklyState {
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 export const dayName = (i: number) => DAY_NAMES[i]
 export const dayLetter = (i: number) => DAY_NAMES[i][0]
+
+/** The one line under the week strip. No flames, no streak-loss warnings. */
+export function streakLine(weeks: number, hasGoal: boolean): string {
+  if (!hasGoal) return 'Choose how many hours a week you want to practise.'
+  if (weeks === 0) return 'Practise on any day this week to start your record.'
+  if (weeks === 1) return 'You met your weekly goal last week.'
+  return `You met your weekly goal for the last ${weeks} weeks.`
+}

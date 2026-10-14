@@ -1,0 +1,70 @@
+/* Phone: Continue → This week → heading → modules. Desktop: modules left, panels right (300px). */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-32);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+}
+
+.mainCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-24);
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+.summary {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--s-16);
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--muted);
+}
+
+.intro {
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--body-ink);
+}
+
+.intro p {
+  margin: 0 0 var(--s-4);
+}
+
+.intro strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    column-gap: var(--s-56);
+    align-items: start;
+  }
+
+  .side {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: calc(var(--topbar-h) + var(--s-24));
+  }
+
+  .mainCol {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}

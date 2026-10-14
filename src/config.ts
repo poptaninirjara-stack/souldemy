@@ -17,6 +17,12 @@ export const PAGE_NOTES: Record<string, string> = {
   'r2/l4': "Ask your library for your institute's exact login steps and which services it has joined.",
 }
 
+/** One-line track blurbs on the welcome page (handoff §9, drafted; author to review). */
+export const TRACK_BLURBS: Record<'research' | 'communicative', string> = {
+  research: 'Read papers, find a research gap, and write in the register of your discipline.',
+  communicative: 'Write formal email, speak in seminars and vivas, and introduce yourself professionally.',
+}
+
 /** Time zone and first weekday for the weekly practice record. */
 export const PRACTICE_TIME_ZONE = 'Asia/Kolkata'
 

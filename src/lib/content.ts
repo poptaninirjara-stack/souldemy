@@ -55,3 +55,12 @@ export function modulePath(m: ModuleSummary): string {
 export function pagePath(m: ModuleSummary, pageId: string): string {
   return m.trackId === 'research' ? `/${m.trackId}/${m.id}/${pageId}` : `/${m.trackId}/${m.id}?s=${pageId}`
 }
+
+/** "purdue.edu" from a URL, for attributing a source by its host. */
+export function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname.toLowerCase().replace(/^www\./, '')
+  } catch {
+    return url
+  }
+}

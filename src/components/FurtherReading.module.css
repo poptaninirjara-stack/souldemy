@@ -1,0 +1,43 @@
+.wrap :global(.caption) {
+  margin: 0 0 var(--s-8);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+/* Resource row: one source per row, attributed with name and host. */
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline);
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--body-ink);
+}
+
+.item a {
+  font-weight: 500;
+  display: inline;
+  padding: 10px 0; /* 44px hit area without changing line layout */
+}
+
+.host {
+  font-size: var(--text-caption);
+  line-height: var(--lh-caption);
+  color: var(--muted);
+}
+
+.after {
+  margin-top: var(--s-16);
+  font: 400 var(--text-caption) / var(--lh-caption) var(--font-sans);
+  color: var(--muted);
+}
+
+.after p {
+  margin: 0;
+}

@@ -1,0 +1,145 @@
+.h1 {
+  max-width: 20ch;
+}
+
+.h3 {
+  font-size: var(--text-h3);
+  line-height: var(--lh-h3);
+}
+
+/* Demo sentence + margin note: stacked on phone, grid 600px 254px on desktop. */
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+}
+
+.sentence {
+  margin: 0;
+  padding: 0;
+  font: 400 var(--text-demo) / 1.6 var(--font-serif);
+  color: var(--body-ink);
+}
+
+.sentence p {
+  margin: 0;
+}
+
+/* Annotated phrase: 2px turmeric underline (shape cue) + wash sweeping left to right. */
+.phrase {
+  color: inherit;
+  padding: 2px 0;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  text-decoration: underline;
+  text-decoration-color: var(--turmeric);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  text-decoration-skip-ink: none;
+  background: linear-gradient(var(--turmeric-wash), var(--turmeric-wash)) left / 100% 100% no-repeat;
+  animation: sweep var(--dur-sweep) var(--ease-out) var(--sweep-delay, 0ms) both;
+}
+
+@keyframes sweep {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+.note {
+  border-top: 2px solid var(--turmeric);
+  padding-top: 11px;
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--body-ink);
+  animation: note-in var(--dur-sweep) var(--ease-out) var(--sweep-delay, 0ms) both;
+}
+
+.note p {
+  margin: 0;
+}
+
+.noteTerm {
+  font: 600 var(--text-ui) / 1.4 var(--font-serif);
+  color: var(--ink);
+}
+
+@keyframes note-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+:root[data-motion='reduced'] .phrase,
+:root[data-motion='reduced'] .note {
+  animation: none;
+}
+
+.choose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+}
+
+.cards {
+  display: grid;
+  gap: var(--s-16);
+}
+
+/* Track card: the whole card is the button. */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+  padding: var(--s-20);
+  background: var(--page);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-panel);
+  text-align: left;
+  cursor: pointer;
+  color: var(--body-ink);
+}
+
+.card:hover {
+  border-color: var(--ink);
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-12);
+  color: var(--ink);
+}
+
+.cardTitle {
+  font: 600 var(--text-panel) / var(--lh-panel) var(--font-serif);
+}
+
+.blurb {
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+}
+
+.week {
+  max-width: 480px;
+}
+
+@media (min-width: 1024px) {
+  .demo {
+    display: grid;
+    grid-template-columns: minmax(0, var(--reading-max)) var(--margin-col);
+    column-gap: var(--margin-gap);
+    align-items: start;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

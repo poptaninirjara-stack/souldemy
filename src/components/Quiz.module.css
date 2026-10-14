@@ -1,0 +1,205 @@
+.quiz {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+  padding-top: var(--s-24);
+  border-top: 1px solid var(--hairline);
+}
+
+.title {
+  font-size: var(--text-h3);
+  line-height: var(--lh-h3);
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-40);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+}
+
+.question {
+  margin: 0;
+  font: 600 var(--text-panel) / var(--lh-panel) var(--font-serif);
+  color: var(--ink);
+}
+
+.qnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+/* Option button (handoff §6): grid 20px 16px 1fr, gap 12, padding 14 16. */
+.option {
+  display: grid;
+  grid-template-columns: 20px 16px minmax(0, 1fr);
+  gap: var(--s-12);
+  align-items: start;
+  width: 100%;
+  min-height: var(--target-min);
+  padding: 14px var(--s-16);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-control);
+  background: var(--page);
+  text-align: left;
+  font: 400 var(--text-body) / 1.55 var(--font-serif);
+  color: var(--body-ink);
+  cursor: pointer;
+}
+
+.option:hover {
+  border-color: var(--ink);
+}
+
+.option[data-locked='true'] {
+  cursor: default;
+}
+
+.option[data-locked='true']:hover {
+  border-color: var(--hairline);
+}
+
+.radio {
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1.5px solid var(--control-border);
+  border-radius: var(--r-round);
+  position: relative;
+}
+
+.letter {
+  font: 600 var(--text-ui) / 1.85 var(--font-sans);
+  color: var(--ink);
+}
+
+.optText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.option[data-view='selected'] {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+  background: var(--margin-tint);
+}
+
+.option[data-view='selected'] .radio {
+  border-color: var(--ink);
+}
+
+.option[data-view='selected'] .radio::after,
+.option[data-view='correct'] .radio::after,
+.option[data-view='incorrect'] .radio::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: var(--r-round);
+  background: var(--ink);
+}
+
+.option[data-view='correct'],
+.option[data-view='correct']:hover {
+  border-color: var(--correct);
+  box-shadow: inset 0 0 0 1px var(--correct);
+}
+
+.option[data-view='incorrect'],
+.option[data-view='incorrect']:hover {
+  border-color: var(--incorrect);
+  box-shadow: inset 0 0 0 1px var(--incorrect);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-4);
+  font: 600 var(--text-caption) / var(--lh-caption) var(--font-sans);
+}
+
+.tag[data-tone='correct'] {
+  color: var(--correct);
+}
+
+.tag[data-tone='incorrect'] {
+  color: var(--incorrect);
+}
+
+/* Feedback panel: appears within 150ms (120ms fade), icon + words, never colour alone. */
+.feedback:empty {
+  display: none;
+}
+
+.panel {
+  padding-top: var(--s-12);
+  border-top: 2px solid var(--turmeric);
+  animation: fb-in var(--dur-instant) var(--ease-out) both;
+}
+
+@keyframes fb-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+:root[data-motion='reduced'] .panel {
+  animation: none;
+}
+
+.fbHead {
+  margin: 0 0 var(--s-4);
+  display: flex;
+  align-items: center;
+  gap: var(--s-8);
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+}
+
+.panel[data-tone='correct'] .fbHead {
+  color: var(--correct);
+}
+
+.panel[data-tone='incorrect'] .fbHead {
+  color: var(--incorrect);
+}
+
+.panel[data-tone='shown'] .fbHead {
+  color: var(--ink);
+}
+
+.fbText {
+  margin: 0;
+  font: 400 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--body-ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-12);
+}
+
+.summary {
+  margin: 0;
+  padding-top: var(--s-16);
+  border-top: 1px solid var(--hairline);
+  font: 600 var(--text-ui) / var(--lh-ui) var(--font-sans);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link, Outlet, useLocation, useMatch } from 'react-router'
 import { APP_NAME } from '../config'
 import { findModule, getTrack } from '../lib/content'
-import { useAppState, useReducedMotion } from '../state/AppState'
+import { useAppState, useReducedMotion } from '../state/useAppState'
 import { ChevronLeft } from './Icons'
 import styles from './Layout.module.css'
 
