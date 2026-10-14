@@ -4,9 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "content": "node scripts/build-content.ts",
+    "predev": "node scripts/build-content.ts --quiet",
     "dev": "vite",
+    "prebuild": "node scripts/build-content.ts",
     "build": "tsc -b && vite build",
+    "pretest": "node scripts/build-content.ts --quiet",
+    "test": "vitest run",
     "lint": "oxlint",
+    "check-links": "node scripts/check-links.ts",
     "preview": "vite preview"
   },
   "dependencies": {

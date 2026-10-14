@@ -2,9 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>english-app</title>
+    <meta name="description" content="A free study app for academic and professional English. No account; progress stays on this device." />
+    <meta name="theme-color" content="#FFFFFF" />
+    <title>English</title>
+    <script>
+      // Apply reduced motion before first paint so nothing animates by mistake.
+      try {
+        var r = matchMedia('(prefers-reduced-motion: reduce)').matches ||
+          JSON.parse(localStorage.getItem('english-app:v1:ui') || '""') === 'reduce'
+        document.documentElement.dataset.motion = r ? 'reduced' : 'full'
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

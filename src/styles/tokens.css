@@ -1,0 +1,114 @@
+/* Design tokens from design-handoff/README.md §3. The only place hex values live. */
+:root {
+  /* Colour */
+  --paper: #f6f7fa;
+  --page: #ffffff;
+  --ink: #1e2a5e;
+  --ink-hover: #16204a;
+  --body-ink: #181b2e;
+  --muted: #4b5375;
+  --control-border: #6e7590;
+  --margin-tint: #eef0f7;
+  --hairline: #d9dce6;
+  --turmeric: #d69a12;
+  --turmeric-wash: #f1dcac;
+  --correct: #2e7d5b;
+  --incorrect: #b23a48;
+  --scrim: rgba(24, 27, 46, 0.36);
+
+  /* Type */
+  --font-serif: 'Literata Variable', Literata, 'Noto Serif Devanagari', serif;
+  --font-sans: 'Public Sans', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-serif-mr: 'Noto Serif Devanagari', 'Literata Variable', serif;
+
+  --text-caption: 14px;
+  --text-ui: 16px;
+  --text-body: 19px;
+  --text-h3: 24px;
+  --text-panel: 19px;
+  --text-h2: 30px;
+  --text-h1: 30px; /* phone; desktop below */
+  --text-demo: 21px;
+  --text-wordmark: 20px;
+  --text-wordmark-opening: 44px;
+
+  --lh-caption: 1.45;
+  --lh-ui: 1.5;
+  --lh-body: 1.7;
+  --lh-h3: 1.3;
+  --lh-panel: 1.35;
+  --lh-h2: 1.25;
+  --lh-h1: 1.2;
+  --lh-mr: 1.8;
+  --tracking-h1: -0.018em;
+  --tracking-wordmark: -0.01em;
+
+  /* Spacing (8px base; 4 and 12 are half-steps) */
+  --s-4: 4px;
+  --s-8: 8px;
+  --s-12: 12px;
+  --s-16: 16px;
+  --s-20: 20px;
+  --s-24: 24px;
+  --s-32: 32px;
+  --s-40: 40px;
+  --s-48: 48px;
+  --s-56: 56px;
+  --s-64: 64px;
+  --s-72: 72px;
+
+  /* Radii */
+  --r-control: 4px;
+  --r-panel: 8px;
+  --r-round: 50%;
+
+  /* Elevation: one soft shadow, bottom sheet only */
+  --shadow-sheet: 0 -8px 32px rgba(30, 42, 94, 0.16);
+
+  /* Layout */
+  --topbar-h: 56px;
+  --bottomnav-h: 64px;
+  --page-pad-x: 24px;
+  --page-pad-top: 32px;
+  --page-pad-bottom: 40px;
+  --reading-max: 600px;
+  --margin-col: 254px;
+  --margin-gap: 40px;
+  --rail-w: 248px;
+  --wide-max: 1040px;
+  --library-max: 760px;
+  --target-min: 44px;
+  --button-h: 48px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --dur-instant: 120ms;
+  --dur-fade-reduced: 150ms;
+  --dur-toast: 200ms;
+  --dur-screen: 220ms;
+  --delay-margin: 120ms;
+  --dur-margin: 260ms;
+  --dur-sheet: 320ms;
+  --dur-scrim: 300ms;
+  --dur-ribbon: 450ms;
+  --dur-sweep: 500ms;
+}
+
+@media (min-width: 600px) {
+  :root {
+    --page-pad-x: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --topbar-h: 64px;
+    --text-h1: 38px;
+    --text-demo: 24px;
+    --text-wordmark: 22px;
+    --text-wordmark-opening: 56px;
+    --page-pad-x: 48px;
+    --page-pad-top: 48px;
+    --page-pad-bottom: 72px;
+  }
+}

@@ -1,0 +1,25 @@
+.page {
+  margin: 0 auto;
+  padding: var(--page-pad-top) var(--page-pad-x) var(--page-pad-bottom);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-24);
+}
+
+.page[data-width='wide'] {
+  max-width: calc(var(--wide-max) + 2 * var(--page-pad-x));
+}
+
+.page[data-width='library'] {
+  max-width: calc(var(--library-max) + 2 * var(--page-pad-x));
+}
+
+.page[data-width='reading'] {
+  max-width: calc(var(--reading-max) + 2 * var(--page-pad-x));
+}
+
+@media (min-width: 1024px) {
+  .page {
+    padding-top: var(--s-56);
+  }
+}
