@@ -32,7 +32,12 @@ export function CommModulePage() {
 
   // A section counts as read once its end has been on screen.
   useEffect(() => {
-    if (!mod || !data || typeof IntersectionObserver === 'undefined') return
+    if (!mod || !data) return
+    if (typeof IntersectionObserver === 'undefined') {
+      // No way to tell what was read: count the sections as read once the page is open.
+      mod.pages.forEach((p) => markVisited(mod.id, p.id))
+      return
+    }
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) if (e.isIntersecting) markVisited(mod.id, (e.target as HTMLElement).dataset.section!)

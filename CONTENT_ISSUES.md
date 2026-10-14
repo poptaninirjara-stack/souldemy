@@ -21,12 +21,20 @@ Problems found in `/content`. **None of these has been changed in the text.** Ea
 9. **Module 1, Lesson 7, Quiz items 4, 5 and 7.** These give the answer letter but no explanation (`→ **(b).**` only). The app shows "Correct answer: (b)" with no explanation sentence. Optional: add a one-line explanation, as in the other items.
 10. **Module 1, Sources, URL case.** The UNLV link is written as `https://WWW.UNLV.EDU/...`. Host names are case-insensitive, so it works, but lower case is conventional. See `LINK_REPORT.md` for its status.
 
+11. **Broken links (404 on 14 Oct 2026; see `LINK_REPORT.md`).** These show as written until the owner supplies replacements:
+    - Module 1: Texas A&M Writing Center, *Essay Exams*. The page now 404s; it redirects to `…/essay-exams/index.html`, which also 404s.
+    - Module 1: Blinn College, *Tackling Timed Writing* (PDF).
+    - Module 2: Montclair State University, *Critical reading collection*.
+    - Communicative Module 4: Northern Illinois University, *Answering "Tell Me About Yourself"* (PDF).
+12. **INFLIBNET links could not be reached from the build machine** (N-LIST portal, Shodhganga repository; connection timeout). This is likely a network or regional block rather than a dead link. Please check them from India.
+
 ## Where the files differ from the structure in the brief
 
 These were handled in the parser, and the text is unchanged.
 
 - **Module 1 extra `###` sections.** Some lessons have sections besides Explain and Exercise: *Same idea, three registers*, *Task words*, *Weighting two-part questions*, *A good thesis answers the question and gives a reason*, *Three sentence errors that cost marks*, and *Reflect (not marked)*. They render as ordinary reading sections. *Reflect (not marked)* and the two *Practice … (not timed)* sections have no model answer. They get an optional notes box stored on the device, with no reveal and no scoring.
 - **Module 2, Lesson 7 order.** The order is Explain → Practice (not timed) → Quiz. The app keeps this order.
+- **Module 2, Lesson 2 tables.** The brief says this lesson "has two tables". The file has one: scholarly vs popular. Primary/secondary/tertiary is a bulleted list. Every table in the files renders intact. The counts are: Module 1, lessons 1, 3, 4 and 5 (two tables in Lesson 5); Module 2, lessons 1, 2, 4, 5, 6 and 7.
 - **Module 2 extra sections.** It has more sections than Explain/Exercise: *A simple research workflow* (Lesson 4) and *Anatomy of a humanities article* (Lesson 5). Both render as reading sections.
 - **Module 1, last Sources bullet.** "Structure informed by S. Bailey…" has no link. It renders as a text line inside the Further reading drawer and on the Library page.
 - **Module 2, closing line.** The Further reading heading carries an instruction in brackets, which is not rendered. The closing line "All explanations and exercises above are newly written for this course." follows the list. It renders below the list in the drawer.
