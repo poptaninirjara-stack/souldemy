@@ -381,7 +381,12 @@ function ManageAccount({
 }) {
   const { profile } = useAuth()
   const self = profile?.id === account.id
-  const [form, setForm] = useState({ full_name: account.full_name, role: account.role as string, class: account.classes?.name ?? '' })
+  const [form, setForm] = useState({
+    username: account.username,
+    full_name: account.full_name,
+    role: account.role as string,
+    class: account.classes?.name ?? '',
+  })
   const [password, setPassword] = useState(tempPassword)
   const [msg, setMsg] = useState<{ error?: string; ok?: string } | null>(null)
   const [busy, setBusy] = useState(false)
@@ -410,6 +415,20 @@ function ManageAccount({
           <input id={`${uid}-n`} className="field" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
         </div>
         <div>
+          <label className="form-label" htmlFor={`${uid}-u`}>
+            Username
+          </label>
+          <input
+            id={`${uid}-u`}
+            className="field"
+            value={form.username}
+            onChange={(e) => setForm({ ...form, username: e.target.value })}
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+          />
+        </div>
+        <div>
           <label className="form-label" htmlFor={`${uid}-r`}>
             Role
           </label>
@@ -431,7 +450,15 @@ function ManageAccount({
           type="button"
           className="btn btn-secondary"
           aria-disabled={busy}
-          onClick={() => run(() => adminCall({ action: 'update', user_id: account.id, ...form }), 'Saved.')}
+          onClick={() => {
+            const renamed = form.username.trim().toLowerCase() !== account.username
+            run(
+              () => adminCall({ action: 'update', user_id: account.id, ...form }),
+              renamed ? `Saved. They now sign in as ${form.username.trim().toLowerCase()} (same password).` : 'Saved.',
+              // Your own new username: reload so the app picks it up (you stay signed in).
+              () => self && renamed && window.location.reload(),
+            )
+          }}
         >
           Save changes
         </button>

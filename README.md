@@ -78,7 +78,7 @@ The Supabase project URL and publishable key are in `.env`. They are public by d
 
 **The admin.** Sign in with the admin username on the normal sign-in page, and you land on **Admin** (also reachable from **Me**). There you can:
 - Add student, teacher or admin accounts. A starting password is suggested (e.g. `mango-river-4821`) and shown once, with a button to copy it for sending.
-- Reset anyone's password, change their name, role or class, or delete an account.
+- Reset anyone's password, change their username, name, role or class, or delete an account.
 - Answer **Password requests**.
 
 Passwords the admin gives out are temporary: after signing in, the person is asked to choose their own (Me → Change password).

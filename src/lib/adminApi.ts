@@ -5,7 +5,7 @@ import { supabase } from './supabase'
 type Action =
   | { action: 'create'; username: string; full_name: string; role: string; password: string; class: string }
   | { action: 'set_password'; user_id: string; password: string }
-  | { action: 'update'; user_id: string; full_name?: string; role?: string; class?: string }
+  | { action: 'update'; user_id: string; username?: string; full_name?: string; role?: string; class?: string }
   | { action: 'delete'; user_id: string }
 
 export async function adminCall(body: Action): Promise<string | null> {

@@ -124,6 +124,23 @@ Deno.serve(async (req) => {
           patch.role = body.role
         }
         if ('class' in body) patch.class_id = await classId(body.class)
+        if (typeof body.username === 'string') {
+          const username = body.username.trim().toLowerCase()
+          check(USERNAME.test(username), 'Usernames are 2–40 characters: lower-case letters, digits, dot, dash or underscore.')
+          const { data: current } = await db.from('profiles').select('username').eq('id', id).single()
+          if (current && current.username !== username) {
+            const { data: taken } = await db.from('profiles').select('id').eq('username', username).maybeSingle()
+            check(!taken, `The username "${username}" is already taken.`)
+            // The sign-in address follows the username; the password stays the same.
+            const { error } = await db.auth.admin.updateUserById(id, {
+              email: `${username}@${LOGIN_EMAIL_DOMAIN}`,
+              email_confirm: true,
+              user_metadata: { username },
+            })
+            if (error) throw new Problem(`Could not change the username: ${error.message}`)
+            patch.username = username
+          }
+        }
         const { error } = await db.from('profiles').update(patch).eq('id', id)
         if (error) throw new Problem(`Could not save: ${error.message}`)
         return json({ ok: true })
