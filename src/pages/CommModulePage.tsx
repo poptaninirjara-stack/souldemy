@@ -9,6 +9,7 @@ import { ReaderLayout } from '../components/ReaderLayout'
 import s from '../components/ReaderLayout.module.css'
 import { SHOW_UNREVIEWED_BADGE } from '../config'
 import { getModule, getTrack } from '../lib/content'
+import { ReportProblem } from '../components/ReportProblem'
 import { moduleProgress } from '../lib/progress'
 import { useModuleContent } from '../lib/useModuleContent'
 import { useAppState } from '../state/useAppState'
@@ -163,6 +164,7 @@ export function CommModulePage() {
           </Link>
         )}
       </nav>
+      <ReportProblem />
     </ReaderLayout>
   )
 }

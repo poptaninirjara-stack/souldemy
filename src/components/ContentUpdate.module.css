@@ -1,0 +1,11 @@
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-12);
+  padding: var(--s-8) var(--s-16);
+  border-bottom: var(--border);
+  background: var(--wash);
+  font-weight: 600;
+}

@@ -13,12 +13,16 @@
     "test": "vitest run",
     "lint": "oxlint",
     "check-links": "node scripts/check-links.ts",
+    "create-admin": "node scripts/create-admin.ts",
+    "import-users": "node scripts/import-users.ts",
+    "publish-content": "node scripts/build-content.ts --quiet && node scripts/publish-content.ts",
     "preview": "vite preview",
     "drafted": "node scripts/list-drafted.ts"
   },
   "dependencies": {
     "@fontsource-variable/anek-latin": "^5.3.0",
     "@fontsource/mukta": "^5.3.0",
+    "@supabase/supabase-js": "^2.118.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router": "^8.4.0"

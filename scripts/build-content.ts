@@ -1,11 +1,13 @@
 // Parses /content/*.md into typed JSON under src/content/ (git-ignored), and assembles the
 // practice games from content/games.json plus the phrase cards extracted from the lessons.
 // Run: node scripts/build-content.ts   (runs automatically before dev, build and test)
+import { createHash } from 'node:crypto'
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { countContent } from './lib/counts.ts'
 import { buildGames } from './lib/games.ts'
+import { progressIds } from './lib/ids.ts'
 import { ContentError, FILES, parseAll } from './lib/parse.ts'
 import { extractCommPhrases, extractTaskWords } from './lib/phrases.ts'
 
@@ -43,6 +45,10 @@ try {
   writeFileSync(join(outDir, 'catalog.json'), JSON.stringify(catalog))
   writeFileSync(join(outDir, 'games.json'), JSON.stringify(bundle))
   for (const c of contents) writeFileSync(join(outDir, 'modules', `${c.id}.json`), JSON.stringify(c))
+  // Identity of this content, so the app can tell bundled content from a newer published version.
+  const hash = createHash('sha256').update(JSON.stringify([catalog, bundle, contents])).digest('hex').slice(0, 16)
+  writeFileSync(join(outDir, 'meta.json'), JSON.stringify({ hash, builtAt: new Date().toISOString() }))
+  writeFileSync(join(outDir, 'ids.json'), JSON.stringify(progressIds(catalog, contents, bundle))) // for publish-content only
 
   if (!process.argv.includes('--quiet')) {
     console.log('Content built:')

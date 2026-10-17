@@ -1,0 +1,7 @@
+# Minimal Supabase CLI config, used to deploy the Edge Function:
+#   npx supabase functions deploy admin-users --project-ref cejwumyzkepcnobvvijm
+project_id = "souldemy"
+
+[functions.admin-users]
+# The function checks the caller's session and admin role itself.
+verify_jwt = true

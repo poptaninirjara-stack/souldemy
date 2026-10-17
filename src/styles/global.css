@@ -447,3 +447,35 @@ h1[tabindex='-1']:focus,
 h2[tabindex='-1']:focus {
   outline: none;
 }
+
+/* Text inputs, selects and textareas outside the exercise reader (sign-in, feedback). */
+.field {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--s-12) var(--s-16);
+  border: var(--border);
+  border-radius: var(--r-control);
+  background: var(--page);
+  font-size: var(--text-ui);
+}
+
+.field:focus-visible {
+  outline-offset: 0;
+  box-shadow: var(--shadow-hard-sm);
+}
+
+textarea.field {
+  min-height: 7em;
+  resize: vertical;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--s-4);
+  font-weight: 700;
+}
+
+.form-error {
+  color: var(--incorrect);
+  font-weight: 600;
+}

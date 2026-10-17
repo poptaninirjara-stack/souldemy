@@ -1,8 +1,8 @@
-// Access to the generated game bundle (src/content/games.json, built from content/games.json).
-import gamesJson from '../content/games.json'
+// Access to the game bundle (built from content/games.json; bundled or published, see contentSource.ts).
+import { source } from './contentSource'
 import type { Game, GameBundle, MirrorTask, Phrase } from '../types/game'
 
-export const bundle = gamesJson as GameBundle
+export const bundle: GameBundle = source.games
 
 export const getGame = (id: string | undefined): Game | undefined => bundle.games.find((g) => g.id === id)
 export const gamesFor = (moduleId: string): Game[] => bundle.games.filter((g) => g.moduleId === moduleId)

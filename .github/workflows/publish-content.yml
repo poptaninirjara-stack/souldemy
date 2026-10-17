@@ -1,0 +1,38 @@
+# Publishes /content to Supabase whenever it changes on main, so every student gets the
+# new lessons the next time they open the app. Nothing is published if the content does
+# not parse, the tests fail, or progress IDs would disappear (see scripts/publish-content.ts).
+#
+# Setup once: GitHub repo → Settings → Secrets and variables → Actions → New repository secret
+#   SUPABASE_SECRET_KEY = the Supabase secret (service role) key
+name: Publish content
+
+on:
+  push:
+    branches: [main]
+    paths: ['content/**', 'scripts/**', 'src/types/**']
+  workflow_dispatch:
+    inputs:
+      allow_removed_ids:
+        description: 'Publish even if some lesson/exercise/quiz IDs were removed (students lose progress on those)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: publish-content
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run publish-content
+        env:
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          ALLOW_REMOVED_IDS: ${{ inputs.allow_removed_ids && '1' || '' }}

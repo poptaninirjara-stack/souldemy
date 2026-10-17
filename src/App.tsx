@@ -7,6 +7,8 @@ import { HomePage } from './pages/HomePage'
 import { NotFound } from './pages/NotFound'
 import { PlacePage } from './pages/PlacePage'
 import { AppStateProvider } from './state/AppState'
+import { AuthProvider } from './state/AuthProvider'
+import { useAuth } from './state/useAuth'
 
 // Screens loaded on demand, so the first visit on a budget phone downloads less.
 const named = <K extends string>(load: () => Promise<Record<K, React.ComponentType>>, name: K) =>
@@ -18,6 +20,10 @@ const LibraryPage = named(() => import('./pages/LibraryPage'), 'LibraryPage')
 const MePage = named(() => import('./pages/MePage'), 'MePage')
 const LessonPage = named(() => import('./pages/LessonPage'), 'LessonPage')
 const CommModulePage = named(() => import('./pages/CommModulePage'), 'CommModulePage')
+const SignInPage = named(() => import('./pages/SignInPage'), 'SignInPage')
+const TeacherPage = named(() => import('./pages/TeacherPage'), 'TeacherPage')
+const StudentPage = named(() => import('./pages/TeacherPage'), 'StudentPage')
+const AdminPage = named(() => import('./pages/AdminPage'), 'AdminPage')
 
 const wait = (el: React.ReactNode, thing: string) => (
   <Suspense
@@ -33,25 +39,45 @@ const wait = (el: React.ReactNode, thing: string) => (
 
 export function App() {
   return (
-    <AppStateProvider>
+    <AuthProvider>
       <HashRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="review" element={wait(<ReviewPage />, 'your review deck')} />
-            <Route path="library" element={wait(<LibraryPage />, 'the library')} />
-            <Route path="me" element={wait(<MePage />, 'your progress')} />
-            <Route path="progress" element={<Navigate to="/me" replace />} />
-            <Route path="play/:gameId" element={wait(<GamePage />, 'the game')} />
-            <Route path="mirror/:moduleId" element={wait(<MirrorPage />, 'Mirror mode')} />
-            <Route path=":trackId" element={<Navigate to="/" replace />} />
-            <Route path=":trackId/:moduleId" element={<PlacePage />} />
-            <Route path="research/:moduleId/:pageId" element={wait(<LessonPage />, 'the lesson')} />
-            <Route path="communicative/:moduleId/read" element={wait(<CommModulePage />, 'the module')} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+        <Synced />
       </HashRouter>
+    </AuthProvider>
+  )
+}
+
+/** App state is re-read (remounted) whenever a sync replaced what was on the device. */
+function Synced() {
+  const { ready, epoch } = useAuth()
+  if (!ready)
+    return (
+      <Page width="reading">
+        <Loading thing="your progress" />
+      </Page>
+    )
+  return (
+    <AppStateProvider key={epoch}>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="review" element={wait(<ReviewPage />, 'your review deck')} />
+          <Route path="library" element={wait(<LibraryPage />, 'the library')} />
+          <Route path="me" element={wait(<MePage />, 'your progress')} />
+          <Route path="signin" element={wait(<SignInPage />, 'sign in')} />
+          <Route path="admin" element={wait(<AdminPage />, 'the admin page')} />
+          <Route path="teacher" element={wait(<TeacherPage />, 'the teacher view')} />
+          <Route path="teacher/:userId" element={wait(<StudentPage />, 'this student')} />
+          <Route path="progress" element={<Navigate to="/me" replace />} />
+          <Route path="play/:gameId" element={wait(<GamePage />, 'the game')} />
+          <Route path="mirror/:moduleId" element={wait(<MirrorPage />, 'Mirror mode')} />
+          <Route path=":trackId" element={<Navigate to="/" replace />} />
+          <Route path=":trackId/:moduleId" element={<PlacePage />} />
+          <Route path="research/:moduleId/:pageId" element={wait(<LessonPage />, 'the lesson')} />
+          <Route path="communicative/:moduleId/read" element={wait(<CommModulePage />, 'the module')} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </AppStateProvider>
   )
 }

@@ -1,0 +1,10 @@
+.box {
+  margin-top: var(--s-24);
+}
+
+.box summary {
+  margin-bottom: var(--s-12);
+  color: var(--muted);
+  font-size: var(--text-caption);
+  cursor: pointer;
+}

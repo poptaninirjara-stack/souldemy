@@ -28,3 +28,7 @@ src/content/
 
 # Local Claude preview config (machine-specific paths)
 .claude/
+
+# Account CSVs contain passwords
+accounts/*
+!accounts/users.example.csv

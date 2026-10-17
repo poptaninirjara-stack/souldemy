@@ -8,6 +8,7 @@ import { Practice } from '../components/Practice'
 import { PractiseThis } from '../components/PractiseThis'
 import { Quiz } from '../components/Quiz'
 import { Rail } from '../components/Rail'
+import { ReportProblem } from '../components/ReportProblem'
 import { ReaderLayout } from '../components/ReaderLayout'
 import s from '../components/ReaderLayout.module.css'
 import { PAGE_NOTES } from '../config'
@@ -111,6 +112,7 @@ export function LessonPage() {
           </Link>
         )}
       </nav>
+      <ReportProblem />
     </ReaderLayout>
   )
 }

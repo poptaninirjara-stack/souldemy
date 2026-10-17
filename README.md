@@ -24,7 +24,7 @@ Each place has:
 - **A weekly goal** of practising on 3–5 days, with no daily-streak pressure.
 - **Ruled out:** leaderboards, hearts and timers.
 
-The app has no backend, accounts, adverts or analytics. Everything a student does is stored in their own browser. It works offline after the first visit and can be installed to the home screen.
+The app has no adverts or analytics. Everything a student does is stored in their own browser first. Signing in is optional: with a college-issued username and password, progress is also saved to the student's account in Supabase, so it follows them between devices and teachers can see it. It works offline after the first visit and can be installed to the home screen.
 
 The app name is set by `APP_NAME` in `src/config.ts`.
 
@@ -52,6 +52,56 @@ On any other static host:
 - **Default:** `dist/` works from any folder, because asset paths are relative.
 - **Under a sub-path:** run `BASE_PATH=/english/ npm run build`. On Git Bash for Windows, add `MSYS_NO_PATHCONV=1` in front.
 - **Offline support:** `public/sw.js` loads pages network-first and caches hashed assets. Bump `CACHE` in it if you ever need to force-clear old caches.
+
+## Accounts, sync and Supabase
+
+The Supabase project URL and publishable key are in `.env`. They are public by design: the access rules in `supabase/migrations/` decide what anyone can read or write. Delete those two lines to build a fully offline app with no accounts.
+
+**One-time setup**
+
+1. Supabase dashboard → **SQL Editor** → paste `supabase/migrations/20261017000000_init.sql` → **Run**.
+2. **Authentication → Sign In / Providers → Email**: turn off **Allow new users to sign up**. Only the admin creates accounts.
+3. Copy `.env.local.example` to `.env.local` and paste the **secret** key (Project Settings → API Keys). Never commit it or put it in a `VITE_` variable.
+4. Deploy the account-management function (`npx supabase login` opens your browser once):
+
+   ```bash
+   npx supabase functions deploy admin-users --project-ref cejwumyzkepcnobvvijm
+   ```
+
+5. Create the main admin. It prints a starting password once:
+
+   ```bash
+   npm run create-admin -- admin "Your Name"
+   ```
+
+6. GitHub repo → Settings → Secrets and variables → Actions: add `SUPABASE_SECRET_KEY` with the same value (for content publishing).
+
+**The admin.** Sign in with the admin username on the normal sign-in page, and you land on **Admin** (also reachable from **Me**). There you can:
+- Add student, teacher or admin accounts. A starting password is suggested (e.g. `mango-river-4821`) and shown once, with a button to copy it for sending.
+- Reset anyone's password, change their name, role or class, or delete an account.
+- Answer **Password requests**.
+
+Passwords the admin gives out are temporary: after signing in, the person is asked to choose their own (Me → Change password).
+
+**Forgot password.** Logins are usernames, not real email addresses, so there is no reset email. Instead, **Forgot your password?** on the sign-in page sends a request to the admin's **Password requests** tab. The admin clicks **Set a new password** and passes it on. To avoid revealing which usernames exist, the request always says it was sent.
+
+**Many accounts at once.** Fill a CSV like `accounts/users.example.csv` (`username,full_name,role,password,class`; role is `student`, `teacher` or `admin`) and save it in `accounts/` (git-ignored). Then check it, and import it:
+
+```bash
+npm run import-users -- accounts/users.csv --dry-run
+```
+
+```bash
+npm run import-users -- accounts/users.csv
+```
+
+Existing usernames are skipped. Add `--update` to change names, roles, classes or passwords. Students sign in with the username only; internally it becomes `username@users.souldemy.app`.
+
+**Who sees what.** Students see only their own data. Teachers and admins see every student's progress, quiz answers, written answers, feedback and (later) recordings. Classes are stored now, and limiting teachers to their classes can be added later through `teacher_classes`.
+
+**Sync.** The device copy is always the working copy, so the app stays instant and works offline. Each change is uploaded about 1.5 seconds later. On a device's first sign-in, anything done before signing in is merged into the account. After that, the account copy wins, apart from changes not yet uploaded. Signing out removes the progress from the device (college computers are shared).
+
+**Content publishing.** Every push to `main` that touches `/content` runs `.github/workflows/publish-content.yml`. It builds the content, runs the tests and publishes a new version to Supabase. Students get it the next time they open the app, with no redeploy needed. You can also run `npm run publish-content` locally. Publishing stops if a lesson, exercise, quiz, game or phrase ID that students' progress points at has disappeared. Those IDs come from headings, so renaming a heading changes them. If that was intended, run the workflow by hand with *allow removed IDs* (or set `ALLOW_REMOVED_IDS=1`). To roll back, delete the newest row in `content_versions`.
 
 ## Update the content
 
@@ -108,8 +158,17 @@ This writes `LINK_REPORT.md`. It flags broken links, redirects to a different do
 | `src/lib/gamify.ts` | XP rules, ranks, spaced review, badges, place progress (pure functions, tested) |
 | `src/lib/weekly.ts` | Weekly goal rules (Monday start, Asia/Kolkata) |
 | `src/lib/places.ts` | Campus places: names, colours, wings |
-| `src/lib/storage.ts` | `load` / `save` / `remove` / `migrate`. This is the seam for future accounts and sync. |
-| `src/state/` | App state (context) and derived progress |
+| `src/lib/storage.ts` | `load` / `save` / `remove` / `migrate`, plus `onSave` for sync |
+| `src/lib/sync.ts` | Signed-in progress sync and its merge rules (tested) |
+| `src/lib/supabase.ts` | The Supabase client and the username → login email rule |
+| `src/lib/contentSource.ts` | Bundled content, or a newer published version from Supabase |
+| `src/state/` | App state, sign-in state (`useAuth.ts`) and derived progress |
+| `src/pages/TeacherPage.tsx` | Teacher view: students, one student's answers, feedback |
+| `supabase/migrations/` | Database tables, access rules and the recordings bucket |
+| `supabase/functions/admin-users/` | Edge Function the Admin page uses to create accounts and set passwords |
+| `scripts/create-admin.ts`, `scripts/import-users.ts`, `scripts/publish-content.ts` | Admin scripts (need the secret key in `.env.local`) |
+| `src/pages/AdminPage.tsx` | Admin: accounts, passwords, password requests |
+| `accounts/` | Account CSVs (git-ignored apart from `users.example.csv`) |
 | `CONTENT_ISSUES.md` | Content problems for the owner |
 | `DESIGN_GAPS.md` | What was built, and what is deferred |
 | `LINK_REPORT.md` | Output of `npm run check-links` |
@@ -131,6 +190,8 @@ Everything is stored in `localStorage` under keys starting with `souldemy:v1:`. 
 | `seen` | Badges and rank already celebrated |
 | `ui` | Reduced-motion override |
 | `schema` | Data version |
+
+When signed in, every key except `ui` and `schema` is also kept in the Supabase `progress` table (one row per key). The session lives under `souldemy:auth`, and downloaded content under `souldemy:content`.
 
 The "opening seen" flag is kept in `sessionStorage`. If storage is blocked, the app keeps data in memory for the session and the Me page says so. **Me → Reset my data** removes every key.
 

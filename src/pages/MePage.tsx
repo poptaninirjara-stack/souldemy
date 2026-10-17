@@ -1,5 +1,7 @@
 import { useId, useState } from 'react'
 import { Link } from 'react-router'
+import { AccountCard } from '../components/AccountCard'
+import { FeedbackForm } from '../components/FeedbackForm'
 import { Page } from '../components/Page'
 import { PlaceIcon } from '../components/PlaceIcon'
 import { RankCard, WeekCard } from '../components/Stats'
@@ -9,6 +11,7 @@ import { possibleBadgeCount, RANKS } from '../lib/gamify'
 import { PLACES } from '../lib/places'
 import { isPersistent } from '../lib/storage'
 import { useAppState } from '../state/useAppState'
+import { useAuth } from '../state/useAuth'
 import { useProgress } from '../state/useProgress'
 import styles from './MePage.module.css'
 
@@ -18,6 +21,7 @@ const BADGE_COUNT = possibleBadgeCount(catalog)
 export function MePage() {
   const p = useProgress()
   const { deck } = useAppState()
+  const { session } = useAuth()
   const collected = Object.keys(deck).length
 
   return (
@@ -25,6 +29,7 @@ export function MePage() {
       <h1>Me</h1>
       <div className={styles.grid}>
         <div className={styles.col}>
+          <AccountCard />
           <RankCard />
           <WeekCard link={false} />
           <Goal />
@@ -116,13 +121,16 @@ export function MePage() {
             </Link>
           </section>
 
+          <Feedback />
           <Notes />
           <Settings />
           <Reset />
         </div>
       </div>
       <p className={`caption ${styles.footer}`}>
-        {isPersistent()
+        {session
+          ? 'Progress is saved to your account and on this device.'
+          : isPersistent()
           ? 'Progress is saved on this device only. Clearing your browser data removes it.'
           : 'This browser is blocking storage, so progress lasts only until you close this tab.'}
       </p>
@@ -148,6 +156,20 @@ function Goal() {
           </label>
         ))}
       </div>
+    </section>
+  )
+}
+
+function Feedback() {
+  const { enabled } = useAuth()
+  if (!enabled) return null
+  return (
+    <section className={styles.section} aria-labelledby="feedback-h">
+      <h2 id="feedback-h" className={styles.h2}>
+        Send feedback
+      </h2>
+      <p className="meta">Found a mistake, something confusing, or an idea? Tell your teachers.</p>
+      <FeedbackForm />
     </section>
   )
 }
@@ -202,19 +224,21 @@ function Settings() {
 
 function Reset() {
   const { resetAll } = useAppState()
+  const { session } = useAuth()
+  const where = session ? 'from this device and your account' : 'from this device'
   const [confirm, setConfirm] = useState(false)
   return (
     <section className={styles.section} aria-labelledby="reset-h">
       <h2 id="reset-h" className={styles.h2}>
         Reset my data
       </h2>
-      <p className="meta">Removes your XP, badges, phrase deck, reading progress, notes and settings from this device.</p>
+      <p className="meta">Removes your XP, badges, phrase deck, reading progress, notes and settings {where}.</p>
       {!confirm ? (
         <button type="button" className="btn btn-secondary" onClick={() => setConfirm(true)}>
           Reset my data
         </button>
       ) : (
-        <Confirm text="Remove all your data from this device? This cannot be undone." yes="Reset my data" onYes={resetAll} onNo={() => setConfirm(false)} />
+        <Confirm text={`Remove all your data ${where}? This cannot be undone.`} yes="Reset my data" onYes={resetAll} onNo={() => setConfirm(false)} />
       )}
     </section>
   )

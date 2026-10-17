@@ -1,9 +1,10 @@
-// Access to the generated content. The catalogue (titles, outcomes, lesson maps, further
-// reading) is small and bundled; each module's lessons are loaded on demand.
-import catalogJson from '../content/catalog.json'
+// Access to the content: bundled, or a newer published copy (see contentSource.ts). The
+// catalogue (titles, outcomes, lesson maps, further reading) is small and loaded up front;
+// each module's lessons are loaded on demand.
+import { source } from './contentSource'
 import type { Catalog, ModuleContent, ModuleSummary, Track, TrackId } from '../types/content'
 
-export const catalog = catalogJson as Catalog
+export const catalog: Catalog = source.catalog
 
 const loaders = import.meta.glob<{ default: ModuleContent }>('../content/modules/*.json')
 const cache = new Map<string, ModuleContent>()
@@ -11,6 +12,11 @@ const cache = new Map<string, ModuleContent>()
 export async function loadModule(id: string): Promise<ModuleContent> {
   const hit = cache.get(id)
   if (hit) return hit
+  const published = source.module(id)
+  if (published) {
+    cache.set(id, published)
+    return published
+  }
   const loader = loaders[`../content/modules/${id}.json`]
   if (!loader) throw new Error(`No content for module "${id}".`)
   const mod = (await loader()).default

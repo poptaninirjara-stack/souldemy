@@ -6,6 +6,8 @@ import { placeFor } from '../lib/places'
 import { useReducedMotion } from '../state/useAppState'
 import { useProgress } from '../state/useProgress'
 import { Celebration } from './Celebration'
+import { ContentUpdate } from './ContentUpdate'
+import { PasswordReminder } from './PasswordReminder'
 import { Bolt, Book, Campus, Cards, ChevronLeft, User } from './Icons'
 import styles from './Layout.module.css'
 import { XpToast } from './XpToast'
@@ -99,6 +101,8 @@ export function Layout() {
         </Link>
       </header>
 
+      <PasswordReminder />
+      <ContentUpdate />
       <main id="main" ref={mainRef} tabIndex={-1} className={styles.main}>
         <div key={path} className="screen-fade">
           <Outlet />

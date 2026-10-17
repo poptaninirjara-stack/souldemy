@@ -1,8 +1,10 @@
-// App-wide state: everything here is stored on the device only (see lib/storage.ts).
+// App-wide state, stored on the device (see lib/storage.ts) and, when signed in, synced to
+// the account by lib/sync.ts. The provider is remounted when a sync replaces device data.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { isTrackId, pageKey } from '../lib/content'
 import { newCard, review, XP, xpKey, type Deck, type GameRecords, type XpLog } from '../lib/gamify'
 import { clearAll, load, migrate, remove, save } from '../lib/storage'
+import { deleteAccountProgress, isSyncing } from '../lib/sync'
 import { todayISO } from '../lib/weekly'
 import type { TrackId } from '../types/content'
 
@@ -183,8 +185,9 @@ export function useAppStateValue() {
     setQuiz({})
   }, [setAttempts, setQuiz])
 
-  /** Wipe everything this app stored and start again from the home page. */
-  const resetAll = useCallback(() => {
+  /** Wipe everything this app stored (and the account copy, when signed in) and start again from the home page. */
+  const resetAll = useCallback(async () => {
+    if (isSyncing()) await deleteAccountProgress()
     clearAll()
     window.location.hash = '#/'
     window.location.reload()

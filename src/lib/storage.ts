@@ -1,6 +1,6 @@
 // Small storage seam: load / save / remove / migrate. Every access is wrapped so the app
 // keeps working (in memory) when localStorage is blocked, full or missing.
-// Accounts and sync can later replace this module without touching screens.
+// Signed-in sync (lib/sync.ts) listens to saves through onSave, so screens never change.
 import { STORAGE_NAMESPACE } from '../config'
 
 export const SCHEMA_VERSION = 2
@@ -17,6 +17,15 @@ function local(): Storage | null {
   } catch {
     return null
   }
+}
+
+type SaveListener = (key: string, value: unknown) => void
+const listeners = new Set<SaveListener>()
+
+/** Be told about every save (lib/sync.ts uses this to upload changes). Returns an unsubscribe. */
+export function onSave(listener: SaveListener): () => void {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
 }
 
 let cached: Storage | null | undefined
@@ -57,6 +66,7 @@ export function save(key: string, value: unknown): void {
   } catch {
     // Quota exceeded or blocked: the in-memory copy keeps the session working.
   }
+  for (const l of listeners) l(key, value)
 }
 
 export function remove(key: string): void {
