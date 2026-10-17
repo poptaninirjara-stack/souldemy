@@ -5,6 +5,7 @@ import { FurtherReadingButton } from '../components/FurtherReading'
 import { Html } from '../components/Html'
 import { LoadError, Loading } from '../components/Loading'
 import { Practice } from '../components/Practice'
+import { PractiseThis } from '../components/PractiseThis'
 import { Quiz } from '../components/Quiz'
 import { Rail } from '../components/Rail'
 import { ReaderLayout } from '../components/ReaderLayout'
@@ -89,6 +90,8 @@ export function LessonPage() {
         lesson.blocks.map((b) => <LessonBlock key={b.id} block={b} />)
       )}
 
+      {lesson && <PractiseThis moduleId={mod.id} pageId={page.id} collect={page.id === 'l3'} />}
+
       <nav className={s.pager} aria-label="Lessons">
         {prev && (
           <Link to={`/research/${mod.id}/${prev.id}`} className={s.pagerLink} data-dir="prev" rel="prev">
@@ -104,7 +107,7 @@ export function LessonPage() {
         ) : (
           <Link to={`/research/${mod.id}`} className={s.pagerLink} data-dir="next">
             <span className={s.pagerDir}>End of module</span>
-            <span className={s.pagerTitle}>Back to contents</span>
+            <span className={s.pagerTitle}>Back to the place</span>
           </Link>
         )}
       </nav>

@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: var(--s-16);
   padding-top: var(--s-24);
-  border-top: 1px solid var(--hairline);
+  border-top: 2px dashed var(--line);
 }
 
 .title {
@@ -28,7 +28,7 @@
 
 .question {
   margin: 0;
-  font: 600 var(--text-panel) / var(--lh-panel) var(--font-serif);
+  font: 700 19px / 1.35 var(--font-display);
   color: var(--ink);
 }
 
@@ -51,17 +51,18 @@
   width: 100%;
   min-height: var(--target-min);
   padding: 14px var(--s-16);
-  border: 1px solid var(--hairline);
+  border: var(--border);
   border-radius: var(--r-control);
   background: var(--page);
+  box-shadow: var(--shadow-hard-sm);
   text-align: left;
-  font: 400 var(--text-body) / 1.55 var(--font-serif);
+  font: 500 17px / 1.5 var(--font-body);
   color: var(--body-ink);
   cursor: pointer;
 }
 
 .option:hover {
-  border-color: var(--ink);
+  background: var(--wash);
 }
 
 .option[data-locked='true'] {
@@ -69,7 +70,7 @@
 }
 
 .option[data-locked='true']:hover {
-  border-color: var(--hairline);
+  background: var(--page);
 }
 
 .radio {
@@ -93,9 +94,8 @@
 }
 
 .option[data-view='selected'] {
-  border-color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--ink);
-  background: var(--margin-tint);
+  background: var(--wash);
+  box-shadow: var(--shadow-hard);
 }
 
 .option[data-view='selected'] .radio {
@@ -114,14 +114,14 @@
 
 .option[data-view='correct'],
 .option[data-view='correct']:hover {
-  border-color: var(--correct);
-  box-shadow: inset 0 0 0 1px var(--correct);
+  background: var(--mint-wash);
+  box-shadow: none;
 }
 
 .option[data-view='incorrect'],
 .option[data-view='incorrect']:hover {
-  border-color: var(--incorrect);
-  box-shadow: inset 0 0 0 1px var(--incorrect);
+  background: var(--wash);
+  box-shadow: none;
 }
 
 .tag {
@@ -145,8 +145,10 @@
 }
 
 .panel {
-  padding-top: var(--s-12);
-  border-top: 2px solid var(--turmeric);
+  padding: var(--s-12) var(--s-16);
+  border: var(--border);
+  border-radius: var(--r-control);
+  background: var(--page);
   animation: fb-in var(--dur-instant) var(--ease-out) both;
 }
 

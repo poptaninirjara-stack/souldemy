@@ -86,9 +86,37 @@ const processor = unified()
   .use(rehypeMarathiLang)
   .use(rehypeStringify)
 
+/**
+ * A table row with more cells than its header has unescaped "|" inside a cell (e.g. a
+ * LinkedIn headline "BA English student | Editor | …"). GFM would silently drop the extra
+ * cells, cutting the author's text. Escape those pipes so the cell renders in full.
+ */
+export function escapeOverflowPipes(src: string): string {
+  const lines = src.split('\n')
+  let width = 0
+  return lines
+    .map((line, i) => {
+      if (!line.trim().startsWith('|')) {
+        width = 0
+        return line
+      }
+      const cells = line.trim().replace(/^\||\|$/g, '').split(/(?<!\\)\|/)
+      const isHeader = width === 0 && /^\s*\|?[\s:-]+\|/.test(lines[i + 1] ?? '')
+      if (isHeader) {
+        width = cells.length
+        return line
+      }
+      if (!width || cells.length <= width || /^[\s:|-]+$/.test(line)) return line
+      const head = cells.slice(0, width - 1)
+      const last = cells.slice(width - 1).join('\\|')
+      return `| ${[...head.map((c) => c.trim()), last.trim()].join(' | ')} |`
+    })
+    .join('\n')
+}
+
 /** Block-level markdown → HTML. */
 export function mdToHtml(src: string): string {
-  return String(processor.processSync(src.trim())).trim()
+  return String(processor.processSync(escapeOverflowPipes(src.trim()))).trim()
 }
 
 /** Inline markdown → HTML without the wrapping <p>. */

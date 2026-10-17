@@ -1,0 +1,322 @@
+/* ---------- Hero (first visit) ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-16);
+  padding: var(--s-8) 0 var(--s-8);
+}
+
+.heroKicker {
+  margin: 0;
+  padding: var(--s-4) var(--s-12);
+  border: var(--border);
+  border-radius: var(--r-pill);
+  background: var(--page);
+  font: 700 13px / 1.3 var(--font-display);
+  color: var(--ink);
+}
+
+.heroTitle {
+  font-size: var(--text-hero);
+  line-height: 1.02;
+  max-width: 14ch;
+}
+
+.mark,
+.mark2 {
+  color: var(--ink);
+  padding: 0 0.12em;
+  border-radius: 8px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.mark {
+  background: var(--mango);
+}
+
+.mark2 {
+  background: var(--mint);
+}
+
+.heroLine {
+  margin: 0;
+  max-width: 46ch;
+  font: 400 var(--text-body) / 1.55 var(--font-body);
+  color: var(--body-ink);
+}
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.welcomeTitle {
+  font-size: var(--text-h1);
+}
+
+/* ---------- Top band: today's walk + rank + week ---------- */
+.top {
+  display: grid;
+  gap: var(--s-16);
+}
+
+.stack {
+  display: grid;
+  gap: var(--s-16);
+}
+
+@media (min-width: 760px) {
+  .top {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .top > .stack:only-child {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.walk {
+  padding: var(--s-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+}
+
+.walkTitle {
+  font-size: var(--text-panel);
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: var(--s-12);
+  min-height: 60px;
+  padding: var(--s-8) var(--s-12);
+  border: var(--border);
+  border-radius: var(--r-control);
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform var(--dur-press) ease-out, box-shadow var(--dur-press) ease-out;
+}
+
+.step:hover {
+  box-shadow: var(--shadow-hard-sm);
+  transform: translate(-1px, -1px);
+}
+
+.stepIcon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: var(--border);
+  border-radius: var(--r-round);
+}
+
+.stepIcon[data-tone='lilac'] {
+  background: var(--lilac);
+}
+
+.stepIcon[data-tone='sky'] {
+  background: var(--sky);
+}
+
+.stepIcon[data-tone='mango'] {
+  background: var(--mango);
+}
+
+.stepText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stepName {
+  font: 700 16px / 1.25 var(--font-display);
+}
+
+.stepMeta {
+  font: 400 14px / 1.35 var(--font-body);
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Campus map ---------- */
+.wing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+}
+
+.wingHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--s-12);
+}
+
+.wingHead :global(.caption) {
+  margin: 0;
+}
+
+.wingTitle {
+  font-size: var(--text-h2);
+  line-height: var(--lh-h2);
+}
+
+.places {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-16);
+}
+
+@media (min-width: 600px) {
+  .places {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .places {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: var(--s-16);
+  align-items: center;
+  height: 100%;
+  padding: var(--s-16);
+  border: var(--border);
+  border-radius: var(--r-panel);
+  box-shadow: var(--shadow-hard);
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    transform var(--dur-press) ease-out,
+    box-shadow var(--dur-press) ease-out;
+}
+
+.tile:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.tile:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.tile[data-tone='mango'] {
+  background: var(--mango);
+}
+.tile[data-tone='sky'] {
+  background: var(--sky);
+}
+.tile[data-tone='lilac'] {
+  background: var(--lilac);
+}
+.tile[data-tone='mint'] {
+  background: var(--mint);
+}
+.tile[data-tone='vermilion'] {
+  background: var(--vermilion);
+}
+.tile[data-tone='wash'] {
+  background: var(--wash);
+}
+
+.tileIcon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: var(--border);
+  border-radius: var(--r-control);
+  background: var(--paper);
+}
+
+.tileBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tileName {
+  font: 800 21px / 1.1 var(--font-display);
+}
+
+.tileModule {
+  font: 500 14px / 1.35 var(--font-body);
+}
+
+.tileMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--s-8);
+  margin-top: var(--s-8);
+}
+
+.tileBar {
+  flex: 1;
+  height: 10px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+  background: var(--page);
+  overflow: hidden;
+}
+
+.tileBar > span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}
+
+.tileStatus {
+  flex: none;
+  padding: 2px var(--s-8);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+  background: var(--page);
+  font: 800 12px / 1.3 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.tileStatus[data-done='true'] {
+  background: var(--ink);
+  color: var(--page);
+}
+
+.foot {
+  margin: 0;
+  text-align: center;
+}
+
+:root[data-motion='reduced'] .tile:hover,
+:root[data-motion='reduced'] .tile:active,
+:root[data-motion='reduced'] .step:hover {
+  transform: none;
+}

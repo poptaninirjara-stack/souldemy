@@ -1,0 +1,11 @@
+{
+  "name": "SoulDemy",
+  "short_name": "SoulDemy",
+  "description": "Academic and professional English, one short practice at a time.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFF8EC",
+  "theme_color": "#FFF8EC",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

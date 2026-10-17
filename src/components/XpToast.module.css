@@ -1,0 +1,27 @@
+.wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: calc(var(--topbar-h) + var(--s-12));
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-8) var(--s-16);
+  border: var(--border);
+  border-radius: var(--r-pill);
+  background: var(--mango);
+  box-shadow: var(--shadow-hard-sm);
+  font: 800 15px / 1.2 var(--font-display);
+  color: var(--ink);
+}
+
+.label {
+  font-weight: 600;
+}

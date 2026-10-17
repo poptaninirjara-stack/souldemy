@@ -4,8 +4,6 @@ import { setSessionFlag } from '../lib/storage'
 import styles from './Opening.module.css'
 
 export const OPENING_FLAG = 'opening-seen'
-/** When the welcome highlight sweep starts if the opening plays (ms). */
-export const OPENING_SWEEP_DELAY = 1300
 
 const EASE = 'cubic-bezier(0.25, 1, 0.5, 1)'
 

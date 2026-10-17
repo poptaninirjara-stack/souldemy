@@ -14,7 +14,7 @@ import type {
   ReadingItem,
   Track,
 } from '../../src/types/content.ts'
-import { mdInline, mdPlain, mdToHtml } from './markdown.ts'
+import { escapeOverflowPipes, mdInline, mdPlain, mdToHtml } from './markdown.ts'
 
 export class ContentError extends Error {
   constructor(file: string, message: string) {
@@ -34,12 +34,12 @@ interface Chunk {
   lines: string[]
 }
 
-function normalise(src: string): string[] {
+export function normalise(src: string): string[] {
   return src.replace(/\r\n?/g, '\n').split('\n')
 }
 
 /** Split lines on headings of exactly `level` hashes. Returns the preamble and the chunks. */
-function splitHeadings(lines: string[], level: number): { preamble: string[]; chunks: Chunk[] } {
+export function splitHeadings(lines: string[], level: number): { preamble: string[]; chunks: Chunk[] } {
   const re = new RegExp(`^#{${level}} (.+?)\\s*$`)
   const preamble: string[] = []
   const chunks: Chunk[] = []
@@ -64,7 +64,7 @@ function trimBlock(lines: string[]): string[] {
 
 const join = (lines: string[]) => lines.join('\n')
 
-const slug = (s: string) =>
+export const slug = (s: string) =>
   s
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -75,16 +75,18 @@ function linesAsParagraphs(lines: string[]): string[] {
   return lines.filter((l) => l.trim()).map((l) => mdInline(l.trim()))
 }
 
-function parseTableRows(lines: string[]): string[][] {
-  const rows = lines.filter((l) => l.trim().startsWith('|'))
+export function parseTableRows(lines: string[]): string[][] {
+  const rows = escapeOverflowPipes(lines.join('\n'))
+    .split('\n')
+    .filter((l) => l.trim().startsWith('|'))
   return rows
     .slice(2) // header + separator
     .map((r) =>
       r
         .trim()
         .replace(/^\||\|$/g, '')
-        .split('|')
-        .map((c) => c.trim()),
+        .split(/(?<!\\)\|/)
+        .map((c) => c.replace(/\\\|/g, '|').trim()),
     )
 }
 
@@ -281,6 +283,7 @@ export function parseResearchModule(file: string, src: string, moduleId: string,
       outcomesHtml: outcomeItems,
       lessonMap,
       pages: lessons.map((l) => ({ id: l.id, title: l.title, number: l.number })),
+      quizCount: lessons.flatMap((l) => l.blocks).reduce((n, b) => n + (b.kind === 'quiz' ? b.items.length : 0), 0),
       furtherReading: parseFurtherReading(file, readingHeading, reading.lines),
     },
     content: { id: moduleId, lessons },
@@ -351,6 +354,7 @@ export function parseCommTrack(file: string, src: string, omissions: Omission[])
         outcomesHtml: [],
         lessonMap: [],
         pages: sections.map((s) => ({ id: s.id, title: s.title })),
+        quizCount: 0,
         furtherReading: reading!,
       },
       content: { id: moduleId, sections },

@@ -3,7 +3,7 @@
 // Accounts and sync can later replace this module without touching screens.
 import { STORAGE_NAMESPACE } from '../config'
 
-export const SCHEMA_VERSION = 1
+export const SCHEMA_VERSION = 2
 
 const memory = new Map<string, string>()
 
@@ -87,13 +87,17 @@ export function clearAll(): void {
 }
 
 /**
- * Bring stored data up to SCHEMA_VERSION. v1 is the first schema, so there is nothing
- * to convert yet; later versions add steps here keyed by the stored version.
+ * Bring stored data up to SCHEMA_VERSION, one step at a time.
+ * v1 → v2: the hand-logged practice hours ("weekly") and the chosen track ("track") are
+ * gone; active days now come from the XP log and every place is open from the campus map.
  */
 export function migrate(): void {
   const stored = load<number>('schema', 0, (v) => typeof v === 'number')
   if (stored === SCHEMA_VERSION) return
-  // if (stored === 1) { …convert v1 → v2… }
+  if (stored <= 1) {
+    remove('weekly')
+    remove('track')
+  }
   save('schema', SCHEMA_VERSION)
 }
 

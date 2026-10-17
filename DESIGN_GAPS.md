@@ -1,44 +1,54 @@
-# Design gaps and departures
+# Design decisions and gaps
 
-Where the build needed something the design handoff (`/design-handoff/README.md`) does not draw, or where the handoff conflicts with the build brief (`MASTER_PROMPT.md`). No new visual style was invented. Every item below is built from existing tokens (`src/styles/tokens.css`) and existing component patterns.
+## v2 (current): "Canteen Pop" plus the "Campus to Career" game layer
 
-## Conflicts with the brief, resolved in favour of the brief or the content
+v2 replaces the v1 "annotated edition" look, which the owner found dull. The research and decisions are in `docs/DESIGN_BRIEF.md`; this file records what was built and where it departs from the brief or is still missing.
 
-| Handoff | What the app does | Why |
+### Built as specified in the brief
+
+- **Look.** Canteen Pop tokens: cream paper, ink outlines, hard offset shadows on interactive surfaces, and mango, vermilion, mint, lilac and sky fills with ink text. Every text pair is checked against WCAG AA in `src/styles/tokens.css`.
+- **Type.** Anek Latin for display and interface; Mukta for body text in Latin and Devanagari.
+- **Calm reading.** The reading column stays calm: no borders, shadows or motion around body text. Game styling appears only in the "Practise this" boxes between sections.
+- **Campus map home.** Six places in two wings, plus Today's walk (warm-up review, continue reading, next game), a rank card and a week card.
+- **Place pages.** Learn (lessons or sections), Play (games and Mirror mode), Phrase cards and Further reading.
+- **Three game engines.** Sort, Quick pick and Story (scenario), all in focus mode. Feedback says why, a wrong answer shows the right one, and there is no timer.
+- **Review.** Spaced recall of phrase cards in Leitner boxes (1, 3, 7, 14 and 30 days).
+- **Mirror mode.** On-device recording with MediaRecorder; nothing is saved or uploaded. The checklist is never scored.
+- **Rewards.**
+  - XP for effortful work only, awarded once per event key.
+  - Six ranks with can-do statements.
+  - Surprise badges with a celebration dialog: confetti once, WhatsApp share text, and confetti hidden under reduced motion.
+  - A weekly "N of 7 days" goal (3, 4 or 5), with no streak-loss wording.
+- **Offline.** A small service worker caches the app after the first visit, and there is a web manifest so it can be installed to the home screen.
+
+### Departures from the brief (decide later)
+
+| Brief | Built | Why |
 |---|---|---|
-| Points: 10 for each first-try correct answer; points total on My progress | **No points.** Quizzes show only "n of N correct". | Brief §7.7 allows only a plain count. Owner chose "drop points, keep badges". |
-| Badges for finished modules | Kept. A module is finished when every lesson (research) or section (communicative) has been read. | Owner decision. Badges reflect reading only, never a score. |
-| Exercise screen: multiple choice, fill in the blank, reorder the words, then "Check answer" | The content has open exercises (textarea, then **Show model answer**) and self-correcting quizzes. Quizzes use the handoff's **Option button**, **Feedback panel** and action-row states (Check answer → Try again / Show answer). | The content defines the tasks. The handoff components fit the quiz. |
-| Quiz explanation in the margin column (desktop) or bottom sheet (phone) | Explanation appears inline in the feedback panel under each question. | The quiz has 8 items per lesson; inline keeps each explanation next to its question on every screen size. |
-| "Sources and further reading" listed inline on the study page | Behind a **Further reading** button that opens the handoff's **Bottom sheet** (on desktop it is centred, max 720px). | Brief constraint 6 and the content files. |
-| Annotated phrases, margin notes and the Phrase book | **Not in v1.** Only the welcome demo sentence uses the annotated-phrase style. The desktop margin column holds a lesson-position note (Lesson n of 7, progress line, Further reading button) in the margin-note style. | The content has no annotations, and the brief forbids adding content. |
-| 12 research modules and 6 communicative modules (titles drafted) | 2 research modules and 4 communicative modules, from the content files. | The content files are the source of truth. |
-| Track names "Research English for Humanities" / "Communicative and professional English" | "Research-Oriented English for Humanities" / "Communicative / Professional English" (from the content). | As above. |
-| Library entries (DOAJ, British Council and others) with drafted skill filters | The Library lists every Further reading source from the content, grouped by module, with filters **All · Research-Oriented English · Communicative English**. It also holds the About section. | No extra content; the brief requires an About/Sources page. |
-| Google Fonts | Fonts are self-hosted via `@fontsource` (Literata variable with opsz, Public Sans, Noto Serif and Noto Sans Devanagari). | Brief: no runtime CDN calls. |
-| Weekly practice: "practice minutes per ISO date" | The student logs hours by hand (number input, quarter-hour steps) for a day this week. Stored as `{date, hours}`; weeks start Monday in Asia/Kolkata. | Brief §7.8: manual logging, no timer. |
-| Phone bottom nav hidden on Exercise (focus mode) | No separate exercise screen exists, so the nav stays on lesson pages. | Exercises sit inside lessons. |
+| Dark theme from Direction B tokens | **Not built** | Scope. All colours are tokens, so adding a dark theme only needs a second set of token values. |
+| Peer cast and mentor voice ("Kavya, final-year senior") | **Not built as a character.** Feedback is written in a friendly second person instead. | A character needs illustration and copy the author should own. Add it once the voice is approved. |
+| Boolean puzzle with a simulated result counter; spot-the-claim highlighter; faded model answers; opt-in exam mode | **Not built.** Boolean practice is a Quick pick game for now. | Listed as "later" in the brief. |
+| Card-chunked lessons (60–120 words per card) | **Not built.** Lessons stay as one calm scrolling page, with "Practise this" after each lesson or section. | Chunking changes how the author's text is grouped, so the author should decide first. |
+| Weekly report share image | **Not built.** Badge sharing is text only (wa.me link). | Generating the image on canvas is a later step. |
+| Haptics | A 15 ms vibration on a correct answer (Android only). Off under reduced motion. | As in the brief. |
 
-## Screens and states the handoff does not draw
+### Still to check on real devices
 
-- **Research module page** (outcomes + lesson list with "Read" marks). Built from the reading column, Module row pattern and the margin-note panel.
-- **Communicative module page.** One page with an in-page index of the six sections, using the Library filter-chip style. "Pending faculty review" badge on Marathi notes uses `margin-tint`, `control-border` and caption type. A section counts as read once its end has been on screen.
-- **Track page details.** "Outcomes and lesson map" is a `<details>` disclosure under each research module row; the lesson map table uses the reading-table style.
-- **Welcome page additions.** "Continue where you left off" panel and This week panel, using the dashboard panel style.
-- **Progress page additions.** Log practice form (inputs styled like the handoff's controls: control-border, radius 4, 48px), My notes with **Clear my notes**, Settings (Reduce motion), **Reset my data**. Destructive actions ask for confirmation inline in a `margin-tint` box.
-- **Error state.** "{Thing} did not load. Check your connection and try again." plus **Try again**, as described in §5.7 but not drawn.
-- **Not found page.** Plain heading, meta line and a primary button.
-- **Tablet (600–1023px).** Built by the stated rule: phone layout, wider padding, reading column capped at 600px and centred.
-- **Responsive tables.** Hairline top and bottom rules. When a table overflows, a caption line "Scroll sideways to see the whole table →" and a 2px `control-border` right edge appear (no shadow, per the one-shadow rule).
-- **Focus states.** Every control uses the handoff's 2px ink ring with 2px offset.
-- **Storage blocked.** The Progress footer line changes to "This browser is blocking storage, so progress lasts only until you close this tab."
+- Lighthouse (mobile) and a low-end Android phone (2–4 GB RAM).
+- Mirror mode on iOS Safari (MediaRecorder support varies by version).
+- Service worker update behaviour after a redeploy: pages load network-first, so updates arrive when online.
 
-## Copy needing the author's review
+---
 
-- Track blurbs (handoff, drafted). The communicative blurb mentions "vivas", which v1 does not cover.
-- Interface lines written for states the handoff does not cover:
-  - the quiz's generic incorrect message, "That is not the best answer. Try again, or show the answer.";
-  - "Write your attempt first. The model answer appears after you try.";
-  - the Marathi-notes review caption;
-  - the About text;
-  - the Log practice helper text.
+## v1 decisions that still apply
+
+- **Further reading** is always behind a button and opens a bottom sheet with a focus trap; Escape closes it and focus returns to the button.
+- **Model answers** stay hidden until the student has written an attempt.
+- **Quizzes.** The Module 1 and Module 2 quizzes keep the Check answer → Try again / Show answer flow, with words and icons as well as colour.
+- **No leaderboards, timers, hearts or lives.**
+- **The Library** lists every source from the content, grouped by module, and includes the About section.
+- **Responsive tables** scroll sideways with a visible hint when they overflow.
+- **Copy that needs the author's review:**
+  - the track blurbs;
+  - interface lines for states the original handoff did not cover;
+  - all game feedback (see `docs/GAME_ITEMS_FOR_REVIEW.md`).

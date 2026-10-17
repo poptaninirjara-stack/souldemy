@@ -1,28 +1,34 @@
 import { useEffect, useRef } from 'react'
 import { Link, Outlet, useLocation, useMatch } from 'react-router'
 import { APP_NAME } from '../config'
-import { findModule, getTrack } from '../lib/content'
-import { useAppState, useReducedMotion } from '../state/useAppState'
-import { ChevronLeft } from './Icons'
+import { findModule } from '../lib/content'
+import { placeFor } from '../lib/places'
+import { useReducedMotion } from '../state/useAppState'
+import { useProgress } from '../state/useProgress'
+import { Celebration } from './Celebration'
+import { Bolt, Book, Campus, Cards, ChevronLeft, User } from './Icons'
 import styles from './Layout.module.css'
+import { XpToast } from './XpToast'
 
 function useBackLink(): { label: string; to: string } | null {
   const lesson = useMatch('/research/:moduleId/:pageId')
-  const module = useMatch('/:trackId/:moduleId')
-  if (lesson) return { label: 'Contents', to: `/research/${lesson.params.moduleId}` }
-  if (module && getTrack(module.params.trackId) && findModule(module.params.moduleId ?? ''))
-    return { label: 'All modules', to: `/${module.params.trackId}` }
+  const read = useMatch('/communicative/:moduleId/read')
+  const place = useMatch('/:trackId/:moduleId')
+  const lessonPlace = lesson && placeFor(lesson.params.moduleId ?? '')
+  if (lesson?.params.pageId !== 'read' && lessonPlace) return { label: lessonPlace.name, to: `/research/${lesson!.params.moduleId}` }
+  const readPlace = read && placeFor(read.params.moduleId ?? '')
+  if (readPlace) return { label: readPlace.name, to: `/communicative/${read!.params.moduleId}` }
+  if (place && findModule(place.params.moduleId ?? '')) return { label: 'Campus', to: '/' }
   return null
 }
 
 export function Layout() {
-  const { track } = useAppState()
   useReducedMotion()
   const location = useLocation()
   const back = useBackLink()
-  const isWelcome = location.pathname === '/'
-  const learnTo = track ? `/${track}` : '/'
-  const onLearn = !['/library', '/progress'].includes(location.pathname)
+  const progress = useProgress()
+  const path = location.pathname
+  const focusMode = path.startsWith('/play/') || path.startsWith('/mirror/')
   const mainRef = useRef<HTMLElement>(null)
   const first = useRef(true)
 
@@ -39,50 +45,73 @@ export function Layout() {
       h1.setAttribute('tabindex', '-1')
       h1.focus({ preventScroll: true })
     }
-  }, [location.pathname, location.search])
+  }, [path, location.search])
 
   const items = [
-    { to: learnTo, label: 'Learn', active: onLearn },
-    { to: '/library', label: 'Library', active: location.pathname === '/library' },
-    { to: '/progress', label: 'Progress', active: location.pathname === '/progress' },
+    { to: '/', label: 'Campus', icon: <Campus size={22} />, active: !['/review', '/library', '/me'].includes(path) },
+    { to: '/review', label: 'Review', icon: <Cards size={22} />, active: path === '/review', badge: progress.dueCards.length || undefined },
+    { to: '/library', label: 'Library', icon: <Book size={22} />, active: path === '/library' },
+    { to: '/me', label: 'Me', icon: <User size={22} />, active: path === '/me' },
   ]
   const nav = items.map((i) => (
     <Link key={i.label} to={i.to} className={styles.navItem} aria-current={i.active ? 'page' : undefined}>
-      {i.label}
+      <span className={styles.navIcon}>
+        {i.icon}
+        {i.badge ? (
+          <span className={styles.navBadge}>
+            {i.badge}
+            <span className="visually-hidden"> due</span>
+          </span>
+        ) : null}
+      </span>
+      <span>{i.label}</span>
     </Link>
   ))
 
   return (
-    <div className={styles.app} data-welcome={isWelcome}>
+    <div className={styles.app} data-focus={focusMode}>
       <a className="skip-link" href="#main" onClick={(e) => { e.preventDefault(); mainRef.current?.focus() }}>
         Skip to content
       </a>
       <header className={styles.topbar}>
-        {back ? (
-          <Link to={back.to} className={`${styles.back} ${styles.phoneOnly}`}>
-            <ChevronLeft />
-            {back.label}
+        <div className={styles.left}>
+          {back && !focusMode ? (
+            <Link to={back.to} className={`${styles.back} ${styles.phoneOnly}`}>
+              <ChevronLeft />
+              {back.label}
+            </Link>
+          ) : null}
+          <Link to="/" className={`${styles.wordmark} ${back && !focusMode ? styles.deskOnly : ''}`} aria-label={`${APP_NAME} home`}>
+            {APP_NAME}
           </Link>
-        ) : null}
-        <Link to="/" className={`${styles.wordmark} ${back ? styles.deskOnly : ''}`}>
-          {APP_NAME}
-        </Link>
+        </div>
         <nav aria-label="Main" className={styles.deskNav}>
           {nav}
         </nav>
+        <Link to="/me" className={styles.stats} aria-label={`${progress.xp} XP, ${progress.rank.name}. ${progress.thisWeek} of ${progress.weekGoal} practice days this week.`}>
+          <span className={styles.statChip} aria-hidden="true">
+            <Bolt size={16} />
+            {progress.xp}
+          </span>
+          <span className={styles.statChip} data-tone={progress.thisWeek >= progress.weekGoal ? 'done' : undefined} aria-hidden="true">
+            {progress.thisWeek}/{progress.weekGoal} days
+          </span>
+        </Link>
       </header>
 
       <main id="main" ref={mainRef} tabIndex={-1} className={styles.main}>
-        <div key={location.pathname} className="screen-fade">
+        <div key={path} className="screen-fade">
           <Outlet />
         </div>
       </main>
 
-      {!isWelcome && (
+      {!focusMode && (
         <nav aria-label="Main" className={styles.bottomNav}>
           {nav}
         </nav>
       )}
+      <XpToast />
+      <Celebration />
     </div>
   )
 }

@@ -56,11 +56,6 @@ export const Info = (p: IconProps) => (
   </Svg>
 )
 
-export const External = (p: IconProps) => (
-  <Svg {...p}>
-    <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5" />
-  </Svg>
-)
 
 export const Book = (p: IconProps) => (
   <Svg {...p}>
@@ -68,3 +63,49 @@ export const Book = (p: IconProps) => (
     <path d="M4 19a2 2 0 012-2h13" />
   </Svg>
 )
+
+export const Campus = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M3 10l9-6 9 6M5 10v9h14v-9M10 19v-5h4v5" />
+  </Svg>
+)
+
+export const Cards = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="7" y="3" width="13" height="16" rx="2" />
+    <path d="M4 7v12a2 2 0 002 2h10" />
+  </Svg>
+)
+
+export const User = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" />
+  </Svg>
+)
+
+export const Bolt = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M13 2L4 14h7l-1 8 9-12h-7z" />
+  </Svg>
+)
+
+export const Mic = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="9" y="3" width="6" height="11" rx="3" />
+    <path d="M5 11a7 7 0 0014 0M12 18v3" />
+  </Svg>
+)
+
+export const Play = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M7 4l13 8-13 8z" />
+  </Svg>
+)
+
+export const Stop = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="6" y="6" width="12" height="12" rx="2" />
+  </Svg>
+)
+

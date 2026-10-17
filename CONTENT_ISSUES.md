@@ -28,6 +28,14 @@ Problems found in `/content`. **None of these has been changed in the text.** Ea
     - Communicative Module 4: Northern Illinois University, *Answering "Tell Me About Yourself"* (PDF).
 12. **INFLIBNET links could not be reached from the build machine** (N-LIST portal, Shodhganga repository; connection timeout). This is likely a network or regional block rather than a dead link. Please check them from India.
 
+13. **Communicative track, Module 3, Useful language table: fixed in the app, not in the file.** The "LinkedIn headline pattern" row contains `|` inside a table cell. Markdown reads each `|` as a column break, so v1 showed only `"BA English student` and dropped the rest. The parser now escapes pipes in any row that is wider than its header, so the whole cell renders as written. To fix it at source, write the cell as `"BA English student \| Editor \| Interested in publishing and communications"`.
+
+## v2 practice games (needs the author's review)
+
+- **Game items.** v2 adds practice games and phrase cards: `docs/DESIGN_BRIEF.md` explains why, and the items live in `content/games.json`. Most items come from the author's own examples, exercises and answer keys. Items written for the games are marked `"d": true`, and **all feedback lines** (the explanations, replies and intros) were drafted. `docs/GAME_ITEMS_FOR_REVIEW.md` lists every drafted item; rerun `npm run drafted` after editing.
+- **Phrase cards.** These are extracted word for word from the "Useful language" tables and the Lesson 3 task-word table, so nothing there was drafted.
+- **Mirror mode.** The tasks are the author's own "Try it" text. The four checklist lines under each task were drafted from the module's core ideas, and need review.
+
 ## Where the files differ from the structure in the brief
 
 These were handled in the parser, and the text is unchanged.

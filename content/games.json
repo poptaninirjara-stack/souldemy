@@ -1,0 +1,337 @@
+{
+  "_note": "Practice games for SoulDemy. Items without \"d\" are taken from the author's lessons, exercises and answer keys. Items with \"d\": true were drafted for the games and need the author's review. All \"why\", \"reply\", intro and ending lines were drafted. Task-word and phrase games are generated at build time from the author's tables.",
+  "games": [
+    {
+      "id": "r1-registers",
+      "kind": "sort",
+      "moduleId": "r1",
+      "after": "l1",
+      "title": "Register radar",
+      "intro": "Read each sentence and decide which register it is written in.",
+      "source": "Lesson 1 examples and Exercise 1, plus new practice sentences",
+      "bins": [
+        { "id": "casual", "label": "Casual" },
+        { "id": "journalistic", "label": "Journalistic" },
+        { "id": "academic", "label": "Academic" }
+      ],
+      "items": [
+        { "text": "Honestly, loads of people reckon social media is ruining kids' brains. I think they're right.", "bin": "casual", "why": "Slang (\"loads\", \"reckon\", \"kids\") and a personal opinion offered as proof." },
+        { "text": "Glued to their screens: is a distracted generation growing up?", "bin": "journalistic", "why": "A dramatic hook and a question to grab attention." },
+        { "text": "Several studies associate heavy social media use with reduced attention among adolescents; however, the direction of cause remains disputed.", "bin": "academic", "why": "It names its evidence, limits the claim and admits uncertainty." },
+        { "text": "A fresh study says old folk running firms do better than youngsters. What's their secret?", "bin": "journalistic", "why": "Question hook, \"old folk\", \"youngsters\"." },
+        { "text": "Firms founded by older entrepreneurs appear to survive longer than those founded by younger ones (Rao, 2019).", "bin": "academic", "why": "Cautious verb (\"appear to\"), reference in brackets, formal words. (The reference is invented for practice.)" },
+        { "text": "My uncle started a shop at 55 and it's still going. Age doesn't matter, obviously.", "bin": "casual", "why": "Personal anecdote as proof, \"obviously\", contraction." },
+        { "text": "The canteen's new menu is honestly the best thing that happened this semester.", "bin": "casual", "why": "\"Honestly\" and an exaggerated personal judgement.", "d": true },
+        { "text": "Monsoon misery: Mumbai commuters stranded again!", "bin": "journalistic", "why": "A dramatic headline with an exclamation mark.", "d": true },
+        { "text": "Rainfall variability appears to influence migration patterns in drought-prone districts of Marathwada.", "bin": "academic", "why": "Precise terms and a cautious verb (\"appears to\").", "d": true },
+        { "text": "Is your phone stealing your sleep? Experts weigh in.", "bin": "journalistic", "why": "A question hook and vague \"experts\" instead of named evidence.", "d": true },
+        { "text": "These findings suggest that peer feedback may improve students' revision of essays.", "bin": "academic", "why": "\"Suggest\" and \"may\" limit the claim to what the evidence supports.", "d": true },
+        { "text": "Not gonna lie, the memory lecture was kind of mind-blowing.", "bin": "casual", "why": "Spoken slang (\"gonna\", \"kind of\", \"mind-blowing\").", "d": true }
+      ]
+    },
+    {
+      "id": "r1-surgery",
+      "kind": "pick",
+      "moduleId": "r1",
+      "after": "l5",
+      "title": "Sentence surgery",
+      "intro": "Diagnose each sentence. What is wrong with it?",
+      "ask": "What is wrong with this sentence?",
+      "source": "Lesson 5 \"Three sentence errors\" table and Exercise 5b, plus new practice sentences",
+      "items": [
+        { "prompt": "Because the harvest failed.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 0, "why": "An incomplete thought. Fix: \"Because the harvest failed, prices rose.\"" },
+        { "prompt": "Walking into the hall, the speech had already begun.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 1, "why": "The speech was not walking. Fix: \"Walking into the hall, I found that the speech had begun.\"" },
+        { "prompt": "The course teaches students to read closely, writing clearly, and how to argue.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 2, "why": "The list items have different shapes. Fix: \"…to read closely, write clearly, and argue.\"" },
+        { "prompt": "Although the results were promising.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 0, "why": "Fix: \"Although the results were promising, further tests were needed.\"" },
+        { "prompt": "Opening the letter, the news shocked her.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 1, "why": "The news did not open the letter. Fix: \"Opening the letter, she was shocked by the news.\"" },
+        { "prompt": "The author is known for her clear style, sharp humour, and writing about rural life.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 2, "why": "Two nouns and then an -ing phrase: keep all the list items in the same form." },
+        { "prompt": "Since the survey covered only one college.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 0, "why": "A \"since\" clause needs a main clause: \"Since the survey covered only one college, the results may not apply widely.\"", "d": true },
+        { "prompt": "After finishing the experiment, the data was entered into a spreadsheet.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 1, "why": "The data did not finish the experiment. Fix: \"After finishing the experiment, we entered the data…\"", "d": true },
+        { "prompt": "The report was clear, concise, and it had good organisation.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 2, "why": "Two adjectives and then a clause. Fix: \"The report was clear, concise and well organised.\"", "d": true },
+        { "prompt": "Although the sample was small, the results suggest a clear pattern.", "options": ["Fragment", "Dangling modifier", "Faulty parallelism", "Nothing: it is fine"], "correct": 3, "why": "Complete: the \"although\" clause is attached to a main clause.", "d": true }
+      ]
+    },
+    {
+      "id": "r1-hedge",
+      "kind": "pick",
+      "moduleId": "r1",
+      "after": "l5",
+      "title": "Hedge-o-meter",
+      "intro": "Turn everyday claims into academic ones: formal, precise and cautious.",
+      "ask": "Which version is the best academic sentence?",
+      "source": "Lesson 5 and Exercise 5a model answers; the weaker options are new",
+      "items": [
+        { "prompt": "Loads of people think the exam system is unfair.", "options": ["Everyone knows the exam system is totally unfair.", "Many critics argue that the examination system is unfair.", "The exam system is obviously unfair to loads of people."], "correct": 1, "why": "\"Many critics argue\" names who holds the view; no slang or absolute claims.", "d": true },
+        { "prompt": "Crime goes up when there are no jobs.", "options": ["Unemployment always causes crime.", "Crime definitely rises when people have no jobs.", "Unemployment is often associated with higher crime rates."], "correct": 2, "why": "\"Often associated with\" is cautious and precise; \"always\" and \"definitely\" overclaim.", "d": true },
+        { "prompt": "Poetry is the best way to show feelings.", "options": ["Poetry is often regarded as an effective means of expressing emotion.", "Poetry proves that feelings are best shown in verse.", "Poetry is the best and only way to show feelings."], "correct": 0, "why": "\"Often regarded as\" reports a view instead of stating a fact.", "d": true },
+        { "prompt": "Sadly, a lot of folk are getting poorer.", "options": ["Sadly, many people are clearly getting poorer.", "Poverty appears to be increasing among a significant proportion of the population.", "Loads more folk are poor now, which is shocking."], "correct": 1, "why": "No emotional words (\"sadly\", \"shocking\"); \"appears to\" and \"a significant proportion\" are precise.", "d": true },
+        { "prompt": "Education reduces crime.", "options": ["Education always reduces crime.", "Education proves that crime will fall.", "Education tends to be associated with lower crime rates."], "correct": 2, "why": "Claims like this are rarely fully true; \"tends to be associated with\" is safer and more accurate.", "d": true },
+        { "prompt": "This study proves that social media causes anxiety.", "options": ["This study suggests that heavy social media use may be linked to anxiety.", "This study clearly proves that social media causes anxiety in everyone.", "Social media obviously causes anxiety, as this study shows."], "correct": 0, "why": "One study rarely proves cause: \"suggests\" and \"may be linked\" match the evidence.", "d": true }
+      ]
+    },
+    {
+      "id": "r2-question",
+      "kind": "sort",
+      "moduleId": "r2",
+      "after": "l1",
+      "title": "Topic, fact or question?",
+      "intro": "Research starts with a question. Sort each line.",
+      "source": "Lesson 1 Exercises 1 and 2 and the Module 2 quiz, plus new practice lines",
+      "bins": [
+        { "id": "topic", "label": "Topic" },
+        { "id": "fact", "label": "Fact" },
+        { "id": "question", "label": "Research question" }
+      ],
+      "items": [
+        { "text": "The Guide was published in 1958.", "bin": "fact", "why": "A statement you can check. There is nothing to investigate." },
+        { "text": "Colonial education in India.", "bin": "topic", "why": "A subject area with no direction yet." },
+        { "text": "How does the narrator's use of flashback shape the reader's sympathy for the protagonist?", "bin": "question", "why": "Asks \"how\" and sets a direction, a method and an end point." },
+        { "text": "Women writers in Marathi.", "bin": "topic", "why": "A subject area: what about them?" },
+        { "text": "To what extent did print newspapers shape nationalist debate in nineteenth-century Bengal?", "bin": "question", "why": "\"To what extent\" asks for a weighed answer." },
+        { "text": "Gender in Indian fiction", "bin": "topic", "why": "A subject area with no question." },
+        { "text": "Premchand wrote about villages", "bin": "fact", "why": "A checkable statement." },
+        { "text": "How does Premchand's use of dialogue shape the reader's view of rural poverty?", "bin": "question", "why": "It asks \"how\" and sets a clear direction." },
+        { "text": "Water scarcity in Marathwada.", "bin": "topic", "why": "A subject area: no direction yet.", "d": true },
+        { "text": "Why do first-generation college students in Pune choose English-medium degree courses?", "bin": "question", "why": "A \"why\" question you could answer with evidence.", "d": true }
+      ]
+    },
+    {
+      "id": "r2-sources",
+      "kind": "sort",
+      "moduleId": "r2",
+      "after": "l2",
+      "title": "Source sorter",
+      "intro": "Is it the material you study, writing about it, or an overview?",
+      "source": "Lesson 2 Exercise 3, plus new practice sources",
+      "bins": [
+        { "id": "primary", "label": "Primary" },
+        { "id": "secondary", "label": "Secondary" },
+        { "id": "tertiary", "label": "Tertiary" }
+      ],
+      "items": [
+        { "text": "A peer-reviewed journal article analysing imagery in a novel.", "bin": "secondary", "why": "It interprets a primary text. Also scholarly." },
+        { "text": "The novel itself.", "bin": "primary", "why": "The literary text you study." },
+        { "text": "A magazine feature on a famous author's life.", "bin": "secondary", "why": "Writing about the author. Popular, not scholarly." },
+        { "text": "A subject encyclopedia entry on \"Postcolonialism\".", "bin": "tertiary", "why": "An overview: use it for orientation only." },
+        { "text": "A soldier's wartime letter held in an archive.", "bin": "primary", "why": "Original material from the time." },
+        { "text": "A university-press book of essays on partition memory.", "bin": "secondary", "why": "Scholarly analysis of primary material." },
+        { "text": "A Marathi poet's handwritten diary in a college archive.", "bin": "primary", "why": "Original material you would study.", "d": true },
+        { "text": "A textbook chapter introducing Indian feminist theory.", "bin": "tertiary", "why": "A textbook overview: good for orientation, not as main evidence.", "d": true },
+        { "text": "A journal article comparing two Dalit autobiographies.", "bin": "secondary", "why": "It analyses the autobiographies (primary texts).", "d": true }
+      ]
+    },
+    {
+      "id": "r2-boolean",
+      "kind": "pick",
+      "moduleId": "r2",
+      "after": "l3",
+      "title": "Search string builder",
+      "intro": "Pick the tool that fixes each search problem.",
+      "ask": "Which tool do you need?",
+      "source": "Lesson 3 Boolean operators; the situations are new",
+      "items": [
+        { "prompt": "Your search for memory returns 40,000 results. You want only papers that also mention Partition.", "options": ["AND", "OR", "NOT", "Quotation marks"], "correct": 0, "why": "AND narrows: all terms must appear (partition AND memory).", "d": true },
+        { "prompt": "You want results that use either \"novel\" or \"fiction\".", "options": ["AND", "OR", "NOT", "Quotation marks"], "correct": 1, "why": "OR broadens: any term may appear. Use it for synonyms.", "d": true },
+        { "prompt": "You are researching the country Mexico but get many results about Mexico City.", "options": ["AND", "OR", "NOT", "Quotation marks"], "correct": 2, "why": "NOT excludes a term (Mexico NOT city)." },
+        { "prompt": "You want the exact phrase short story, not pages where \"short\" and \"story\" appear far apart.", "options": ["AND", "OR", "NOT", "Quotation marks"], "correct": 3, "why": "Quotation marks keep a phrase together (\"short story\").", "d": true },
+        { "prompt": "Your search returns too few results.", "options": ["Add a term with AND", "Add synonyms with OR, or remove a term", "Add NOT", "Put every word in quotation marks"], "correct": 1, "why": "Too few results: add synonyms with OR or remove a term." },
+        { "prompt": "Your search returns far too many results.", "options": ["Add a term with AND or use filters", "Add more synonyms with OR", "Remove all keywords", "Search full sentences instead"], "correct": 0, "why": "Too many results: add a term with AND, or filter by date, subject or peer review." }
+      ]
+    },
+    {
+      "id": "r2-desk",
+      "kind": "pick",
+      "moduleId": "r2",
+      "after": "l4",
+      "title": "Which desk?",
+      "intro": "You are in the library with a problem. Where do you go first?",
+      "ask": "Best first step?",
+      "source": "Lesson 4 Exercise 5, plus one new situation",
+      "items": [
+        { "prompt": "You need a doctoral thesis on Marathi theatre and want it free, in full.", "options": ["Shodhganga", "DELNET inter-library loan", "Google Scholar", "A newspaper archive"], "correct": 0, "why": "Shodhganga holds Indian PhD theses, free and without login." },
+        { "prompt": "You found a journal article through Google Scholar but it is behind a paywall.", "options": ["Give up on it", "Check your institute's access (N-LIST); if unavailable, request document delivery or ask the librarian", "Search Shodhganga", "Use a blog summary instead"], "correct": 1, "why": "Check your institute's access first; then document delivery or your librarian." },
+        { "prompt": "Your college library does not own a book that another library does.", "options": ["Shodhganga", "Google Scholar", "Ask the library to request it via inter-library loan (DELNET)", "Buy a summary online"], "correct": 2, "why": "DELNET links libraries for inter-library loan." },
+        { "prompt": "You need a ready list of sources on a topic.", "options": ["Read the literature review and bibliography of a recent thesis or survey article", "Search a single keyword on Google", "Ask a friend for their notes", "Read only abstracts"], "correct": 0, "why": "A literature review is a ready-made map of the field." },
+        { "prompt": "You want to know which libraries in India hold a particular book.", "options": ["Shodhganga", "DELNET's union catalogue", "A Google Image search", "N-LIST document delivery"], "correct": 1, "why": "DELNET's union catalogues show which libraries hold a book or journal.", "d": true }
+      ]
+    },
+    {
+      "id": "c2-inbox",
+      "kind": "scenario",
+      "moduleId": "c2",
+      "after": "example",
+      "title": "Professor's inbox",
+      "intro": "Write to Professor Kulkarni to ask for a meeting about your project. Build the email one part at a time.",
+      "source": "Module 2 core ideas, useful language, worked example and Marathi notes; the replies are new",
+      "setting": "Email",
+      "steps": [
+        {
+          "from": "Your draft",
+          "message": "To: Professor Kulkarni. First, the subject line.",
+          "ask": "Choose a subject line",
+          "choices": [
+            { "text": "Doubt.", "good": false, "reply": "Your email sits among forty others called \"Doubt\". It waits until Friday.", "why": "A subject line should say what the email is about." },
+            { "text": "Request for a meeting about my Semester 2 project topic", "good": true, "reply": "The professor can see at once what you need, and opens it.", "why": "A meaningful subject line tells the reader what the message is about." },
+            { "text": "URGENT!!! PLEASE READ", "good": false, "reply": "All capitals read as shouting. Not a good first impression.", "why": "No ALL CAPS in professional email.", "d": true }
+          ]
+        },
+        {
+          "from": "Your draft",
+          "message": "Now the greeting.",
+          "ask": "Choose a greeting",
+          "choices": [
+            { "text": "Hi sir, plz help", "good": false, "reply": "Text-message shortcuts make the email look careless.", "why": "Use standard spelling: no \"plz\" or \"u\".", "d": true },
+            { "text": "Respected Sir/Madam,", "good": false, "reply": "Polite, but it doesn't show you know who you are writing to.", "why": "Common in Indian English, but \"Dear Professor Kulkarni\" is the standard greeting." },
+            { "text": "Dear Professor Kulkarni,", "good": true, "reply": "Clear and respectful.", "why": "Open the way you would a letter, with the person's title and name." }
+          ]
+        },
+        {
+          "from": "Your draft",
+          "message": "Say who you are and why you are writing.",
+          "ask": "Choose the opening",
+          "choices": [
+            { "text": "Kindly do the needful regarding my project.", "good": false, "reply": "The professor writes back: \"What do you need, exactly?\" One more email, one more day.", "why": "Widely understood in India, but vague. Say what you need." },
+            { "text": "I am a first-year BA Geography student in your Tuesday class. I would like to discuss my project topic before I submit my proposal.", "good": true, "reply": "In two sentences the professor knows who you are and what you want.", "why": "Say why you are writing in the first two sentences." },
+            { "text": "I have a doubt about something, can u tell?", "good": false, "reply": "Unclear and informal: the professor can't help without more detail.", "why": "Be specific, and avoid shortcuts such as \"u\".", "d": true }
+          ]
+        },
+        {
+          "from": "Your draft",
+          "message": "Make the request.",
+          "ask": "Choose the request",
+          "choices": [
+            { "text": "Please revert ASAP.", "good": false, "reply": "\"Revert\" can mean \"go back to an earlier state\", and \"ASAP\" sounds demanding.", "why": "\"Please reply\" is the safer choice; give options instead of pressure." },
+            { "text": "Tell me when you are free.", "good": false, "reply": "It reads as an order rather than a request.", "why": "Use a polite request form: \"Could you…?\", \"Could we…?\"", "d": true },
+            { "text": "Could we meet for ten minutes this week? I am free after 2 p.m. on Wednesday and Thursday.", "good": true, "reply": "A short meeting with two time options is easy to say yes to.", "why": "A clear, polite request with options." }
+          ]
+        },
+        {
+          "from": "Your draft",
+          "message": "Close the email.",
+          "ask": "Choose the closing",
+          "choices": [
+            { "text": "Waiting for your reply.", "good": false, "reply": "It sounds impatient, and there is no name.", "why": "End with thanks, a sign-off and your name.", "d": true },
+            { "text": "Thank you for your time. Best regards, Aatma Shah, BA Geography, Year 1", "good": true, "reply": "A friendly close, and the professor knows exactly who wrote.", "why": "Sign-off plus name, with course details when useful." },
+            { "text": "Thanks bye", "good": false, "reply": "Too casual for a first email to a teacher.", "why": "Friendly but not chatty: use a full sign-off.", "d": true }
+          ]
+        }
+      ],
+      "ending": "Professor Kulkarni replies: \"Thursday at 2.15 works. See you in the department office.\" (Names are fictional.)"
+    },
+    {
+      "id": "c2-false-friends",
+      "kind": "sort",
+      "moduleId": "c2",
+      "after": "marathi",
+      "title": "Would a recruiter say this?",
+      "intro": "Some Indian English phrases are fine at home but unclear elsewhere. Sort each one.",
+      "source": "Marathi to English notes from all four communicative modules",
+      "bins": [
+        { "id": "clear", "label": "Clear anywhere" },
+        { "id": "rephrase", "label": "Better to rephrase" }
+      ],
+      "items": [
+        { "text": "I have a doubt.", "bin": "rephrase", "why": "In a seminar, \"I have a question\" or \"Could I ask a question?\" is the usual choice." },
+        { "text": "Could I ask a question?", "bin": "clear", "why": "The usual seminar choice." },
+        { "text": "Kindly do the needful.", "bin": "rephrase", "why": "Widely understood in India but vague. Say what you need." },
+        { "text": "Could you please confirm my attendance record?", "bin": "clear", "why": "It says exactly what you need." },
+        { "text": "Please revert.", "bin": "rephrase", "why": "In many workplaces \"revert\" suggests going back to an earlier state; \"please reply\" is safer." },
+        { "text": "Myself Aatma.", "bin": "rephrase", "why": "In a cover letter or LinkedIn summary, write \"I am Aatma\" or start with what you do." },
+        { "text": "I am Aatma.", "bin": "clear", "why": "Standard in any setting." },
+        { "text": "What is your good name?", "bin": "rephrase", "why": "A literal translation; \"Could you tell me your name?\" is more usual." },
+        { "text": "Dear Professor Kulkarni,", "bin": "clear", "why": "The standard greeting in most professional settings." },
+        { "text": "Respected Sir/Madam,", "bin": "rephrase", "why": "Polite, but \"Dear Professor Kulkarni\" is the standard greeting in most professional settings." }
+      ]
+    },
+    {
+      "id": "c3-bullets",
+      "kind": "pick",
+      "moduleId": "c3",
+      "after": "example",
+      "title": "Bullet upgrade",
+      "intro": "Recruiters skim. Pick the line that shows what you actually did.",
+      "ask": "Which is the strongest CV line?",
+      "source": "Module 3 worked example and core ideas; the other lines are new (use only claims that are true for you)",
+      "items": [
+        { "prompt": "College magazine", "options": ["Responsible for college magazine.", "Edited six articles for the college magazine and coordinated a team of four student writers.", "Helped with the college magazine sometimes."], "correct": 1, "why": "Starts with an action verb and gives concrete numbers." },
+        { "prompt": "NSS volunteering", "options": ["Was part of NSS.", "Did NSS activities and other things.", "Organised a three-day NSS cleanliness drive with 25 volunteers."], "correct": 2, "why": "Action verb first, plus scale and duration.", "d": true },
+        { "prompt": "Describing yourself", "options": ["Hardworking and sincere.", "Researched and presented a 20-page report on groundwater use in my district.", "Very hardworking, sincere and honest person."], "correct": 1, "why": "Show it with one concrete example instead of \"hardworking and sincere\".", "d": true },
+        { "prompt": "A class project", "options": ["Did a project on migration.", "Researched migration to Pune through 30 short interviews and presented the findings to my class.", "Project on migration (group)."], "correct": 1, "why": "Action verbs (\"researched\", \"presented\") and a number make it concrete.", "d": true },
+        { "prompt": "LinkedIn headline", "options": ["Student", "Hardworking person looking for opportunities", "BA English student | Editor | Interested in publishing and communications"], "correct": 2, "why": "A headline that says who you are and what you aim to do." }
+      ]
+    },
+    {
+      "id": "c4-interview",
+      "kind": "scenario",
+      "moduleId": "c4",
+      "after": "example",
+      "title": "Interview room",
+      "intro": "An internship interview. Choose your answers and see how the interviewer reacts. There is no clock.",
+      "source": "Module 4 core ideas, useful language and worked example; the interviewer's lines are new",
+      "setting": "Interview",
+      "steps": [
+        {
+          "from": "Interviewer",
+          "message": "Thank you for coming in. Tell me about yourself.",
+          "ask": "Your answer",
+          "choices": [
+            { "text": "My name is Aatma, my father has a business in Nashik, I was born in 2005, I studied at…", "good": false, "reply": "The interviewer glances at the clock. This is turning into a life story.", "why": "\"Tell me about yourself\" is not a request for your life story.", "d": true },
+            { "text": "I'm a second-year BA English student, and I edit our college periodical. Over the past year I've led a small team and learned to meet deadlines and give feedback. I'm interested in this internship because it combines editing and communication, which is what I enjoy most.", "good": true, "reply": "The interviewer nods: \"Editing and communication. Good, tell me more about the team.\"", "why": "Present, past, future: what you do now, what prepared you, why this role." },
+            { "text": "Myself Aatma. Everything is there in my CV.", "good": false, "reply": "\"I've read the CV. I'd like to hear it from you.\"", "why": "Don't point to your CV; choose two to four points that match the job.", "d": true }
+          ]
+        },
+        {
+          "from": "Interviewer",
+          "message": "Tell me about a time you worked in a team.",
+          "ask": "Your answer",
+          "choices": [
+            { "text": "We did a group project and we all worked hard and it went well.", "good": false, "reply": "\"What did you do, specifically?\"", "why": "Say \"I\", not \"we\", for your own actions, and give a result.", "d": true },
+            { "text": "In my second semester, I was part of a group project on water use. My responsibility was to plan the survey. I organised a schedule and asked each member to collect ten responses. As a result, we finished a week early. What I learned was to check in with the team every few days.", "good": true, "reply": "\"That's a clear example. Thank you.\"", "why": "STAR: Situation, Task, Action, Result, with your own actions as \"I\".", "d": true },
+            { "text": "I don't really like group work, to be honest.", "good": false, "reply": "The interviewer writes something down and moves on.", "why": "Use a real experience and show what you learned.", "d": true }
+          ]
+        },
+        {
+          "from": "Interviewer",
+          "message": "Have you used our editing software before?",
+          "ask": "Your answer",
+          "choices": [
+            { "text": "I haven't done that yet, but I've worked on something similar.", "good": true, "reply": "\"Good. What was it?\" A chance to talk about what you know.", "why": "Honest, and it moves to what you can do." },
+            { "text": "Yes, I know everything about it.", "good": false, "reply": "\"Great, show me how you'd set up a style sheet.\" Uh-oh.", "why": "Don't overclaim; it is fine not to know everything.", "d": true },
+            { "text": "No.", "good": false, "reply": "Silence. The interviewer waits for more.", "why": "Add what you have done instead.", "d": true }
+          ]
+        },
+        {
+          "from": "Interviewer",
+          "message": "Do you have any questions for us?",
+          "ask": "Your answer",
+          "choices": [
+            { "text": "No, nothing.", "good": false, "reply": "A missed chance to show interest.", "why": "Prepare one or two questions to ask at the end.", "d": true },
+            { "text": "What would a typical week look like for an intern on your team?", "good": true, "reply": "The interviewer smiles and describes the team's week.", "why": "A prepared question shows real interest in the role.", "d": true },
+            { "text": "How many holidays do interns get?", "good": false, "reply": "\"We can discuss that later.\" Not the best first question.", "why": "Ask about the work first.", "d": true }
+          ]
+        }
+      ],
+      "ending": "\"Thank you for your time. We'll be in touch by Friday.\" Written link: send a short thank-you email using the patterns from Module 2."
+    }
+  ],
+  "mirror": [
+    {
+      "moduleId": "c1",
+      "task": "Choose a topic from your own subject. Write a three-sentence opening that includes a map (\"First… Then… Finally…\") and say it aloud.",
+      "checklist": ["I said what I would cover, in order", "I used a map: First… Then… Finally…", "I spoke a little slower than feels natural", "I paused after the key point"],
+      "seconds": 30
+    },
+    {
+      "moduleId": "c3",
+      "task": "Spoken link: practise saying your LinkedIn About section aloud in 30 seconds. It becomes your introduction at networking events and interviews.",
+      "checklist": ["I said who I am and what I do", "I mentioned one concrete thing I have done", "I said what I am aiming for", "I kept it to about 30 seconds"],
+      "seconds": 30
+    },
+    {
+      "moduleId": "c4",
+      "task": "Write and say aloud a 40-to-60-second answer to \"Tell me about yourself\" using present, past, future.",
+      "checklist": ["Present: what I am doing now", "Past: the experience that prepared me", "Future: why this role", "I did not recite my CV"],
+      "seconds": 60
+    }
+  ]
+}

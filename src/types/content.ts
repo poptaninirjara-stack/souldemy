@@ -88,6 +88,8 @@ export interface ModuleSummary {
   outcomesHtml: string[]
   lessonMap: LessonMapRow[]
   pages: PageRef[]
+  /** Number of self-correcting quiz items in the module (0 for the communicative track). */
+  quizCount: number
   furtherReading: FurtherReading
 }
 

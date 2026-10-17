@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 import { FurtherReadingButton } from '../components/FurtherReading'
 import { Html } from '../components/Html'
+import { PractiseThis } from '../components/PractiseThis'
 import { LoadError, Loading } from '../components/Loading'
 import { Rail } from '../components/Rail'
 import { ReaderLayout } from '../components/ReaderLayout'
@@ -138,26 +139,27 @@ export function CommModulePage() {
               }}
               aria-hidden="true"
             />
+            <PractiseThis moduleId={mod.id} pageId={sec.id} collect={sec.id === 'language'} />
           </section>
         ))
       )}
 
       <nav className={s.pager} aria-label="Modules">
         {mod.number > 1 && (
-          <Link to={`/communicative/${track.modules[mod.number - 2].id}`} className={s.pagerLink} data-dir="prev" rel="prev">
+          <Link to={`/communicative/${track.modules[mod.number - 2].id}/read`} className={s.pagerLink} data-dir="prev" rel="prev">
             <span className={s.pagerDir}>Previous module</span>
             <span className={s.pagerTitle}>{track.modules[mod.number - 2].title}</span>
           </Link>
         )}
         {mod.number < track.modules.length ? (
-          <Link to={`/communicative/${track.modules[mod.number].id}`} className={s.pagerLink} data-dir="next" rel="next">
+          <Link to={`/communicative/${track.modules[mod.number].id}/read`} className={s.pagerLink} data-dir="next" rel="next">
             <span className={s.pagerDir}>Next module</span>
             <span className={s.pagerTitle}>{track.modules[mod.number].title}</span>
           </Link>
         ) : (
-          <Link to="/communicative" className={s.pagerLink} data-dir="next">
-            <span className={s.pagerDir}>End of track</span>
-            <span className={s.pagerTitle}>Back to contents</span>
+          <Link to={`/communicative/${mod.id}`} className={s.pagerLink} data-dir="next">
+            <span className={s.pagerDir}>Finished reading</span>
+            <span className={s.pagerTitle}>Back to the place</span>
           </Link>
         )}
       </nav>

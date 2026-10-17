@@ -11,9 +11,9 @@ export function Rail({ track, current, activePage }: { track: Track; current: Mo
   const { visited } = useAppState()
   return (
     <nav className={styles.rail} aria-label="Modules in this track">
-      <Link to={`/${track.id}`} className={styles.back}>
+      <Link to="/" className={styles.back}>
         <ChevronLeft size={16} />
-        All modules
+        Campus
       </Link>
       <p className={styles.track}>{track.title}</p>
       <ul className={styles.list}>

@@ -53,7 +53,7 @@ export function modulePath(m: ModuleSummary): string {
 }
 
 export function pagePath(m: ModuleSummary, pageId: string): string {
-  return m.trackId === 'research' ? `/${m.trackId}/${m.id}/${pageId}` : `/${m.trackId}/${m.id}?s=${pageId}`
+  return m.trackId === 'research' ? `/${m.trackId}/${m.id}/${pageId}` : `/${m.trackId}/${m.id}/read?s=${pageId}`
 }
 
 /** "purdue.edu" from a URL, for attributing a source by its host. */
