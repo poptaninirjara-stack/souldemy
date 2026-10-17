@@ -57,8 +57,12 @@ Deno.serve(async (req) => {
   if (req.method !== 'POST') return json({ error: 'Use POST.' }, 405)
 
   const jwt = req.headers.get('Authorization')?.replace(/^Bearer\s+/i, '')
-  const { data: auth } = jwt ? await db.auth.getUser(jwt) : { data: { user: null } }
-  if (!auth.user) return json({ error: 'Your session has ended. Sign in again.' }, 401)
+  const { data: auth, error: authErr } = jwt ? await db.auth.getUser(jwt) : { data: { user: null }, error: null }
+  if (!auth.user) {
+    // Visible in Supabase → Edge Functions → admin-users → Logs.
+    console.warn('Rejected sign-in:', jwt?.startsWith('sb_') ? 'no user session (app key only)' : (authErr?.message ?? 'no token'))
+    return json({ error: 'Your session has ended. Sign in again.' }, 401)
+  }
   const { data: me } = await db.from('profiles').select('role').eq('id', auth.user.id).maybeSingle()
   if (me?.role !== 'admin') return json({ error: 'Only the admin can manage accounts.' }, 403)
   const self = auth.user.id

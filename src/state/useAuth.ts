@@ -29,8 +29,21 @@ export function useAuthValue() {
   useEffect(() => onSyncStatus(setStatus), [])
 
   const begin = useCallback(async (s: Session) => {
-    const { data } = await supabase!.from('profiles').select('id, username, full_name, role, must_change_password').eq('id', s.user.id).maybeSingle()
-    setProfile((data as Profile | null) ?? null)
+    const load = () => supabase!.from('profiles').select('id, username, full_name, role, must_change_password').eq('id', s.user.id).maybeSingle()
+    let { data, error, status } = await load()
+    if (status === 401) {
+      // The saved sign-in was not accepted: renew it once; if that fails, sign out cleanly
+      // instead of leaving the app looking signed in. (Offline errors leave it as it is.)
+      const { data: r } = await supabase!.auth.refreshSession()
+      if (r.session) ({ data, error, status } = await load())
+      if (!r.session || status === 401) {
+        await supabase!.auth.signOut({ scope: 'local' })
+        setSession(null)
+        setProfile(null)
+        return
+      }
+    }
+    if (!error) setProfile((data as Profile | null) ?? null)
     if (await startSync(s.user.id)) setEpoch((n) => n + 1)
   }, [])
 

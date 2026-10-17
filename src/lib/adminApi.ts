@@ -8,9 +8,41 @@ type Action =
   | { action: 'update'; user_id: string; username?: string; full_name?: string; role?: string; class?: string }
   | { action: 'delete'; user_id: string }
 
+const SIGNED_OUT = 'You were signed out (your sign-in had expired). Sign in again, then try once more.'
+
+/** A current access token, renewed first if it has expired or is about to. */
+async function freshToken(): Promise<string | null> {
+  const { data } = await supabase!.auth.getSession()
+  const s = data.session
+  if (!s) return null
+  if (!s.expires_at || s.expires_at * 1000 - Date.now() > 60_000) return s.access_token
+  const { data: r } = await supabase!.auth.refreshSession()
+  return r.session?.access_token ?? null
+}
+
+const send = (body: Action, token: string) =>
+  supabase!.functions.invoke('admin-users', { body, headers: { Authorization: `Bearer ${token}` } })
+
+const statusOf = (error: unknown) => {
+  const res = (error as { context?: unknown } | null)?.context
+  return res instanceof Response ? res.status : 0
+}
+
 export async function adminCall(body: Action): Promise<string | null> {
   if (!supabase) return 'Accounts are not set up.'
-  const { error } = await supabase.functions.invoke('admin-users', { body })
+  let token = await freshToken()
+  let { error } = token ? await send(body, token) : { error: null as unknown }
+  // The server did not accept the sign-in: renew it once and retry. If that fails too,
+  // sign out properly so the page stops looking signed in.
+  if (!token || statusOf(error) === 401) {
+    const { data } = await supabase.auth.refreshSession()
+    token = data.session?.access_token ?? null
+    if (token) ({ error } = await send(body, token))
+    if (!token || statusOf(error) === 401) {
+      await supabase.auth.signOut({ scope: 'local' })
+      return SIGNED_OUT
+    }
+  }
   if (!error) return null
   // The function answers errors as {error: "..."}; the client wraps the response.
   const res = (error as { context?: unknown }).context
