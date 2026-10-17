@@ -137,3 +137,90 @@
 .quiz [data-status='shown'] {
   color: var(--incorrect);
 }
+
+/* Phones: each student becomes a card (name on top, figures in a two-column grid),
+   and the whole card opens that student. */
+@media (max-width: 767px) {
+  .tableWrap {
+    overflow: visible;
+    outline: none;
+    background: none;
+  }
+
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .table,
+  .table tbody {
+    display: block;
+  }
+
+  .table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-12);
+  }
+
+  .table tr {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-8) var(--s-16);
+    padding: var(--s-16);
+    border: var(--border);
+    border-radius: var(--r-panel);
+    background: var(--page);
+    box-shadow: var(--shadow-hard-sm);
+  }
+
+  .table th,
+  .table td {
+    padding: 0;
+    border: 0;
+    white-space: normal;
+  }
+
+  .table tbody th {
+    grid-column: 1 / -1;
+    font-size: var(--text-ui);
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--muted);
+    font-size: var(--text-caption);
+  }
+
+  .table td[data-label='Class'] {
+    grid-column: 1 / -1;
+  }
+
+  .rowLink::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--r-panel);
+  }
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  font-weight: 600;
+}
+
+.check {
+  min-height: var(--target-min);
+}
+
+.check input {
+  width: 20px;
+  height: 20px;
+}

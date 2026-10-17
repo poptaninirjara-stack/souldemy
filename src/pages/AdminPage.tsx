@@ -113,6 +113,9 @@ function AdminBody({ tab, setTab }: { tab: 'accounts' | 'requests'; setTab: (t: 
           Password requests
           {data.requests.length > 0 && <span className={styles.badge}>{data.requests.length}</span>}
         </button>
+        <Link to="/teacher" className={styles.tabLink}>
+          Teacher view →
+        </Link>
       </div>
 
       {handout && <HandoutCard handout={handout} onClose={() => setHandout(null)} />}
@@ -186,6 +189,14 @@ function CreateAccount({ classes, onCreated }: { classes: string[]; onCreated: (
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const uid = useId()
+  // Open on wide screens; folded on phones so the account list is not pushed far down.
+  const [startOpen] = useState(() => {
+    try {
+      return window.matchMedia('(min-width: 768px)').matches
+    } catch {
+      return true
+    }
+  })
   const set = (k: keyof typeof form) => (v: string) => setForm((f) => ({ ...f, [k]: v }))
 
   async function submit(e: FormEvent) {
@@ -203,7 +214,7 @@ function CreateAccount({ classes, onCreated }: { classes: string[]; onCreated: (
   }
 
   return (
-    <details className={styles.panel} open>
+    <details className={styles.panel} open={startOpen}>
       <summary className={styles.panelTitle}>Add an account</summary>
       <form className={styles.form} onSubmit={submit} noValidate>
         <div className={styles.grid}>

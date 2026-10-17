@@ -84,6 +84,24 @@ export const User = (p: IconProps) => (
   </Svg>
 )
 
+/** Shield with a check: the admin area. */
+export const Shield = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z" />
+    <path d="M9 12l2 2 4-4" />
+  </Svg>
+)
+
+/** Two people: the teacher's class view. */
+export const Group = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="9" cy="8" r="3.5" />
+    <path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5" />
+    <circle cx="17" cy="9" r="2.5" />
+    <path d="M16.5 14c2.5 0 4.2 1.6 5 4.5" />
+  </Svg>
+)
+
 export const Bolt = (p: IconProps) => (
   <Svg {...p}>
     <path d="M13 2L4 14h7l-1 8 9-12h-7z" />

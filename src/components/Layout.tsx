@@ -4,11 +4,12 @@ import { APP_NAME } from '../config'
 import { findModule } from '../lib/content'
 import { placeFor } from '../lib/places'
 import { useReducedMotion } from '../state/useAppState'
+import { useAuth } from '../state/useAuth'
 import { useProgress } from '../state/useProgress'
 import { Celebration } from './Celebration'
 import { ContentUpdate } from './ContentUpdate'
 import { PasswordReminder } from './PasswordReminder'
-import { Bolt, Book, Campus, Cards, ChevronLeft, User } from './Icons'
+import { Bolt, Book, Campus, Cards, ChevronLeft, Group, Shield, User } from './Icons'
 import styles from './Layout.module.css'
 import { XpToast } from './XpToast'
 
@@ -29,6 +30,7 @@ export function Layout() {
   const location = useLocation()
   const back = useBackLink()
   const progress = useProgress()
+  const { isAdmin, isStaff } = useAuth()
   const path = location.pathname
   const focusMode = path.startsWith('/play/') || path.startsWith('/mirror/')
   const mainRef = useRef<HTMLElement>(null)
@@ -49,10 +51,17 @@ export function Layout() {
     }
   }, [path, location.search])
 
+  const staff = path.startsWith('/admin') || path.startsWith('/teacher')
   const items = [
-    { to: '/', label: 'Campus', icon: <Campus size={22} />, active: !['/review', '/library', '/me'].includes(path) },
+    { to: '/', label: 'Campus', icon: <Campus size={22} />, active: !['/review', '/library', '/me'].includes(path) && !staff },
     { to: '/review', label: 'Review', icon: <Cards size={22} />, active: path === '/review', badge: progress.dueCards.length || undefined },
     { to: '/library', label: 'Library', icon: <Book size={22} />, active: path === '/library' },
+    // Staff get their own tab, so the admin and teacher pages are one tap away on a phone.
+    ...(isAdmin
+      ? [{ to: '/admin', label: 'Admin', icon: <Shield size={22} />, active: staff, badge: undefined }]
+      : isStaff
+        ? [{ to: '/teacher', label: 'Teacher', icon: <Group size={22} />, active: staff, badge: undefined }]
+        : []),
     { to: '/me', label: 'Me', icon: <User size={22} />, active: path === '/me' },
   ]
   const nav = items.map((i) => (

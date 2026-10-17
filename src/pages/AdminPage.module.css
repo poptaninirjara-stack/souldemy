@@ -227,3 +227,27 @@
   font: 700 var(--text-body) / 1.3 ui-monospace, 'Cascadia Mono', monospace;
   overflow-wrap: anywhere;
 }
+
+.tabLink {
+  margin-left: auto;
+  align-self: center;
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  /* Long names: the "Temporary password" tag goes under the name instead of squeezing it. */
+  .accountHead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-4);
+    padding: var(--s-12) var(--s-16);
+  }
+
+  .manage {
+    padding: var(--s-16) var(--s-12);
+  }
+
+  .panel {
+    padding: var(--s-16);
+  }
+}

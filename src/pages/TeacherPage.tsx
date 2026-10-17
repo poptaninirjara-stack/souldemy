@@ -166,7 +166,7 @@ function Students() {
       {state.students.length === 0 ? (
         <p className="meta">No student accounts yet. Create them with npm run import-users (see the README).</p>
       ) : (
-        <div className="table-scroll">
+        <div className={`table-scroll ${styles.tableWrap}`}>
           <table className={styles.table}>
             <thead>
               <tr>
@@ -183,19 +183,19 @@ function Students() {
               {rows.map(({ s, p, sum }) => (
                 <tr key={s.id}>
                   <th scope="row">
-                    <Link to={`/teacher/${s.id}`}>{s.full_name || s.username}</Link>
+                    <Link to={`/teacher/${s.id}`} className={styles.rowLink}>{s.full_name || s.username}</Link>
                     <span className={styles.username}>{s.username}</span>
                   </th>
-                  <td>{s.classes?.name ?? '—'}</td>
-                  <td>
+                  <td data-label="Class">{s.classes?.name ?? '—'}</td>
+                  <td data-label="Pages read">
                     {sum.read} / {TOTAL_PAGES}
                   </td>
-                  <td>
+                  <td data-label="Quiz correct">
                     {sum.correct} / {TOTAL_QUIZ}
                   </td>
-                  <td>{sum.written}</td>
-                  <td>{sum.xp}</td>
-                  <td>{date(p.lastActive)}</td>
+                  <td data-label="Answers">{sum.written}</td>
+                  <td data-label="XP">{sum.xp}</td>
+                  <td data-label="Last active">{date(p.lastActive)}</td>
                 </tr>
               ))}
             </tbody>
@@ -297,7 +297,9 @@ export function StudentPage() {
 
   const back = (
     <p>
-      <Link to="/teacher">← All students</Link>
+      <Link to="/teacher" className={styles.back}>
+        ← All students
+      </Link>
     </p>
   )
   if (gate)
